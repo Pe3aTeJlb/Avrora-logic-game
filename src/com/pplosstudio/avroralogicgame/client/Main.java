@@ -23,7 +23,7 @@ public class Main implements EntryPoint {
 	static CirSim mysim;
 	
   public void onModuleLoad() {  
-	  loadSimulator()
+	  loadSimulator();
   }
   
   public void loadSimulator() {
@@ -36,7 +36,7 @@ public class Main implements EntryPoint {
             public void onResize(ResizeEvent event)
             {               
             	mysim.setCanvasSize();
-                mysim.setiFrameHeight();	
+                //mysim.setiFrameHeight();	
                 	
             }
         });
