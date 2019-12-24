@@ -71,36 +71,35 @@ public class CirSim {
 	
 	final int FASTTIMER=16;
 	private static final int REFRESH_RATE = 1;
-
-    //static final int POSTGRABSQ=25;
-    //static final int MINPOSTGRABSIZE = 256;
+	
+	RootLayoutPanel root;
 	
     Canvas cv;
     Context2d cvcontext;
     Canvas backcv;
     Context2d backcontext;
-    
-	static final int MENUBARHEIGHT=20;
-	int width,height;
-    
-	 RootLayoutPanel root;
 	
-     DockLayoutPanel layoutPanel;
+    DockLayoutPanel layoutPanel;
      
-     MenuBar mainBar;
-     MenuBar extrasBar;
+    MenuBar mainBar;
+    MenuBar extrasBar;
+    MenuBar editBar;
+    MenuBar infoBar;
      
-     CheckboxMenuItem alternativeColorCheckItem;
-     CheckboxMenuItem printableCheckItem;
-
+    CheckboxMenuItem alternativeColorCheckItem;
+    CheckboxMenuItem printableCheckItem;
      
-     int gridSize, gridMask, gridRound;
+    static final int MENUBARHEIGHT=30;
+    int width,height;
+      
+    int gridSize, gridMask, gridRound;
      
-     double transform[];
+    Vector<CircuitElm> elmList;
+    double transform[];
      
-     int scopeCount;
-    // Scope scopes[];
-     int scopeColCount[];
+    int scopeCount;
+    //Scope scopes[];
+    int scopeColCount[];
      
 	
    CirSim() {
@@ -131,18 +130,37 @@ public class CirSim {
  public void init() {
 	 
 	 boolean printable = false;
+	 
 	 transform = new double[6];
 	 
-	// CircuitElm.initClass(this);
+	 CircuitElm.initClass(this);
 	 
 	 root = RootLayoutPanel.get();
 	 
 	 layoutPanel = new DockLayoutPanel(Unit.PX);
-	 mainBar = new MenuBar(true);
-	 extrasBar = new MenuBar(true);
+	 mainBar     = new MenuBar(false);
+	 extrasBar   = new MenuBar(true);
+	 editBar     = new MenuBar(true);
+     infoBar     = new MenuBar(true);
+     
+     
+		editBar.addItem(new MenuItem("Center Circuit", new Command() { public void execute(){
+			//centreCircuit();
+		}}));
+		editBar.addItem(new MenuItem("Zoom 100%",  new Command() { public void execute(){
+			//setCircuitScale(1);
+		}}));
+		editBar.addItem(new MenuItem("Zoom In",  new Command() { public void execute(){
+			//zoomCircuit(20);
+		}}));
+		editBar.addItem(new MenuItem("Zoom Out",  new Command() { public void execute(){
+			//zoomCircuit(-20);
+		}}));
+		
+		mainBar.addItem("Edit", editBar);
 	 
-			 
-	 extrasBar.addItem(printableCheckItem = new CheckboxMenuItem("White Background",
+		
+	 	extrasBar.addItem(printableCheckItem = new CheckboxMenuItem("White back",
 				new Command() { public void execute(){
 					//printableCheckItem.setState(true);
 					//int i;
@@ -156,7 +174,13 @@ public class CirSim {
 					CircuitElm.setColorScale();
 				}}));
 			
-		mainBar.addItem("Extras",extrasBar);
+		mainBar.addItem("Options",extrasBar);
+		
+		///
+		///
+     	mainBar.addItem("Info", infoBar);
+		
+		
 		layoutPanel.addNorth(mainBar, MENUBARHEIGHT);
 	 
 		cv = Canvas.createIfSupported();
@@ -164,23 +188,26 @@ public class CirSim {
 				  RootPanel.get().add(new Label("Not working. You need a browser that supports the CANVAS element."));
 				  return;
 			  }
+			  
 		cvcontext=cv.getContext2d();
-		
 		
 		backcv = Canvas.createIfSupported();
 		backcontext=backcv.getContext2d();
-		setCanvasSize();	  
-		layoutPanel.add(cv);
 		
-		cvcontext.setStrokeStyle("white");
-    	cvcontext.fillRect(0, 0, width, height);
+		setCanvasSize();	  
+		
+		layoutPanel.add(cv);
 		
 		root.add(layoutPanel);
 			 
-			//	scopes = new Scope[20];
+				//scopes = new Scope[20];
 				//scopeColCount = new int[20];
-			//	scopeCount = 0;
+				//scopeCount = 0;
 				
+		CircuitElm newce = createCe(464, 384, 464, 400, 0);
+		newce.setPoints();
+		elmList.addElement(newce);
+		
 		timer.scheduleRepeating(REFRESH_RATE);
 			
 				
@@ -216,6 +243,10 @@ public class CirSim {
 	gridRound = gridSize/2-1;
     }
 
+    
+    public static CircuitElm createCe(int x1, int y1, int x2, int y2, int f) {
+    	return (CircuitElm) new WireElm(x1, y1, x2, y2, f);
+    }
     
     static SafeHtml LSHTML(String s) { return SafeHtmlUtils.fromTrustedString(s); }
 	

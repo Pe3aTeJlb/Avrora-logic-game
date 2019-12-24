@@ -425,22 +425,18 @@ public abstract class CircuitElm  {
     	setPoints();
     }
     
-    /*
+    
     void drawPosts(Graphics g) {
 	// we normally do this in updateCircuit() now because the logic is more complicated.
 	// we only handle the case where we have to draw all the posts.  That happens when
 	// this element is selected or is being created
-	if (sim.dragElm == null && !needsHighlight())
-	    return;
-	if (sim.mouseMode == CirSim.MODE_DRAG_ROW ||
-	    sim.mouseMode == CirSim.MODE_DRAG_COLUMN)
-	    return;
+	
 	int i;
 	for (i = 0; i != getPostCount(); i++) {
 	    Point p = getPost(i);
 	    drawPost(g, p);
 	}
-    }*/
+    }
     
     void drawHandles(Graphics g, Color c) {
     	g.setColor(c);
