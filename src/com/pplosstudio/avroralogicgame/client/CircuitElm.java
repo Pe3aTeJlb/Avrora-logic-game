@@ -172,6 +172,7 @@ public abstract class CircuitElm  {
 	    volts[i] = 0;
 	curcount = 0;
     }
+    
     void draw(Graphics g) {}
     
     // set current for voltage source vn to c.  vn will be the same value as in a previous call to setVoltageSource(n, vn) 

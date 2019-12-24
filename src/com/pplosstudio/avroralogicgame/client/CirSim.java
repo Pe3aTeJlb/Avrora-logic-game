@@ -3,6 +3,7 @@ package com.pplosstudio.avroralogicgame.client;
 import java.util.Vector;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.lang.Math;
@@ -63,6 +64,7 @@ import static com.google.gwt.event.dom.client.KeyCodes.*;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Widget;
+import com.lushprojects.circuitjs1.client.Rectangle;
 import com.google.gwt.user.client.Window.Navigator;
 
 public class CirSim {
@@ -70,7 +72,7 @@ public class CirSim {
 	static CirSim theSim;
 	
 	final int FASTTIMER=16;
-	private static final int REFRESH_RATE = 1;
+	private static final int REFRESH_RATE = 16;
 	
 	RootLayoutPanel root;
 	
@@ -95,13 +97,9 @@ public class CirSim {
     int gridSize, gridMask, gridRound;
      
     Vector<CircuitElm> elmList;
+
     double transform[];
      
-    int scopeCount;
-    //Scope scopes[];
-    int scopeColCount[];
-     
-	
    CirSim() {
 	theSim = this;
    }
@@ -126,14 +124,20 @@ public class CirSim {
 
   }
   
- 
- public void init() {
-	 
-	 boolean printable = false;
+  void setCircuitArea() {
+  	int height = cv.getCanvasElement().getHeight();
+  	int width = cv.getCanvasElement().getWidth();
+		//int h = (int) ((double)height * scopeHeightFraction);
+	
+		//circuitArea = new Rectangle(0, 0, width, height-h);
+  }
+  
+  public void init() {
 	 
 	 transform = new double[6];
 	 
 	 CircuitElm.initClass(this);
+	 elmList = new Vector<CircuitElm>();
 	 
 	 root = RootLayoutPanel.get();
 	 
@@ -145,16 +149,16 @@ public class CirSim {
      
      
 		editBar.addItem(new MenuItem("Center Circuit", new Command() { public void execute(){
-			//centreCircuit();
+			centreCircuit();
 		}}));
 		editBar.addItem(new MenuItem("Zoom 100%",  new Command() { public void execute(){
-			//setCircuitScale(1);
+			setCircuitScale(1);
 		}}));
 		editBar.addItem(new MenuItem("Zoom In",  new Command() { public void execute(){
-			//zoomCircuit(20);
+			zoomCircuit(20);
 		}}));
 		editBar.addItem(new MenuItem("Zoom Out",  new Command() { public void execute(){
-			//zoomCircuit(-20);
+			zoomCircuit(-20);
 		}}));
 		
 		mainBar.addItem("Edit", editBar);
@@ -162,12 +166,8 @@ public class CirSim {
 		
 	 	extrasBar.addItem(printableCheckItem = new CheckboxMenuItem("White back",
 				new Command() { public void execute(){
-					//printableCheckItem.setState(true);
-					//int i;
-					//for (i=0;i<scopeCount;i++)
-						//scopes[i].setRect(scopes[i].rect);
 				}}));
-		printableCheckItem.setState(true);
+		printableCheckItem.setState(false);
 		
 		extrasBar.addItem(alternativeColorCheckItem = new CheckboxMenuItem("Alt Color",
 				new Command() { public void execute(){
@@ -199,50 +199,190 @@ public class CirSim {
 		layoutPanel.add(cv);
 		
 		root.add(layoutPanel);
-			 
-				//scopes = new Scope[20];
-				//scopeColCount = new int[20];
-				//scopeCount = 0;
-				
-		CircuitElm newce = createCe(464, 384, 464, 400, 0);
-		newce.setPoints();
-		elmList.addElement(newce);
 		
+		
+				
+		CircuitElm newce = createCe(0, 0, 20, 20, 0);
+		newce.setPoints();
+		elmList.add(newce);
+		
+		CircuitElm newce2 = createCe(50, 50, 70, 80, 1);
+		newce2.setPoints();
+		elmList.add(newce2);
+
 		timer.scheduleRepeating(REFRESH_RATE);
 			
 				
  }
   
-  final Timer timer = new Timer() {
-      public void run() {
-        updateCircuit();
-      }
-    };
+	final Timer timer = new Timer() {
+	      public void run() {
+	        updateCircuit();
+	      }
+	 };
 
-    
     public void updateCircuit() {
+    	
+    //	GWT.log("ms");
+    	setCanvasSize();
     	
     	Graphics g = new Graphics(backcontext);
     	
+    	CircuitElm.selectColor = Color.cyan;
+    	
     	if (printableCheckItem.getState()) {
-      	    g.setColor(Color.red);
+    		CircuitElm.whiteColor = Color.black;
+      	    CircuitElm.lightGrayColor = Color.black;
+      	    g.setColor(Color.white);
     	} else {
-    		g.setColor(Color.green);
+    		CircuitElm.whiteColor = Color.white;
+    		CircuitElm.lightGrayColor = Color.lightGray;
+    		g.setColor(Color.black);
+    	}
+    	g.fillRect(0, 0, width, height);
+    	//
+    	
+    	backcontext.setTransform(transform[0], transform[1], transform[2],
+				 transform[3], transform[4], transform[5]);
+    
+    	
+    	for (int i = 0; i != elmList.size(); i++) {
+    		//g.setColor(Color.green);
+    	    getElm(i).draw(g);
     	}
     	
-    	g.fillRect(0, 0, width, height);
+    	//backcontext.setTransform(1, 0, 0, 1, 0, 0);
     	
     	cvcontext.drawImage(backcontext.getCanvas(),0.0,0.0);
     	
     }
     
 	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     void setGrid() {
 	gridSize = 8;
 	gridMask = ~(gridSize-1);
 	gridRound = gridSize/2-1;
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    void zoomCircuit(int dy) {
+	double newScale;
+    	double oldScale = transform[0];
+    	double val = dy*.01;
+    	newScale = Math.max(oldScale+val, .2);
+    	newScale = Math.min(newScale, 2.5);
+    	setCircuitScale(newScale);
+    }
+    
+    void setCircuitScale(double newScale) {
+	int cx = inverseTransformX((double)(width/2));
+	int cy = inverseTransformY((double)(height/2));
+	transform[0] = transform[3] = newScale;
+
+	// adjust translation to keep center of screen constant
+	// inverse transform = (x-t4)/t0
+	transform[4] = (double)width /2 - cx*newScale;
+	transform[5] = (double)height/2 - cy*newScale;
+    }
+    
+    void centreCircuit() {
+	Rectangle bounds = getCircuitBounds();
+	
+    	double scale = 1;
+    	
+    	if (bounds != null)
+    	    // add some space on edges because bounds calculation is not perfect
+    	    scale = Math.min((double)width /(double)(bounds.width+140),
+    			     (double)height/(double)(bounds.height+100));
+    	scale = Math.min(scale, 1.5); // Limit scale so we don't create enormous circuits in big windows
+
+    	// calculate transform so circuit fills most of screen
+    	transform[0] = transform[3] = scale;
+    	transform[1] = transform[2] = transform[4] = transform[5] = 0;
+    	if (bounds != null) {
+    	    transform[4] = ((double)width -bounds.width *scale)/2 - bounds.x*scale;
+    	    transform[5] = ((double)height-bounds.height*scale)/2 - bounds.y*scale;
+    	}
+    }
+        
+    Rectangle getCircuitBounds() {
+    	
+    	int i;
+    	int minx = 1000, maxx = 0, miny = 1000, maxy = 0;
+    	
+    	for (i = 0; i != elmList.size(); i++) {
+    		CircuitElm ce = getElm(i);
+    		// centered text causes problems when trying to center the circuit,
+    		// so we special-case it here
+    		//if (!ce.isCenteredText()) {
+    			minx = min(ce.x, min(ce.x2, minx));
+    			maxx = max(ce.x, max(ce.x2, maxx));
+    		//}
+    		//miny = min(ce.y, min(ce.y2, miny));
+    		//maxy = max(ce.y, max(ce.y2, maxy));
+    	}
+    	
+    	if (minx > maxx) {
+    	    return null;
+    	    }
+    	return new Rectangle(minx, miny, maxx-minx, maxy-miny);
+    }
+        
+    int min(int a, int b) { return (a < b) ? a : b; }
+    int max(int a, int b) { return (a > b) ? a : b; }
+        
+ // convert screen coordinates to grid coordinates by inverting circuit transform
+    int inverseTransformX(double x) {
+	return (int) ((x-transform[4])/transform[0]);
+    }
+
+    int inverseTransformY(double y) {
+	return (int) ((y-transform[5])/transform[3]);
+    }
+    
+    // convert grid coordinates to screen coordinates
+    int transformX(double x) {
+	return (int) ((x*transform[0]) + transform[4]);
+    }
+    
+    int transformY(double y) {
+	return (int) ((y*transform[3]) + transform[5]);
+    }
+    
+
+    
+    public CircuitElm getElm(int n) {
+	if (n >= elmList.size())
+	    return null;
+	return elmList.elementAt(n);
+    }
     
     public static CircuitElm createCe(int x1, int y1, int x2, int y2, int f) {
     	return (CircuitElm) new WireElm(x1, y1, x2, y2, f);
