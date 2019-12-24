@@ -21,9 +21,10 @@ package com.pplosstudio.avroralogicgame.client;
 
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
 
 public class CheckboxMenuItem extends MenuItem implements Command {
-	private boolean on=false;
+	private boolean on = false;
 	private String name="";
 	private String shortcut="";
 	private Command extcmd=null;
@@ -94,6 +95,7 @@ public class CheckboxMenuItem extends MenuItem implements Command {
 	}
 	
 	public boolean getState(){
+		//Window.alert(Boolean.toString(on));
 		return on;
 	}
 

@@ -34,6 +34,7 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.impl.AsyncFragmentLoader.Logger;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestException;
@@ -69,7 +70,7 @@ public class CirSim {
 	static CirSim theSim;
 	
 	final int FASTTIMER=16;
-	
+	private static final int REFRESH_RATE = 1;
 
     //static final int POSTGRABSQ=25;
     //static final int MINPOSTGRABSIZE = 256;
@@ -79,15 +80,16 @@ public class CirSim {
     Canvas backcv;
     Context2d backcontext;
     
-	Rectangle circuitArea;
-	
-	double scopeHeightFraction = 0.2;
-	static final int MENUBARHEIGHT=30;
-    static int VERTICALPANELWIDTH=166; // default
+	static final int MENUBARHEIGHT=20;
+	int width,height;
     
+	 RootLayoutPanel root;
+	
      DockLayoutPanel layoutPanel;
+     
      MenuBar mainBar;
      MenuBar extrasBar;
+     
      CheckboxMenuItem alternativeColorCheckItem;
      CheckboxMenuItem printableCheckItem;
 
@@ -96,6 +98,10 @@ public class CirSim {
      
      double transform[];
      
+     int scopeCount;
+    // Scope scopes[];
+     int scopeColCount[];
+     
 	
    CirSim() {
 	theSim = this;
@@ -103,10 +109,8 @@ public class CirSim {
 	
   public void setCanvasSize(){
 	  
-  	int width, height;
   	width=(int)RootLayoutPanel.get().getOffsetWidth();
-  	height=(int)RootLayoutPanel.get().getOffsetHeight();
-  	height=height-MENUBARHEIGHT;
+  	height=(int)RootLayoutPanel.get().getOffsetHeight()-MENUBARHEIGHT;
   	
 		if (cv != null) {
 			cv.setWidth(width + "PX");
@@ -121,64 +125,65 @@ public class CirSim {
 			backcv.setCoordinateSpaceHeight(height);
 		}
 
-  	//setCircuitArea();
   }
   
-  void setCircuitArea() {
-  	int height = cv.getCanvasElement().getHeight();
-  	int width = cv.getCanvasElement().getWidth();
-	int h = (int) ((double)height * scopeHeightFraction);
-	circuitArea = new Rectangle(0, 0, width, height-h);
-  }
  
  public void init() {
 	 
 	 boolean printable = false;
 	 transform = new double[6];
 	 
-	 CircuitElm.initClass(this);
+	// CircuitElm.initClass(this);
+	 
+	 root = RootLayoutPanel.get();
 	 
 	 layoutPanel = new DockLayoutPanel(Unit.PX);
 	 mainBar = new MenuBar(true);
 	 extrasBar = new MenuBar(true);
 	 
-	 
+			 
 	 extrasBar.addItem(printableCheckItem = new CheckboxMenuItem("White Background",
 				new Command() { public void execute(){
+					//printableCheckItem.setState(true);
 					//int i;
 					//for (i=0;i<scopeCount;i++)
 						//scopes[i].setRect(scopes[i].rect);
 				}}));
-		printableCheckItem.setState(printable);
+		printableCheckItem.setState(true);
 		
 		extrasBar.addItem(alternativeColorCheckItem = new CheckboxMenuItem("Alt Color",
 				new Command() { public void execute(){
-
-					//CircuitElm.setColorScale();
+					CircuitElm.setColorScale();
 				}}));
-			//alternativeColorCheckItem.setState(getOptionFromStorage("alternativeColor", false));
-		
-			mainBar.addItem("Extras",extrasBar);
-			layoutPanel.addNorth(mainBar, MENUBARHEIGHT);
-	 
 			
-	  
-			cv = Canvas.createIfSupported();
+		mainBar.addItem("Extras",extrasBar);
+		layoutPanel.addNorth(mainBar, MENUBARHEIGHT);
+	 
+		cv = Canvas.createIfSupported();
 			  if (cv==null) {
 				  RootPanel.get().add(new Label("Not working. You need a browser that supports the CANVAS element."));
 				  return;
 			  }
-			  //cvcontext=cv.getContext2d();
-			  //backcv = Canvas.createIfSupported();
-			  //backcontext=backcv.getContext2d();
-	  
-			  
-			  
-			 layoutPanel.add(cv);
-			 setCanvasSize();
-			 RootPanel.get().add(layoutPanel);
+		cvcontext=cv.getContext2d();
+		
+		
+		backcv = Canvas.createIfSupported();
+		backcontext=backcv.getContext2d();
+		setCanvasSize();	  
+		layoutPanel.add(cv);
+		
+		cvcontext.setStrokeStyle("white");
+    	cvcontext.fillRect(0, 0, width, height);
+		
+		root.add(layoutPanel);
 			 
-			 
+			//	scopes = new Scope[20];
+				//scopeColCount = new int[20];
+			//	scopeCount = 0;
+				
+		timer.scheduleRepeating(REFRESH_RATE);
+			
+				
  }
   
   final Timer timer = new Timer() {
@@ -190,35 +195,27 @@ public class CirSim {
     
     public void updateCircuit() {
     	
-    	
-    	Graphics g=new Graphics(cvcontext);
+    	Graphics g = new Graphics(backcontext);
     	
     	if (printableCheckItem.getState()) {
-      	   // CircuitElm.whiteColor = Color.black;
-      	  //  CircuitElm.lightGrayColor = Color.black;
-      	    g.setColor(Color.black);
+      	    g.setColor(Color.red);
     	} else {
-    	   // CircuitElm.whiteColor = Color.white;
-    	   // CircuitElm.lightGrayColor = Color.lightGray;
-    	    g.setColor(Color.black);
+    		g.setColor(Color.green);
     	}
-    	g.fillRect(0, 0, g.context.getCanvas().getWidth(), g.context.getCanvas().getHeight());
     	
-    	backcontext.setTransform(transform[0], transform[1], transform[2],
-				 transform[3], transform[4], transform[5]);
+    	g.fillRect(0, 0, width, height);
     	
-    	backcontext.setTransform(1, 0, 0, 1, 0, 0);
-    	g.fillRect(0, circuitArea.height, circuitArea.width, cv.getCoordinateSpaceHeight()-circuitArea.height);
-
-
+    	cvcontext.drawImage(backcontext.getCanvas(),0.0,0.0);
+    	
     }
+    
 	
     void setGrid() {
 	gridSize = 8;
 	gridMask = ~(gridSize-1);
 	gridRound = gridSize/2-1;
     }
-    
+
     
     static SafeHtml LSHTML(String s) { return SafeHtmlUtils.fromTrustedString(s); }
 	

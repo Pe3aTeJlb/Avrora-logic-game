@@ -36,12 +36,11 @@ public class Main implements EntryPoint {
             public void onResize(ResizeEvent event)
             {               
             	mysim.setCanvasSize();
-                //mysim.setiFrameHeight();	
                 	
             }
         });
 	    
-	  mysim.updateCircuit();
+	  //mysim.updateCircuit();
 	   
   	}
 
