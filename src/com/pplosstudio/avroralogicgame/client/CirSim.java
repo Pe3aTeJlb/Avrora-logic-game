@@ -64,7 +64,6 @@ import static com.google.gwt.event.dom.client.KeyCodes.*;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Widget;
-import com.lushprojects.circuitjs1.client.Rectangle;
 import com.google.gwt.user.client.Window.Navigator;
 
 public class CirSim {
@@ -99,6 +98,13 @@ public class CirSim {
     Vector<CircuitElm> elmList;
 
     double transform[];
+    
+    Rectangle circuitArea;
+    double scopeHeightFraction = 0.2;
+    
+    boolean euroGates = false;
+    
+    Random random;
      
    CirSim() {
 	theSim = this;
@@ -106,8 +112,8 @@ public class CirSim {
 	
   public void setCanvasSize(){
 	  
-  	width=(int)RootLayoutPanel.get().getOffsetWidth();
-  	height=(int)RootLayoutPanel.get().getOffsetHeight()-MENUBARHEIGHT;
+  	width  = (int)RootLayoutPanel.get().getOffsetWidth();
+  	height = (int)RootLayoutPanel.get().getOffsetHeight()-MENUBARHEIGHT;
   	
 		if (cv != null) {
 			cv.setWidth(width + "PX");
@@ -122,17 +128,16 @@ public class CirSim {
 			backcv.setCoordinateSpaceHeight(height);
 		}
 
+		circuitArea = new Rectangle(0, 0, width, height);
+		//setCircuitArea();
+		
   }
   
   void setCircuitArea() {
-  	int height = cv.getCanvasElement().getHeight();
-  	int width = cv.getCanvasElement().getWidth();
-		//int h = (int) ((double)height * scopeHeightFraction);
-	
-		//circuitArea = new Rectangle(0, 0, width, height-h);
+	circuitArea = new Rectangle(0, 0, width, height);
   }
   
-  public void init() {
+  	public void init() {
 	 
 	 transform = new double[6];
 	 
@@ -201,15 +206,47 @@ public class CirSim {
 		root.add(layoutPanel);
 		
 		
-				
-		CircuitElm newce = createCe(0, 0, 20, 20, 0);
-		newce.setPoints();
-		elmList.add(newce);
+	try {			
+		//CircuitElm newce = createCe("Wire",width/2, height/2, (width/2)+10, (height/2)+50, 0,0);
+		//newce.setPoints();
+		//elmList.add(newce);
 		
-		CircuitElm newce2 = createCe(50, 50, 70, 80, 1);
+		CircuitElm newce2 = createCe("And",width/2, height/2, (width/2)-45, (height/2), 0, 2);
 		newce2.setPoints();
 		elmList.add(newce2);
+		
+		//CircuitElm newce3 = createCe("Linput",10, 10, 20, 10, 0, 2);
+		//newce2.setPoints();
+		//elmList.add(newce3);
+		
+		//CircuitElm newce4 = createCe("Loutput",10, 20, 20, 20, 0, 2);
+		//newce2.setPoints();
+		//elmList.add(newce4);
+		
+		CircuitElm newce5 = createCe("Or",width/2, height/2, (width/2)-45, (height/2), 0, 2);
+		newce2.setPoints();
+		elmList.add(newce5);
+		
+		CircuitElm newce6 = createCe("XOR",width/2, height/2, (width/2)-45, (height/2), 0, 2);
+		newce2.setPoints();
+		elmList.add(newce6);
+		
+		CircuitElm newce7 = createCe("Nor",width/2, height/2, (width/2)-45, (height/2), 0, 2);
+		newce2.setPoints();
+		elmList.add(newce7);
+		
+		CircuitElm newce8 = createCe("Nand",width/2, height/2, (width/2)-45, (height/2), 0, 2);
+		newce2.setPoints();
+		elmList.add(newce8);
+	
+	} catch (Exception ee) {
+	    ee.printStackTrace();
+	    GWT.log("exception while undumping " + ee);
+	}
+		
 
+		centreCircuit();
+		
 		timer.scheduleRepeating(REFRESH_RATE);
 			
 				
@@ -239,7 +276,7 @@ public class CirSim {
     		CircuitElm.lightGrayColor = Color.lightGray;
     		g.setColor(Color.black);
     	}
-    	g.fillRect(0, 0, width, height);
+    	g.fillRect(0, 0, g.context.getCanvas().getWidth(), g.context.getCanvas().getHeight());
     	//
     	
     	backcontext.setTransform(transform[0], transform[1], transform[2],
@@ -247,7 +284,13 @@ public class CirSim {
     
     	
     	for (int i = 0; i != elmList.size(); i++) {
-    		//g.setColor(Color.green);
+    		
+    		if(printableCheckItem.getState()){
+    			g.setColor(Color.black);	
+    		}else {
+    			g.setColor(Color.white);
+    		}
+    		
     	    getElm(i).draw(g);
     	}
     	
@@ -257,79 +300,56 @@ public class CirSim {
     	
     }
     
-	
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     void setGrid() {
 	gridSize = 8;
 	gridMask = ~(gridSize-1);
 	gridRound = gridSize/2-1;
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     void zoomCircuit(int dy) {
-	double newScale;
+    	
+    	double newScale;
     	double oldScale = transform[0];
     	double val = dy*.01;
     	newScale = Math.max(oldScale+val, .2);
     	newScale = Math.min(newScale, 2.5);
     	setCircuitScale(newScale);
+    	
     }
     
     void setCircuitScale(double newScale) {
-	int cx = inverseTransformX((double)(width/2));
-	int cy = inverseTransformY((double)(height/2));
-	transform[0] = transform[3] = newScale;
-
-	// adjust translation to keep center of screen constant
-	// inverse transform = (x-t4)/t0
-	transform[4] = (double)width /2 - cx*newScale;
-	transform[5] = (double)height/2 - cy*newScale;
+    	
+		int cx = inverseTransformX(circuitArea.width/2);
+		int cy = inverseTransformY(circuitArea.height/2);
+		transform[0] = transform[3] = newScale;
+	
+		// adjust translation to keep center of screen constant
+		// inverse transform = (x-t4)/t0
+		transform[4] = circuitArea.width /2 - cx*newScale;
+		transform[5] = circuitArea.height/2 - cy*newScale;
     }
     
     void centreCircuit() {
+    	
 	Rectangle bounds = getCircuitBounds();
 	
     	double scale = 1;
     	
     	if (bounds != null)
     	    // add some space on edges because bounds calculation is not perfect
-    	    scale = Math.min((double)width /(double)(bounds.width+140),
-    			     (double)height/(double)(bounds.height+100));
+    	    scale = Math.min(circuitArea.width /(double)(bounds.width+140),
+    	    		circuitArea.height/(double)(bounds.height+100));
     	scale = Math.min(scale, 1.5); // Limit scale so we don't create enormous circuits in big windows
 
     	// calculate transform so circuit fills most of screen
     	transform[0] = transform[3] = scale;
     	transform[1] = transform[2] = transform[4] = transform[5] = 0;
+    	
     	if (bounds != null) {
-    	    transform[4] = ((double)width -bounds.width *scale)/2 - bounds.x*scale;
-    	    transform[5] = ((double)height-bounds.height*scale)/2 - bounds.y*scale;
+    	    transform[4] = (circuitArea.width  -  bounds.width *scale)/2 - bounds.x*scale;
+    	    transform[5] = (circuitArea.height -  bounds.height*scale)/2 - bounds.y*scale;
     	}
+    	
     }
         
     Rectangle getCircuitBounds() {
@@ -342,11 +362,11 @@ public class CirSim {
     		// centered text causes problems when trying to center the circuit,
     		// so we special-case it here
     		//if (!ce.isCenteredText()) {
-    			minx = min(ce.x, min(ce.x2, minx));
-    			maxx = max(ce.x, max(ce.x2, maxx));
+    			//minx = min(ce.x, min(ce.x2, minx));
+    			//maxx = max(ce.x, max(ce.x2, maxx));
     		//}
-    		//miny = min(ce.y, min(ce.y2, miny));
-    		//maxy = max(ce.y, max(ce.y2, maxy));
+    		miny = min(ce.y, min(ce.y2, miny));
+    		maxy = max(ce.y, max(ce.y2, maxy));
     	}
     	
     	if (minx > maxx) {
@@ -358,38 +378,67 @@ public class CirSim {
     int min(int a, int b) { return (a < b) ? a : b; }
     int max(int a, int b) { return (a > b) ? a : b; }
         
- // convert screen coordinates to grid coordinates by inverting circuit transform
+    // convert screen coordinates to grid coordinates by inverting circuit transform
     int inverseTransformX(double x) {
-	return (int) ((x-transform[4])/transform[0]);
+    	return (int) ((x-transform[4])/transform[0]);
     }
 
     int inverseTransformY(double y) {
-	return (int) ((y-transform[5])/transform[3]);
+    	return (int) ((y-transform[5])/transform[3]);
     }
     
     // convert grid coordinates to screen coordinates
     int transformX(double x) {
-	return (int) ((x*transform[0]) + transform[4]);
+    	return (int) ((x*transform[0]) + transform[4]);
     }
     
     int transformY(double y) {
-	return (int) ((y*transform[3]) + transform[5]);
+    	return (int) ((y*transform[3]) + transform[5]);
     }
-    
-
     
     public CircuitElm getElm(int n) {
-	if (n >= elmList.size())
-	    return null;
-	return elmList.elementAt(n);
+		if (n >= elmList.size())
+		    return null;
+		return elmList.elementAt(n);
     }
     
-    public static CircuitElm createCe(int x1, int y1, int x2, int y2, int f) {
+    public static CircuitElm createCe(String marker, int x1, int y1, int x2, int y2, int f, int inputcount) {
+    	
+    	if(marker.equals("Wire")) {
     	return (CircuitElm) new WireElm(x1, y1, x2, y2, f);
+    	}
+    	if(marker.equals("And")) {
+        	return (CircuitElm) new AndGateElm(x1, y1, x2, y2, f, inputcount);
+        }
+    	if(marker.equals("Linput")) {
+    		return (CircuitElm) new LogicInputElm(x1, y1, x2, y2, f);
+    	}
+    	if(marker.equals("Loutput")) {
+    		return (CircuitElm) new LogicOutputElm(x1, y1, x2, y2, f);
+    	}
+    	if(marker.equals("Or")) {
+    		return (CircuitElm) new OrGateElm(x1, y1, x2, y2, f, inputcount);
+    	}
+    	if(marker.equals("XOR")) {
+    		return (CircuitElm) new XorGateElm(x1, y1, x2, y2, f, inputcount);
+    	}
+    	if(marker.equals("Nor")) {
+    		return (CircuitElm) new NorGateElm(x1, y1, x2, y2, f, inputcount);
+    	}
+    	if(marker.equals("Nand")) {
+    		return (CircuitElm) new NandGateElm(x1, y1, x2, y2, f, inputcount);
+    	}
+    	else {return null;}
+    	
     }
     
     static SafeHtml LSHTML(String s) { return SafeHtmlUtils.fromTrustedString(s); }
 	
-	
+    int getrand(int x) {
+		int q = random.nextInt();
+		if (q < 0)
+			q = -q;
+		return q % x;
+	}
 	
 }
