@@ -25,6 +25,7 @@ import com.google.gwt.i18n.client.NumberFormat;
 
 // circuit element class
 public abstract class CircuitElm  {
+	
     static double voltageRange = 5;
     static int colorScaleCount = 32;
     static Color colorScale[];
@@ -128,34 +129,34 @@ public abstract class CircuitElm  {
     
     // create new element with one post at xx,yy, to be dragged out by user
     CircuitElm(int xx, int yy) {
-	x = x2 = xx;
-	y = y2 = yy;
-	flags = getDefaultFlags();
-	allocNodes();
-	initBoundingBox();
+		x = x2 = xx;
+		y = y2 = yy;
+		flags = getDefaultFlags();
+		allocNodes();
+		initBoundingBox();
     }
     
     // create element between xa,ya and xb,yb from undump
     CircuitElm(int xa, int ya, int xb, int yb, int f) {
-	x = xa; y = ya; x2 = xb; y2 = yb; flags = f;
-	allocNodes();
-	initBoundingBox();
+		x = xa; y = ya; x2 = xb; y2 = yb; flags = f;
+		allocNodes();
+		initBoundingBox();
     }
     
     void initBoundingBox() {
-	boundingBox = new Rectangle();
-	boundingBox.setBounds(min(x, x2), min(y, y2),
-			      abs(x2-x)+1, abs(y2-y)+1);
+		boundingBox = new Rectangle();
+		boundingBox.setBounds(min(x, x2), min(y, y2),
+				      abs(x2-x)+1, abs(y2-y)+1);
     }
     
     // allocate nodes/volts arrays we need
     void allocNodes() {
-	int n = getPostCount() + getInternalNodeCount();
-	// preserve voltages if possible
-	if (nodes == null || nodes.length != n) {
-	    nodes = new int[n];
-	    volts = new double[n];
-	}
+		int n = getPostCount() + getInternalNodeCount();
+		// preserve voltages if possible
+		if (nodes == null || nodes.length != n) {
+		    nodes = new int[n];
+		    volts = new double[n];
+		}
     }
     
     // dump component state for export/undo
@@ -880,69 +881,85 @@ public abstract class CircuitElm  {
     boolean isWire() { return false; }
     
     boolean canViewInScope() { return getPostCount() <= 2; }
+    
     boolean comparePair(int x1, int x2, int y1, int y2) {
-	return ((x1 == y1 && x2 == y2) || (x1 == y2 && x2 == y1));
+    	return ((x1 == y1 && x2 == y2) || (x1 == y2 && x2 == y1));
     }
+    
     boolean needsHighlight() { 
-	return mouseElmRef==this || selected 
+    	return mouseElmRef==this || selected 
 			//|| 
 		// Test if the current mouseElm is a ScopeElm and, if so, does it belong to this elm
 		//(mouseElmRef instanceof ScopeElm && ((ScopeElm) mouseElmRef).elmScope.getElm()==this)
 			; 
     }
+    
     boolean isSelected() { return selected; }
+    
     boolean canShowValueInScope(int v) { return false; }
+    
     void setSelected(boolean x) { selected = x; }
+    
     void selectRect(Rectangle r) {
-	selected = r.intersects(boundingBox);
+    	selected = r.intersects(boundingBox);
     }
+    
     static int abs(int x) { return x < 0 ? -x : x; }
+    
     static int sign(int x) { return (x < 0) ? -1 : (x == 0) ? 0 : 1; }
+    
     static int min(int a, int b) { return (a < b) ? a : b; }
+    
     static int max(int a, int b) { return (a > b) ? a : b; }
+    
     static double distance(Point p1, Point p2) {
-	double x = p1.x-p2.x;
-	double y = p1.y-p2.y;
-	return Math.sqrt(x*x+y*y);
+		double x = p1.x-p2.x;
+		double y = p1.y-p2.y;
+		return Math.sqrt(x*x+y*y);
     }
+    
     Rectangle getBoundingBox() { return boundingBox; }
+    
     boolean needsShortcut() { return getShortcut() > 0; }
+    
     int getShortcut() { return 0; }
 
     boolean isGraphicElmt() { return false; }
     
     void setMouseElm(boolean v) {
-	if (v)
-	    mouseElmRef=this;
-	else if (mouseElmRef==this)
-	    mouseElmRef=null;
+		if (v)
+		    mouseElmRef=this;
+		else if (mouseElmRef==this)
+		    mouseElmRef=null;
     }
+    
     void draggingDone() {}
     
     String dumpModel() { return null; }
     
     boolean isMouseElm() {
-	return mouseElmRef==this; 
+    	return mouseElmRef==this; 
     }
     
     void updateModels() {}
+    
     void stepFinished() {}
     
     double getCurrentIntoNode(int n) {
-	// if we take out the getPostCount() == 2 it gives the wrong value for rails
-	if (n==0 && getPostCount() == 2)
-	    return -current;
-	else
-	    return current;
+		// if we take out the getPostCount() == 2 it gives the wrong value for rails
+		if (n==0 && getPostCount() == 2)
+		    return -current;
+		else
+		    return current;
     }
     
     void flipPosts() {
-	int oldx = x;
-	int oldy = y;
-	x = x2;
-	y = y2;
-	x2 = oldx;
-	y2 = oldy;
-	setPoints();
+		int oldx = x;
+		int oldy = y;
+		x = x2;
+		y = y2;
+		x2 = oldx;
+		y2 = oldy;
+		setPoints();
     }
 }

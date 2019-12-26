@@ -66,19 +66,25 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.Window.Navigator;
 
-public class CirSim {
+public class CirSim implements  MouseDownHandler,  MouseUpHandler,
+ClickHandler, MouseWheelHandler{
 
+	//this
 	static CirSim theSim;
 	
-	final int FASTTIMER=16;
-	private static final int REFRESH_RATE = 16;
+	//Canvas refresh rate
+	//final int FASTTIMER = 16;
+	private final int REFRESH_RATE = 16;
 	
+	//Set UI fields
 	RootLayoutPanel root;
 	
     Canvas cv;
     Context2d cvcontext;
     Canvas backcv;
     Context2d backcontext;
+    
+	Rectangle circuitArea; 
 	
     DockLayoutPanel layoutPanel;
      
@@ -90,21 +96,21 @@ public class CirSim {
     CheckboxMenuItem alternativeColorCheckItem;
     CheckboxMenuItem printableCheckItem;
      
-    static final int MENUBARHEIGHT=30;
-    int width,height;
-      
+    private final int MENUBARHEIGHT=30;
+    public int width,height;
+    
     int gridSize, gridMask, gridRound;
      
-    Vector<CircuitElm> elmList;
+    public Vector<CircuitElm> elmList;
 
     double transform[];
-    
-    Rectangle circuitArea;
-    double scopeHeightFraction = 0.2;
-    
+        
     boolean euroGates = false;
     
     Random random;
+    
+    //Events
+    long zoomTime;
      
    CirSim() {
 	theSim = this;
@@ -128,13 +134,8 @@ public class CirSim {
 			backcv.setCoordinateSpaceHeight(height);
 		}
 
-		circuitArea = new Rectangle(0, 0, width, height);
-		//setCircuitArea();
+		circuitArea = new Rectangle(0, 0, width, height);	
 		
-  }
-  
-  void setCircuitArea() {
-	circuitArea = new Rectangle(0, 0, width, height);
   }
   
   	public void init() {
@@ -205,39 +206,48 @@ public class CirSim {
 		
 		root.add(layoutPanel);
 		
+		cv.addMouseDownHandler(this);
+		cv.addMouseUpHandler(this);
+		cv.addClickHandler(this);
+		cv.addMouseWheelHandler(this);
+		
 		
 	try {			
 		//CircuitElm newce = createCe("Wire",width/2, height/2, (width/2)+10, (height/2)+50, 0,0);
 		//newce.setPoints();
 		//elmList.add(newce);
 		
-		CircuitElm newce2 = createCe("And",width/2, height/2, (width/2)-45, (height/2), 0, 2);
+		CircuitElm newce2 = createCe("And",width/2, height/2, (width/2)+45, (height/2), 0, 2);
 		newce2.setPoints();
 		elmList.add(newce2);
 		
-		//CircuitElm newce3 = createCe("Linput",10, 10, 20, 10, 0, 2);
-		//newce2.setPoints();
-		//elmList.add(newce3);
+		CircuitElm newce3 = createCe("Linput",10, 100, 50, 100, 0, 2);
+		newce3.setPoints();
+		elmList.add(newce3);
 		
-		//CircuitElm newce4 = createCe("Loutput",10, 20, 20, 20, 0, 2);
-		//newce2.setPoints();
-		//elmList.add(newce4);
+		CircuitElm newce4 = createCe("Loutput",10, 200, 50, 200, 0, 2);
+		newce4.setPoints();
+		elmList.add(newce4);
 		
-		CircuitElm newce5 = createCe("Or",width/2, height/2, (width/2)-45, (height/2), 0, 2);
-		newce2.setPoints();
+		CircuitElm newce5 = createCe("Or",10,300,50,300, 0, 2);
+		newce5.setPoints();
 		elmList.add(newce5);
 		
-		CircuitElm newce6 = createCe("XOR",width/2, height/2, (width/2)-45, (height/2), 0, 2);
-		newce2.setPoints();
+		CircuitElm newce6 = createCe("XOR",10,400,50,400, 0, 2);
+		newce6.setPoints();
 		elmList.add(newce6);
 		
-		CircuitElm newce7 = createCe("Nor",width/2, height/2, (width/2)-45, (height/2), 0, 2);
-		newce2.setPoints();
+		CircuitElm newce7 = createCe("Nor",10,500,50,500, 0, 2);
+		newce7.setPoints();
 		elmList.add(newce7);
 		
-		CircuitElm newce8 = createCe("Nand",width/2, height/2, (width/2)-45, (height/2), 0, 2);
-		newce2.setPoints();
+		CircuitElm newce8 = createCe("Nand",10,600,50,600, 0, 2);
+		newce8.setPoints();
 		elmList.add(newce8);
+		
+		CircuitElm newce9 = createCe("Invertor",10, 700, 50, 700, 0, 2);
+		newce9.setPoints();
+		elmList.add(newce9);
 	
 	} catch (Exception ee) {
 	    ee.printStackTrace();
@@ -290,8 +300,13 @@ public class CirSim {
     		}else {
     			g.setColor(Color.white);
     		}
-    		
+    		try {
     	    getElm(i).draw(g);
+    	    }catch(Exception ee) {
+    	    	ee.printStackTrace();
+    		    GWT.log("exception while drawing " + ee);
+    	    	
+    	    }
     	}
     	
     	//backcontext.setTransform(1, 0, 0, 1, 0, 0);
@@ -369,9 +384,8 @@ public class CirSim {
     		maxy = max(ce.y, max(ce.y2, maxy));
     	}
     	
-    	if (minx > maxx) {
-    	    return null;
-    	    }
+    	if (minx > maxx) {return null;}
+    	
     	return new Rectangle(minx, miny, maxx-minx, maxy-miny);
     }
         
@@ -428,6 +442,9 @@ public class CirSim {
     	if(marker.equals("Nand")) {
     		return (CircuitElm) new NandGateElm(x1, y1, x2, y2, f, inputcount);
     	}
+    	if(marker.equals("Invertor")) {
+    		return (CircuitElm) new InverterElm(x1, y1, x2, y2, f);
+    	}
     	else {return null;}
     	
     }
@@ -439,6 +456,51 @@ public class CirSim {
 		if (q < 0)
 			q = -q;
 		return q % x;
+	}
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	@Override
+	public void onClick(ClickEvent e) {
+
+		
+	}
+
+	@Override
+	public void onMouseWheel(MouseWheelEvent e) {
+		
+		e.preventDefault();
+		//boolean zoomOnly = System.currentTimeMillis() < zoomTime+1000;
+		GWT.log("asd");
+		//if(zoomOnly) {
+			GWT.log(Integer.toString(e.getDeltaY()));
+		    zoomCircuit(e.getDeltaY());
+		    //zoomTime = System.currentTimeMillis();
+	   // }
+		
+	}
+
+	@Override
+	public void onMouseUp(MouseUpEvent event) {
+		// TODO Auto-generated method stub
+		GWT.log("asd");
+	}
+
+	@Override
+	public void onMouseDown(MouseDownEvent event) {
+		// TODO Auto-generated method stub
+		GWT.log("asd");
 	}
 	
 }

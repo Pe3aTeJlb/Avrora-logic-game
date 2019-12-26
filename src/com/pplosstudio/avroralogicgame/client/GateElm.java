@@ -19,7 +19,9 @@
 
 package com.pplosstudio.avroralogicgame.client;
 
-    abstract class GateElm extends CircuitElm {
+import com.google.gwt.core.client.GWT;
+
+abstract class GateElm extends CircuitElm {
     	
 	final int FLAG_SMALL = 1;
 	final int FLAG_SCHMITT = 2;
@@ -111,14 +113,18 @@ package com.pplosstudio.avroralogicgame.client;
 	}
 
 	String getGateText() { return null; }
+	
 	static boolean useEuroGates() { return sim.euroGates; }
 	
 	void draw(Graphics g) {
-	    int i;
-	    for (i = 0; i != inputCount; i++) {
-		setVoltageColor(g, volts[i]);
-		drawThickLine(g, inPosts[i], inGates[i]);
+
+	    for (int i = 0; i != inputCount; i++) {
+			setVoltageColor(g, volts[i]);
+			//GWT.log(inPosts[i].toString());
+			//GWT.log(inGates[i].toString());
+			drawThickLine(g, inPosts[i], inGates[i]);
 	    }
+	    
 	    setVoltageColor(g, volts[inputCount]);
 	    drawThickLine(g, lead2, point2);
 	    g.setColor(needsHighlight() ? selectColor : lightGrayColor);
@@ -132,7 +138,7 @@ package com.pplosstudio.avroralogicgame.client;
 		drawPolygon(g, schmittPoly);
 	    g.setLineWidth(1);
 	    if (linePoints != null)
-		for (i = 0; i != linePoints.length-1; i++)
+		for (int i = 0; i != linePoints.length-1; i++)
 		    drawThickLine(g, linePoints[i], linePoints[i+1]);
 	    if (isInverting())
 		drawThickCircle(g, pcircle.x, pcircle.y, 3);
