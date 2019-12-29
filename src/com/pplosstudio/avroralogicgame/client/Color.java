@@ -99,4 +99,5 @@ public class Color
         }
         return "red=" + r + ", green=" + g + ", blue=" + b;
     }
+    
 }

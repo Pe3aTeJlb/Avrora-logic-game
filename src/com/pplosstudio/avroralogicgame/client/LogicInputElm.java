@@ -89,7 +89,7 @@ package com.pplosstudio.avroralogicgame.client;
 	void setCurrent(int vs, double c) { current = -c; }
 	
 	void stamp() {
-	    //double v = (position == 0) ? loV : hiV;
+	    double v = (position == 0) ? loV : hiV;
 	    //if (isTernary())
 		//v = position * 2.5;
 	    //sim.stampVoltageSource(0, nodes[0], voltSource, v);
@@ -150,4 +150,5 @@ package com.pplosstudio.avroralogicgame.client;
 	double getCurrentIntoNode(int n) {
 	    return -current;
 	}
-    }
+	
+}

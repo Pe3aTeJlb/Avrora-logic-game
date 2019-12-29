@@ -19,8 +19,6 @@
 
 package com.pplosstudio.avroralogicgame.client;
 
-
-
 class Font {
 	static final int BOLD=1;
 	
@@ -36,4 +34,5 @@ class Font {
 		fontname=styleStr+size+"px "+name;
 		this.size=size;
 	}
+	
 }

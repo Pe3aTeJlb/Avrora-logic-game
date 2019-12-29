@@ -84,7 +84,7 @@ public abstract class CircuitElm  {
 	throw new IllegalStateException(); // Seems necessary to work-around what appears to be a compiler
 	// bug affecting OTAElm to make sure this method (which should really be abstract) throws
 	// an exception
- }
+    }
     
     // leftover from java, doesn't do anything anymore. 
     Class getDumpClass() { return getClass(); }
@@ -92,38 +92,47 @@ public abstract class CircuitElm  {
     int getDefaultFlags() { return 0; }
 
     static void initClass(CirSim s) {
-	unitsFont = new Font("SansSerif", 0, 12);
-	sim = s;
+    	
+		unitsFont = new Font("SansSerif", 0, 12);
+		sim = s;
+		
+		colorScale = new Color[colorScaleCount];
+		
+		ps1 = new Point();
+		ps2 = new Point();
 	
-	colorScale = new Color[colorScaleCount];
+		showFormat=NumberFormat.getFormat("####.###");
 	
-	
-	ps1 = new Point();
-	ps2 = new Point();
-
-	showFormat=NumberFormat.getFormat("####.###");
-
-	shortFormat=NumberFormat.getFormat("####.#");
+		shortFormat=NumberFormat.getFormat("####.#");
+		
     }
     
     static void setColorScale() {
 
-	int i;
-	for (i = 0; i != colorScaleCount; i++) {
-	    double v = i * 2. / colorScaleCount - 1;
-	    if (v < 0) {
-		int n1 = (int) (128 * -v) + 127;
-		int n2 = (int) (127 * (1 + v));
-		colorScale[i] = new Color(n1, n2, n2);
-	    } else {
-		int n1 = (int) (128 * v) + 127;
-		int n2 = (int) (127 * (1 - v));
-		if (sim.alternativeColorCheckItem.getState())
-		    colorScale[i] = new Color(n2, n2, n1);
-		else
-		    colorScale[i] = new Color(n2, n1, n2);
-	    }
-	}
+		for (int i = 0; i != colorScaleCount; i++) {
+		    double v = i * 2. / colorScaleCount - 1;
+		    
+		    if (v < 0) {
+		    	
+				int n1 = (int) (128 * -v) + 127;
+				int n2 = (int) (127 * (1 + v));
+				colorScale[i] = new Color(n1, n2, n2);
+				
+		    } else {
+		    	
+				int n1 = (int) (128 * v) + 127;
+				int n2 = (int) (127 * (1 - v));
+				
+				if (sim.alternativeColorCheckItem.getState()) {
+				    colorScale[i] = new Color(n2, n2, n1);
+				}
+				else 
+				{
+				    colorScale[i] = new Color(n2, n1, n2);
+				}
+				
+		    }
+		}
 
     }
     
@@ -161,17 +170,17 @@ public abstract class CircuitElm  {
     
     // dump component state for export/undo
     String dump() {
-	int t = getDumpType();
-	return (t < 127 ? ((char)t)+" " : t+" ") + x + " " + y + " " +
-	    x2 + " " + y2 + " " + flags;
+		int t = getDumpType();
+		return (t < 127 ? ((char)t)+" " : t+" ") + x + " " + y + " " +
+		    x2 + " " + y2 + " " + flags;
     }
     
     // handle reset button
     void reset() {
-	int i;
-	for (i = 0; i != getPostCount()+getInternalNodeCount(); i++)
-	    volts[i] = 0;
-	curcount = 0;
+		int i;
+		for (i = 0; i != getPostCount()+getInternalNodeCount(); i++)
+		    volts[i] = 0;
+		curcount = 0;
     }
     
     void draw(Graphics g) {}
@@ -217,26 +226,28 @@ public abstract class CircuitElm  {
     // calculate lead points for an element of length len.  Handy for simple two-terminal elements.
     // Posts are where the user connects wires; leads are ends of wire stubs drawn inside the element.
     void calcLeads(int len) {
-	if (dn < len || len == 0) {
-	    lead1 = point1;
-	    lead2 = point2;
-	    return;
-	}
-	lead1 = interpPoint(point1, point2, (dn-len)/(2*dn));
-	lead2 = interpPoint(point1, point2, (dn+len)/(2*dn));
+    	
+		if (dn < len || len == 0) {
+		    lead1 = point1;
+		    lead2 = point2;
+		    return;
+		}
+		lead1 = interpPoint(point1, point2, (dn-len)/(2*dn));
+		lead2 = interpPoint(point1, point2, (dn+len)/(2*dn));
+		
     }
 
     // calculate point fraction f between a and b, linearly interpolated
     Point interpPoint(Point a, Point b, double f) {
-	Point p = new Point();
-	interpPoint(a, b, p, f);
-	return p;
+		Point p = new Point();
+		interpPoint(a, b, p, f);
+		return p;
     }
     
     // calculate point fraction f between a and b, linearly interpolated, return it in c
     void interpPoint(Point a, Point b, Point c, double f) {
-	c.x = (int) Math.floor(a.x*(1-f)+b.x*f+.48);
-	c.y = (int) Math.floor(a.y*(1-f)+b.y*f+.48);
+		c.x = (int) Math.floor(a.x*(1-f)+b.x*f+.48);
+		c.y = (int) Math.floor(a.y*(1-f)+b.y*f+.48);
     }
     
     /**
@@ -248,11 +259,11 @@ public abstract class CircuitElm  {
      * Returns interpolated point in c
      */
     void interpPoint(Point a, Point b, Point c, double f, double g) {
-	int gx = b.y-a.y;
-	int gy = a.x-b.x;
-	g /= Math.sqrt(gx*gx+gy*gy);
-	c.x = (int) Math.floor(a.x*(1-f)+b.x*f+g*gx+.48);
-	c.y = (int) Math.floor(a.y*(1-f)+b.y*f+g*gy+.48);
+		int gx = b.y-a.y;
+		int gy = a.x-b.x;
+		g /= Math.sqrt(gx*gx+gy*gy);
+		c.x = (int) Math.floor(a.x*(1-f)+b.x*f+g*gx+.48);
+		c.y = (int) Math.floor(a.y*(1-f)+b.y*f+g*gy+.48);
     }
     
     /**
@@ -264,9 +275,9 @@ public abstract class CircuitElm  {
      * @return Interpolated point
      */
     Point interpPoint(Point a, Point b, double f, double g) {
-	Point p = new Point();
-	interpPoint(a, b, p, f, g);
-	return p;
+		Point p = new Point();
+		interpPoint(a, b, p, f, g);
+		return p;
     }
     
     
@@ -280,31 +291,32 @@ public abstract class CircuitElm  {
      * @param g Fraction perpendicular to line
      */
     void interpPoint2(Point a, Point b, Point c, Point d, double f, double g) {
-//	int xpd = b.x-a.x;
-//	int ypd = b.y-a.y;
-	int gx = b.y-a.y;
-	int gy = a.x-b.x;
-	g /= Math.sqrt(gx*gx+gy*gy);
-	c.x = (int) Math.floor(a.x*(1-f)+b.x*f+g*gx+.48);
-	c.y = (int) Math.floor(a.y*(1-f)+b.y*f+g*gy+.48);
-	d.x = (int) Math.floor(a.x*(1-f)+b.x*f-g*gx+.48);
-	d.y = (int) Math.floor(a.y*(1-f)+b.y*f-g*gy+.48);
+	//	int xpd = b.x-a.x;
+	//	int ypd = b.y-a.y;
+		int gx = b.y-a.y;
+		int gy = a.x-b.x;
+		g /= Math.sqrt(gx*gx+gy*gy);
+		c.x = (int) Math.floor(a.x*(1-f)+b.x*f+g*gx+.48);
+		c.y = (int) Math.floor(a.y*(1-f)+b.y*f+g*gy+.48);
+		d.x = (int) Math.floor(a.x*(1-f)+b.x*f-g*gx+.48);
+		d.y = (int) Math.floor(a.y*(1-f)+b.y*f-g*gy+.48);
     }
     
     void draw2Leads(Graphics g) {
-	// draw first lead
-	setVoltageColor(g, volts[0]);
-	drawThickLine(g, point1, lead1);
-
-	// draw second lead
-	setVoltageColor(g, volts[1]);
-	drawThickLine(g, lead2, point2);
+		// draw first lead
+		setVoltageColor(g, volts[0]);
+		drawThickLine(g, point1, lead1);
+	
+		// draw second lead
+		setVoltageColor(g, volts[1]);
+		drawThickLine(g, lead2, point2);
     }
+    
     Point [] newPointArray(int n) {
-	Point a[] = new Point[n];
-	while (n > 0)
-	    a[--n] = new Point();
-	return a;
+		Point a[] = new Point[n];
+		while (n > 0)
+		    a[--n] = new Point();
+		return a;
     }
 
     // draw current dots from point a to b
@@ -330,62 +342,64 @@ public abstract class CircuitElm  {
     */
 
     Polygon calcArrow(Point a, Point b, double al, double aw) {
-	Polygon poly = new Polygon();
-	Point p1 = new Point();
-	Point p2 = new Point();
-	int adx = b.x-a.x;
-	int ady = b.y-a.y;
-	double l = Math.sqrt(adx*adx+ady*ady);
-	poly.addPoint(b.x, b.y);
-	interpPoint2(a, b, p1, p2, 1-al/l, aw);
-	poly.addPoint(p1.x, p1.y);
-	poly.addPoint(p2.x, p2.y);
-	return poly;
+		Polygon poly = new Polygon();
+		Point p1 = new Point();
+		Point p2 = new Point();
+		int adx = b.x-a.x;
+		int ady = b.y-a.y;
+		double l = Math.sqrt(adx*adx+ady*ady);
+		poly.addPoint(b.x, b.y);
+		interpPoint2(a, b, p1, p2, 1-al/l, aw);
+		poly.addPoint(p1.x, p1.y);
+		poly.addPoint(p2.x, p2.y);
+		return poly;
     }
+    
     Polygon createPolygon(Point a, Point b, Point c) {
-	Polygon p = new Polygon();
-	p.addPoint(a.x, a.y);
-	p.addPoint(b.x, b.y);
-	p.addPoint(c.x, c.y);
-	return p;
+		Polygon p = new Polygon();
+		p.addPoint(a.x, a.y);
+		p.addPoint(b.x, b.y);
+		p.addPoint(c.x, c.y);
+		return p;
     }
+    
     Polygon createPolygon(Point a, Point b, Point c, Point d) {
-	Polygon p = new Polygon();
-	p.addPoint(a.x, a.y);
-	p.addPoint(b.x, b.y);
-	p.addPoint(c.x, c.y);
-	p.addPoint(d.x, d.y);
-	return p;
+		Polygon p = new Polygon();
+		p.addPoint(a.x, a.y);
+		p.addPoint(b.x, b.y);
+		p.addPoint(c.x, c.y);
+		p.addPoint(d.x, d.y);
+		return p;
     }
+    
     Polygon createPolygon(Point a[]) {
-	Polygon p = new Polygon();
-	int i;
-	for (i = 0; i != a.length; i++)
-	    p.addPoint(a[i].x, a[i].y);
-	return p;
+		Polygon p = new Polygon();
+		int i;
+		for (i = 0; i != a.length; i++)
+		    p.addPoint(a[i].x, a[i].y);
+		return p;
     }
     
     // draw second point to xx, yy
-
     
     void move(int dx, int dy) {
-	x += dx; y += dy; x2 += dx; y2 += dy;
-	boundingBox.translate(dx, dy);
-	setPoints();
+		x += dx; y += dy; x2 += dx; y2 += dy;
+		boundingBox.translate(dx, dy);
+		setPoints();
     }
 
     // called when an element is done being dragged out; returns true if it's zero size and should be deleted
     boolean creationFailed() {
-	return (x == x2 && y == y2);
+		return (x == x2 && y == y2);
     }
 
     // this is used to set the position of an internal element so we can draw it inside the parent
     void setPosition(int x_, int y_, int x2_, int y2_) {
-	x = x_;
-	y = y_;
-	x2 = x2_;
-	y2 = y2_;
-	setPoints();
+		x = x_;
+		y = y_;
+		x2 = x2_;
+		y2 = y2_;
+		setPoints();
     }
     
     // determine if moving this element by (dx,dy) will put it on top of another element
@@ -429,15 +443,15 @@ public abstract class CircuitElm  {
     
     
     void drawPosts(Graphics g) {
-	// we normally do this in updateCircuit() now because the logic is more complicated.
-	// we only handle the case where we have to draw all the posts.  That happens when
-	// this element is selected or is being created
-	
-	int i;
-	for (i = 0; i != getPostCount(); i++) {
-	    Point p = getPost(i);
-	    drawPost(g, p);
-	}
+		// we normally do this in updateCircuit() now because the logic is more complicated.
+		// we only handle the case where we have to draw all the posts.  That happens when
+		// this element is selected or is being created
+		
+		int i;
+		for (i = 0; i != getPostCount(); i++) {
+		    Point p = getPost(i);
+		    drawPost(g, p);
+		}
     }
     
     void drawHandles(Graphics g, Color c) {
@@ -477,15 +491,17 @@ public abstract class CircuitElm  {
     // notify this element that its nth voltage source is v.  This value v can be passed to stampVoltageSource(), etc and will be passed back in calls to setCurrent()
     void setVoltageSource(int n, int v) {
 	// default implementation only makes sense for subclasses with one voltage source.  If we have 0 this isn't used, if we have >1 this won't work 
-	voltSource = v;
+    	voltSource = v;
     }
     
 //    int getVoltageSource() { return voltSource; } // Never used except for debug code which is commented out
     
     double getVoltageDiff() {
-	return volts[0] - volts[1];
+    	return volts[0] - volts[1];
     }
+    
     boolean nonLinear() { return false; }
+    
     int getPostCount() { return 2; }
     
     // get (global) node number of nth node
@@ -493,19 +509,19 @@ public abstract class CircuitElm  {
     
     // get position of nth node
     Point getPost(int n) {
-	return (n == 0) ? point1 : (n == 1) ? point2 : null;
+    	return (n == 0) ? point1 : (n == 1) ? point2 : null;
     }
     
     int getNodeAtPoint(int xp, int yp) {
-	if (getPostCount() == 2)
-	    return (x == xp && y == yp) ? 0 : 1;
-	int i;
-	for (i = 0; i != getPostCount(); i++) {
-	    Point p = getPost(i);
-	    if (p.x == xp && p.y == yp)
-		return i;
-	}
-	return 0;
+		if (getPostCount() == 2)
+		    return (x == xp && y == yp) ? 0 : 1;
+		int i;
+		for (i = 0; i != getPostCount(); i++) {
+		    Point p = getPost(i);
+		    if (p.x == xp && p.y == yp)
+			return i;
+		}
+		return 0;
     }
     
     /*
@@ -520,37 +536,38 @@ public abstract class CircuitElm  {
     }
     */
     static void drawPost(Graphics g, Point pt) {
-	g.setColor(whiteColor);
-	g.fillOval(pt.x-3, pt.y-3, 7, 7);
+		g.setColor(whiteColor);
+		g.fillOval(pt.x-3, pt.y-3, 7, 7);
     }
     
     // set/adjust bounding box used for selecting elements.  getCircuitBounds() does not use this!
     void setBbox(int x1, int y1, int x2, int y2) {
-	if (x1 > x2) { int q = x1; x1 = x2; x2 = q; }
-	if (y1 > y2) { int q = y1; y1 = y2; y2 = q; }
-	boundingBox.setBounds(x1, y1, x2-x1+1, y2-y1+1);
+		if (x1 > x2) { int q = x1; x1 = x2; x2 = q; }
+		if (y1 > y2) { int q = y1; y1 = y2; y2 = q; }
+		boundingBox.setBounds(x1, y1, x2-x1+1, y2-y1+1);
     }
     
     // set bounding box for an element from p1 to p2 with width w
     void setBbox(Point p1, Point p2, double w) {
-	setBbox(p1.x, p1.y, p2.x, p2.y);
-	int dpx = (int) (dpx1*w);
-	int dpy = (int) (dpy1*w);
-	adjustBbox(p1.x+dpx, p1.y+dpy, p1.x-dpx, p1.y-dpy);
+		setBbox(p1.x, p1.y, p2.x, p2.y);
+		int dpx = (int) (dpx1*w);
+		int dpy = (int) (dpy1*w);
+		adjustBbox(p1.x+dpx, p1.y+dpy, p1.x-dpx, p1.y-dpy);
     }
 
     // enlarge bbox to contain an additional rectangle
     void adjustBbox(int x1, int y1, int x2, int y2) {
-	if (x1 > x2) { int q = x1; x1 = x2; x2 = q; }
-	if (y1 > y2) { int q = y1; y1 = y2; y2 = q; }
-	x1 = min(boundingBox.x, x1);
-	y1 = min(boundingBox.y, y1);
-	x2 = max(boundingBox.x+boundingBox.width,  x2);
-	y2 = max(boundingBox.y+boundingBox.height, y2);
-	boundingBox.setBounds(x1, y1, x2-x1, y2-y1);
+		if (x1 > x2) { int q = x1; x1 = x2; x2 = q; }
+		if (y1 > y2) { int q = y1; y1 = y2; y2 = q; }
+		x1 = min(boundingBox.x, x1);
+		y1 = min(boundingBox.y, y1);
+		x2 = max(boundingBox.x+boundingBox.width,  x2);
+		y2 = max(boundingBox.y+boundingBox.height, y2);
+		boundingBox.setBounds(x1, y1, x2-x1, y2-y1);
     }
+    
     void adjustBbox(Point p1, Point p2) {
-	adjustBbox(p1.x, p1.y, p2.x, p2.y);
+    	adjustBbox(p1.x, p1.y, p2.x, p2.y);
     }
     
     // needed for calculating circuit bounds (need to special-case centered text elements)
@@ -584,58 +601,58 @@ public abstract class CircuitElm  {
     
     // draw component values (number of resistor ohms, etc).  hs = offset
     void drawValues(Graphics g, String s, double hs) {
-	if (s == null)
-	    return;
-	g.setFont(unitsFont);
-	//FontMetrics fm = g.getFontMetrics();
-	int w = (int)g.context.measureText(s).getWidth();
-	g.setColor(whiteColor);
-	int ya = (int)g.currentFontSize/2;
-	int xc, yc;
-
-	    xc = (x2+x)/2;
-	    yc = (y2+y)/2;
+		if (s == null)
+		    return;
+		g.setFont(unitsFont);
+		//FontMetrics fm = g.getFontMetrics();
+		int w = (int)g.context.measureText(s).getWidth();
+		g.setColor(whiteColor);
+		int ya = (int)g.currentFontSize/2;
+		int xc, yc;
 	
-	int dpx = (int) (dpx1*hs);
-	int dpy = (int) (dpy1*hs);
-	if (dpx == 0)
-	    g.drawString(s, xc-w/2, yc-abs(dpy)-2);
-	else {
-	    int xx = xc+abs(dpx)+2;
-
-	    g.drawString(s, xx, yc+dpy+ya);
-	}
+		    xc = (x2+x)/2;
+		    yc = (y2+y)/2;
+		
+		int dpx = (int) (dpx1*hs);
+		int dpy = (int) (dpy1*hs);
+		if (dpx == 0)
+		    g.drawString(s, xc-w/2, yc-abs(dpy)-2);
+		else {
+		    int xx = xc+abs(dpx)+2;
+	
+		    g.drawString(s, xx, yc+dpy+ya);
+		}
     }
-    void drawCoil(Graphics g, int hs, Point p1, Point p2,
-		  double v1, double v2) {
-	double len = distance(p1, p2);
-
-	g.context.save();
-	g.context.setLineWidth(3.0);
-	g.context.transform(((double)(p2.x-p1.x))/len, ((double)(p2.y-p1.y))/len,
-		-((double)(p2.y-p1.y))/len,((double)(p2.x-p1.x))/len,p1.x,p1.y);
-
-	    CanvasGradient grad = g.context.createLinearGradient(0,0,len,0);
-	    grad.addColorStop(0, getVoltageColor(g,v1).getHexValue());
-	    grad.addColorStop(1.0, getVoltageColor(g,v2).getHexValue());
-	    g.context.setStrokeStyle(grad);
+    void drawCoil(Graphics g, int hs, Point p1, Point p2, double v1, double v2) {
+    	
+		double len = distance(p1, p2);
 	
-	g.context.setLineCap(LineCap.ROUND);
-	g.context.scale(1, hs > 0 ? 1 : -1);
-
-	int loop;
-	// draw more loops for a longer coil
-	int loopCt = (int)Math.ceil(len/11);
-	for (loop = 0; loop != loopCt; loop++) {
-	    g.context.beginPath();
-	    double start = len*loop/loopCt;
-	    g.context.moveTo(start,0);
-	    g.context.arc(len*(loop+.5)/loopCt, 0, len/(2*loopCt), Math.PI, Math.PI*2);
-	    g.context.lineTo(len*(loop+1)/loopCt, 0);
-	    g.context.stroke();
-	}
-
-	g.context.restore();
+		g.context.save();
+		g.context.setLineWidth(3.0);
+		g.context.transform(((double)(p2.x-p1.x))/len, ((double)(p2.y-p1.y))/len,
+			-((double)(p2.y-p1.y))/len,((double)(p2.x-p1.x))/len,p1.x,p1.y);
+	
+		    CanvasGradient grad = g.context.createLinearGradient(0,0,len,0);
+		    grad.addColorStop(0, getVoltageColor(g,v1).getHexValue());
+		    grad.addColorStop(1.0, getVoltageColor(g,v2).getHexValue());
+		    g.context.setStrokeStyle(grad);
+		
+		g.context.setLineCap(LineCap.ROUND);
+		g.context.scale(1, hs > 0 ? 1 : -1);
+	
+		int loop;
+		// draw more loops for a longer coil
+		int loopCt = (int)Math.ceil(len/11);
+		for (loop = 0; loop != loopCt; loop++) {
+		    g.context.beginPath();
+		    double start = len*loop/loopCt;
+		    g.context.moveTo(start,0);
+		    g.context.arc(len*(loop+.5)/loopCt, 0, len/(2*loopCt), Math.PI, Math.PI*2);
+		    g.context.lineTo(len*(loop+1)/loopCt, 0);
+		    g.context.stroke();
+		}
+	
+		g.context.restore();
     }
     
     static void drawThickLine(Graphics g, int x, int y, int x2, int y2) {
@@ -651,29 +668,29 @@ public abstract class CircuitElm  {
     }
 
     static void drawThickPolygon(Graphics g, int xs[], int ys[], int c) {
-//	int i;
-//	for (i = 0; i != c-1; i++)
-//	    drawThickLine(g, xs[i], ys[i], xs[i+1], ys[i+1]);
-//	drawThickLine(g, xs[i], ys[i], xs[0], ys[0]);
+    	//	int i;
+    	//	for (i = 0; i != c-1; i++)
+    	//	    drawThickLine(g, xs[i], ys[i], xs[i+1], ys[i+1]);
+    	//	drawThickLine(g, xs[i], ys[i], xs[0], ys[0]);
     	g.setLineWidth(3.0);
     	g.drawPolyline(xs, ys, c);
     	g.setLineWidth(1.0);
     }
     
     static void drawThickPolygon(Graphics g, Polygon p) {
-	drawThickPolygon(g, p.xpoints, p.ypoints, p.npoints);
+    	drawThickPolygon(g, p.xpoints, p.ypoints, p.npoints);
     }
     
     static void drawPolygon(Graphics g, Polygon p) {
     	g.drawPolyline(p.xpoints, p.ypoints, p.npoints);
-/*	int i;
-	int xs[] = p.xpoints;
-	int ys[] = p.ypoints;
-	int np = p.npoints;
-	np -= 3;
-	for (i = 0; i != np-1; i++)
-	    g.drawLine(xs[i], ys[i], xs[i+1], ys[i+1]);
-	g.drawLine(xs[i], ys[i], xs[0], ys[0]);*/
+	/*	int i;
+		int xs[] = p.xpoints;
+		int ys[] = p.ypoints;
+		int np = p.npoints;
+		np -= 3;
+		for (i = 0; i != np-1; i++)
+		    g.drawLine(xs[i], ys[i], xs[i+1], ys[i+1]);
+		g.drawLine(xs[i], ys[i], xs[0], ys[0]);*/
     }
     
     static void drawThickCircle(Graphics g, int cx, int cy, int ri) {
@@ -685,91 +702,91 @@ public abstract class CircuitElm  {
     }
     
     Polygon getSchmittPolygon(float gsize, float ctr) {
-	Point pts[] = newPointArray(6);
-	float hs = 3*gsize;
-	float h1 = 3*gsize;
-	float h2 = h1*2;
-	double len = distance(lead1, lead2);
-	pts[0] = interpPoint(lead1, lead2, ctr-h2/len, hs);
-	pts[1] = interpPoint(lead1, lead2, ctr+h1/len,  hs);
-	pts[2] = interpPoint(lead1, lead2, ctr+h1/len, -hs);
-	pts[3] = interpPoint(lead1, lead2, ctr+h2/len, -hs);
-	pts[4] = interpPoint(lead1, lead2, ctr-h1/len, -hs);
-	pts[5] = interpPoint(lead1, lead2, ctr-h1/len, hs);
-	return createPolygon(pts); 
+		Point pts[] = newPointArray(6);
+		float hs = 3*gsize;
+		float h1 = 3*gsize;
+		float h2 = h1*2;
+		double len = distance(lead1, lead2);
+		pts[0] = interpPoint(lead1, lead2, ctr-h2/len, hs);
+		pts[1] = interpPoint(lead1, lead2, ctr+h1/len,  hs);
+		pts[2] = interpPoint(lead1, lead2, ctr+h1/len, -hs);
+		pts[3] = interpPoint(lead1, lead2, ctr+h2/len, -hs);
+		pts[4] = interpPoint(lead1, lead2, ctr-h1/len, -hs);
+		pts[5] = interpPoint(lead1, lead2, ctr-h1/len, hs);
+		return createPolygon(pts); 
     }
 
     static String getVoltageDText(double v) {
-	return getUnitText(Math.abs(v), "V");
+    	return getUnitText(Math.abs(v), "V");
     }
+    
     static String getVoltageText(double v) {
-	return getUnitText(v, "V");
-	
-	
+    	return getUnitText(v, "V");
     }
     
     // IES - hacking
     static String getUnitText(double v, String u) {
     	return myGetUnitText(v,u, false);
     }
+    
     static String getShortUnitText(double v, String u) {
     	return myGetUnitText(v,u, true);
     }
     
     static String format(double v, boolean sf) {
-	if (sf && Math.abs(v) > 10)
-	    return shortFormat.format(Math.round(v));
-	return (sf ? shortFormat : showFormat).format(v);
+		if (sf && Math.abs(v) > 10)
+		    return shortFormat.format(Math.round(v));
+		return (sf ? shortFormat : showFormat).format(v);
     }
     
     static String myGetUnitText(double v, String u, boolean sf) {
-	String sp = sf ? "" : " ";
-	double va = Math.abs(v);
-	if (va < 1e-14)
-	    // this used to return null, but then wires would display "null" with 0V
-	    return "0" + sp + u;
-	if (va < 1e-9)
-	    return format(v*1e12, sf) + sp + "p" + u;
-	if (va < 1e-6)
-	    return format(v*1e9, sf) + sp + "n" + u;
-	if (va < 1e-3)
-	    //return format(v*1e6, sf) + sp + CirSim.muString + u;
-	if (va < 1)
-	    return format(v*1e3, sf) + sp + "m" + u;
-	if (va < 1e3)
-	    return format(v, sf) + sp + u;
-	if (va < 1e6)
-	    return format(v*1e-3, sf) + sp + "k" + u;
-	if (va < 1e9)
-	    return format(v*1e-6, sf) + sp + "M" + u;
-	return format(v*1e-9, sf) + sp + "G" + u;
+		String sp = sf ? "" : " ";
+		double va = Math.abs(v);
+		if (va < 1e-14)
+		    // this used to return null, but then wires would display "null" with 0V
+		    return "0" + sp + u;
+		if (va < 1e-9)
+		    return format(v*1e12, sf) + sp + "p" + u;
+		if (va < 1e-6)
+		    return format(v*1e9, sf) + sp + "n" + u;
+		if (va < 1e-3)
+		    //return format(v*1e6, sf) + sp + CirSim.muString + u;
+		if (va < 1)
+		    return format(v*1e3, sf) + sp + "m" + u;
+		if (va < 1e3)
+		    return format(v, sf) + sp + u;
+		if (va < 1e6)
+		    return format(v*1e-3, sf) + sp + "k" + u;
+		if (va < 1e9)
+		    return format(v*1e-6, sf) + sp + "M" + u;
+		return format(v*1e-9, sf) + sp + "G" + u;
     }
     
     static String getCurrentText(double i) {
-	return getUnitText(i, "A");
+    	return getUnitText(i, "A");
     }
+    
     static String getCurrentDText(double i) {
-	return getUnitText(Math.abs(i), "A");
+    	return getUnitText(Math.abs(i), "A");
     }
 
     // update dot positions (curcount) for drawing current (simple case for single current)
     void updateDotCount() {
-	curcount = updateDotCount(current, curcount);
+    	curcount = updateDotCount(current, curcount);
     }
 
     // update dot positions (curcount) for drawing current (general case for multiple currents)
     double updateDotCount(double cur, double cc) {
-  
-
-	double cadd = cur*currentMult;
-	/*if (cur != 0 && cadd <= .05 && cadd >= -.05)
-	  cadd = (cadd < 0) ? -.05 : .05;*/
-	cadd %= 8;
-	/*if (cadd > 8)
-	  cadd = 8;
-	  if (cadd < -8)
-	  cadd = -8;*/
-	return cc + cadd;
+ 
+		double cadd = cur*currentMult;
+		/*if (cur != 0 && cadd <= .05 && cadd >= -.05)
+		  cadd = (cadd < 0) ? -.05 : .05;*/
+		cadd %= 8;
+		/*if (cadd > 8)
+		  cadd = 8;
+		  if (cadd < -8)
+		  cadd = -8;*/
+		return cc + cadd;
     }
     
     // update and draw current for simple two-terminal element
@@ -778,6 +795,7 @@ public abstract class CircuitElm  {
     }
     
     void doAdjust() {}
+    
     void setupAdjust() {}
     
     // get component info for display in lower right
@@ -785,10 +803,11 @@ public abstract class CircuitElm  {
     }
     
     int getBasicInfo(String arr[]) {
-	arr[1] = "I = " + getCurrentDText(getCurrent());
-	arr[2] = "Vd = " + getVoltageDText(getVoltageDiff());
-	return 3;
+		arr[1] = "I = " + getCurrentDText(getCurrent());
+		arr[2] = "Vd = " + getVoltageDText(getVoltageDiff());
+		return 3;
     }
+    
     String getScopeText(int v) {
         String info[] = new String[10];
         getInfo(info);
@@ -817,41 +836,44 @@ public abstract class CircuitElm  {
     
     void setPowerColor(Graphics g, boolean yellow) {
 
-	/*if (conductanceCheckItem.getState()) {
-	  setConductanceColor(g, current/getVoltageDiff());
-	  return;
-	  }*/
-	//if (!sim.powerCheckItem.getState() )
-	 //   return;
-	setPowerColor(g, getPower());
+		/*if (conductanceCheckItem.getState()) {
+		  setConductanceColor(g, current/getVoltageDiff());
+		  return;
+		  }*/
+		//if (!sim.powerCheckItem.getState() )
+		 //   return;
+		setPowerColor(g, getPower());
     }
     
     void setPowerColor(Graphics g, double w0) {
-	//if (!sim.powerCheckItem.getState() )
-	  //  return;
-    	//if (needsHighlight()) {
-	  //  	g.setColor(selectColor);
-	  //  	return;
-    	//}
-	w0 *= powerMult;
-	//System.out.println(w);
-	int i = (int) ((colorScaleCount/2)+(colorScaleCount/2)*-w0);
-	if (i<0)
-	    i=0;
-	if (i>=colorScaleCount)
-	    i=colorScaleCount-1;
-	 g.setColor(colorScale[i]);
+		//if (!sim.powerCheckItem.getState() )
+		  //  return;
+	    	//if (needsHighlight()) {
+		  //  	g.setColor(selectColor);
+		  //  	return;
+	    	//}
+		w0 *= powerMult;
+		//System.out.println(w);
+		int i = (int) ((colorScaleCount/2)+(colorScaleCount/2)*-w0);
+		if (i<0)
+		    i=0;
+		if (i>=colorScaleCount)
+		    i=colorScaleCount-1;
+		 g.setColor(colorScale[i]);
     }
+    
     void setConductanceColor(Graphics g, double w0) {
-	w0 *= powerMult;
-	//System.out.println(w);
-	double w = (w0 < 0) ? -w0 : w0;
-	if (w > 1)
-	    w = 1;
-	int rg = (int) (w*255);
-	g.setColor(new Color(rg, rg, rg));
+		w0 *= powerMult;
+		//System.out.println(w);
+		double w = (w0 < 0) ? -w0 : w0;
+		if (w > 1)
+		    w = 1;
+		int rg = (int) (w*255);
+		g.setColor(new Color(rg, rg, rg));
     }
-    double getPower() { return getVoltageDiff()*current; }
+    
+    double getPower() { return getVoltageDiff()*current;}
+    
  //   double getScopeValue(int x) {
 	//return (x == Scope.VAL_CURRENT) ? getCurrent() :
 	 //   (x == Scope.VAL_POWER) ? getPower() : getVoltageDiff();

@@ -30,7 +30,7 @@ public class Graphics {
 	
 	  public Graphics(Context2d context) {
 		    this.context = context;
-		  }
+	}
 	  
 	  public void setColor(Color color) {
 		    if (color != null) {
@@ -41,7 +41,7 @@ public class Graphics {
 		      System.out.println("Ignoring null-Color");
 		    }
 		    lastColor=color;
-		  }
+	  }
 	  
 	  public void setColor(String color) {
 	      context.setStrokeStyle(color);
@@ -121,7 +121,7 @@ public class Graphics {
 		  }
 		  context.closePath();
 		  context.fill();
-		  }
+	  }
 	  
 	  public void setFont(Font f){
 		  if (f!=null){
@@ -139,7 +139,7 @@ public class Graphics {
 	    	x2 -= x1;
 	    	y2 -= y1;
 	    	return x2*x2+y2*y2;
-	        }
+	   }
 	  
 	   void setLineDash(int a, int b) {
 	       setLineDash(context, a, b);
@@ -151,4 +151,5 @@ public class Graphics {
 	       else
 	       	   context.setLineDash([a, b]);
 	   }-*/;
+	   
 }

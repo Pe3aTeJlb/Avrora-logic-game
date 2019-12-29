@@ -25,10 +25,11 @@ package com.pplosstudio.avroralogicgame.client;
 	public WireElm(int xx, int yy) { super(xx, yy); }
 	public WireElm(int xa, int ya, int xb, int yb, int f)		  
 	{
-			
 	    super(xa, ya, xb, yb, f);
 	}
+	
 	static final int FLAG_SHOWCURRENT = 1;
+	
 	static final int FLAG_SHOWVOLTAGE = 2;
 	
 	void draw(Graphics g) {
@@ -46,15 +47,19 @@ package com.pplosstudio.avroralogicgame.client;
 	    drawValues(g, s, 4);
 	    drawPosts(g);
 	}
+	
 	void stamp() {
 //	    sim.stampVoltageSource(nodes[0], nodes[1], voltSource, 0);
 	}
+	
 	boolean mustShowCurrent() {
 	    return (flags & FLAG_SHOWCURRENT) != 0;
 	}
+	
 	boolean mustShowVoltage() {
 	    return (flags & FLAG_SHOWVOLTAGE) != 0;
 	}
+	
 //	int getVoltageSourceCount() { return 1; }
 	
 	void getInfo(String arr[]) {
@@ -105,4 +110,4 @@ package com.pplosstudio.avroralogicgame.client;
         int getShortcut() { return 'w'; }
     
     */
-    }
+}

@@ -31,6 +31,7 @@ package com.pplosstudio.avroralogicgame.client;
 	    super(xx, yy);
 	    threshold = 2.5;
 	}
+	
 	public LogicOutputElm(int xa, int ya, int xb, int yb, int f) {
 	    super(xa, ya, xb, yb, f);
 	    try {
@@ -139,4 +140,4 @@ package com.pplosstudio.avroralogicgame.client;
 //		g.fillRect(x-3, y-3, 7, 7);
 //    }
     
-    }
+}

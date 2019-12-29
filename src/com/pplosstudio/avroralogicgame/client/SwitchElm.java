@@ -25,11 +25,12 @@ class SwitchElm extends CircuitElm {
 	boolean momentary;
     // position 0 == closed, position 1 == open
     int position, posCount;
+    
     public SwitchElm(int xx, int yy) {
-	super(xx, yy);
-	momentary = false;
-	position = 0;
-	posCount = 2;
+		super(xx, yy);
+		momentary = false;
+		position = 0;
+		posCount = 2;
     }
     
     SwitchElm(int xx, int yy, boolean mm) {
@@ -40,7 +41,7 @@ class SwitchElm extends CircuitElm {
     }
     
     public SwitchElm(int xa, int ya, int xb, int yb, int f) {
-	super(xa, ya, xb, yb, f);
+    	super(xa, ya, xb, yb, f);
 	//String str = st.nextToken();
 	//if (str.compareTo("true") == 0)
 	  //  position = (this instanceof LogicInputElm) ? 0 : 1;
@@ -55,7 +56,7 @@ class SwitchElm extends CircuitElm {
     int getDumpType() { return 's'; }
     
     String dump() {
-	return super.dump() + " " + position + " " + momentary;
+    	return super.dump() + " " + position + " " + momentary;
     }
 
     Point ps, ps2;
@@ -116,6 +117,7 @@ class SwitchElm extends CircuitElm {
 		position++;
 		if (position >= posCount)
 		    position = 0;
+		sim.analyzeCircuit();
     }
     
     /*
@@ -154,4 +156,5 @@ class SwitchElm extends CircuitElm {
     */
     
     int getShortcut() { return 's'; }
+    
 }

@@ -43,8 +43,7 @@ package com.pplosstudio.avroralogicgame.client;
 	    try {
 		//slewRate = new Double (st.nextToken()).doubleValue();
 		//highVoltage = new Double (st.nextToken()).doubleValue();
-	    } catch (Exception e) {
-	    }
+	    } catch (Exception e) {}
 	    
 	}
 	String dump() {

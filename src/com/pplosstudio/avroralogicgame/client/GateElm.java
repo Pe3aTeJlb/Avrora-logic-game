@@ -146,16 +146,22 @@ abstract class GateElm extends CircuitElm {
 	    //drawDots(g, lead2, point2, curcount);
 	    drawPosts(g);
 	}
+	
 	Polygon gatePoly, schmittPoly;
 	Point pcircle, linePoints[];
+	
 	int getPostCount() { return inputCount+1; }
+	
 	Point getPost(int n) {
 	    if (n == inputCount)
 		return point2;
 	    return inPosts[n];
 	}
+	
 	int getVoltageSourceCount() { return 1; }
+	
 	abstract String getGateName();
+	
 	void getInfo(String arr[]) {
 	    arr[0] = getGateName();
 	    arr[1] = "Vout = " + getVoltageText(volts[inputCount]);
@@ -167,6 +173,7 @@ abstract class GateElm extends CircuitElm {
 	}
 	
 	boolean hasSchmittInputs() { return (flags & FLAG_SCHMITT) != 0; }
+	
 	boolean getInput(int x) {
 	    if (!hasSchmittInputs())
 		return volts[x] > highVoltage*.5;
@@ -174,6 +181,7 @@ abstract class GateElm extends CircuitElm {
 	    inputStates[x] = res;
 	    return res;
 	}
+	
 	abstract boolean calcFunction();
 	
 	int oscillationCount;
@@ -185,12 +193,12 @@ abstract class GateElm extends CircuitElm {
 	    
 	    // detect oscillation (using same strategy as Atanua)
 	    if (lastOutput == !f) {
-		if (oscillationCount++ > 50) {
-		    // output is oscillating too much, randomly leave output the same
-		    oscillationCount = 0;
-		    if (sim.getrand(10) > 5)
-			f = lastOutput;
-		}
+			if (oscillationCount++ > 50) {
+			    // output is oscillating too much, randomly leave output the same
+			    oscillationCount = 0;
+			    if (sim.getrand(10) > 5)
+				f = lastOutput;
+			}
 	    } else
 		oscillationCount = 0;
 	    
@@ -236,6 +244,7 @@ abstract class GateElm extends CircuitElm {
 	// there is no current path through the gate inputs, but there
 	// is an indirect path through the output to ground.
 	boolean getConnection(int n1, int n2) { return false; }
+	
 	boolean hasGroundConnection(int n1) {
 	    return (n1 == inputCount);
 	}
@@ -245,5 +254,5 @@ abstract class GateElm extends CircuitElm {
 		return current;
 	    return 0;
 	}
-    }
+}
 

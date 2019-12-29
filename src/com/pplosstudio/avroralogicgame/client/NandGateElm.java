@@ -35,4 +35,4 @@ package com.pplosstudio.avroralogicgame.client;
 	
 	int getShortcut() { return '@'; }
 	
-    }
+}

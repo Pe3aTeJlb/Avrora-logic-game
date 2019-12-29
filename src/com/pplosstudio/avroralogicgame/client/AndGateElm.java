@@ -38,6 +38,7 @@ class AndGateElm extends GateElm {
 	    if (sim.euroGates) {
 	    	createEuroGatePolygon();
 	    } else {
+	    	
 			// 0=topleft, 1-10 = top curve, 11 = right, 12-21=bottom curve,
 			// 22 = bottom left
 			Point triPoints[] = newPointArray(23);
@@ -61,6 +62,7 @@ class AndGateElm extends GateElm {
 	    
 	}
 	String getGateName() { return "AND gate"; }
+	
 	boolean calcFunction() {
 	    int i;
 	    boolean f = true;
@@ -68,6 +70,9 @@ class AndGateElm extends GateElm {
 		f &= getInput(i);
 	    return f;
 	}
+	
 	int getDumpType() { return 150; }
+	
 	int getShortcut() { return '2'; }
+	
     }

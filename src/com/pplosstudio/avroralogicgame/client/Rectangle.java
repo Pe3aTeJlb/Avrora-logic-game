@@ -112,6 +112,7 @@ public class Rectangle {
     }
     
     public Rectangle union(Rectangle r) {
+    	
         long tx2 = this.width;
         long ty2 = this.height;
         if ((tx2 | ty2) < 0) {
@@ -125,9 +126,11 @@ public class Rectangle {
         }
         long rx2 = r.width;
         long ry2 = r.height;
+        
         if ((rx2 | ry2) < 0) {
             return new Rectangle(this);
         }
+        
         int tx1 = this.x;
         int ty1 = this.y;
         tx2 += tx1;
@@ -148,12 +151,14 @@ public class Rectangle {
         if (tx2 > Integer.MAX_VALUE) tx2 = Integer.MAX_VALUE;
         if (ty2 > Integer.MAX_VALUE) ty2 = Integer.MAX_VALUE;
         return new Rectangle(tx1, ty1, (int) tx2, (int) ty2);
+        
     }
     
     public String toString() { return "Rect(" + x + "," + y + "," + width + "," + height + ")"; }
 
     
     public boolean equals(Object obj) {
+    	
         if (obj instanceof Rectangle) {
             Rectangle r = (Rectangle)obj;
             return ((x == r.x) &&
@@ -161,6 +166,7 @@ public class Rectangle {
                     (width == r.width) &&
                     (height == r.height));
         }
+        
         return super.equals(obj);
     }
 }

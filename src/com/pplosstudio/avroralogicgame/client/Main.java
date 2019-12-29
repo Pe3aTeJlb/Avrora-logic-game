@@ -39,8 +39,7 @@ public class Main implements EntryPoint {
                 	
             }
         });
-	    
-	   
-  	}
+		   
+  }
 
 }
