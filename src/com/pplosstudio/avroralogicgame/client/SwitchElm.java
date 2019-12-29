@@ -118,6 +118,7 @@ class SwitchElm extends CircuitElm {
 		    position = 0;
     }
     
+    /*
     void getInfo(String arr[]) {
 		arr[0] = (momentary) ? "push switch (SPST)" : "switch (SPST)";
 		if (position == 1) {
@@ -129,6 +130,7 @@ class SwitchElm extends CircuitElm {
 		    arr[3] = "I = " + getCurrentDText(getCurrent());
 		}
     }
+    */
     
     boolean getConnection(int n1, int n2) { return position == 0; }
     

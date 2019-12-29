@@ -66,14 +66,11 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.Window.Navigator;
 
-public class CirSim implements  MouseDownHandler,  MouseUpHandler,
-ClickHandler, MouseWheelHandler{
+public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandler, MouseWheelHandler{
 
 	//this
 	static CirSim theSim;
 	
-	//Canvas refresh rate
-	//final int FASTTIMER = 16;
 	private final int REFRESH_RATE = 16;
 	
 	//Set UI fields
@@ -111,15 +108,20 @@ ClickHandler, MouseWheelHandler{
     
     //Events
     long zoomTime;
-     
-   CirSim() {
-	theSim = this;
-   }
+    int dragScreenX, dragScreenY, initDragGridX, initDragGridY;
+    boolean dragging;
+    private CircuitElm mouseElm=null;
+    static final int POSTGRABSQ=25;
+    static final int MINPOSTGRABSIZE = 256;
+    
+    CirSim() {
+    	theSim = this;
+    }
 	
-  public void setCanvasSize(){
+    public void setCanvasSize(){
 	  
-  	width  = (int)RootLayoutPanel.get().getOffsetWidth();
-  	height = (int)RootLayoutPanel.get().getOffsetHeight()-MENUBARHEIGHT;
+	  	width  = (int)RootLayoutPanel.get().getOffsetWidth();
+	  	height = (int)RootLayoutPanel.get().getOffsetHeight()-MENUBARHEIGHT;
   	
 		if (cv != null) {
 			cv.setWidth(width + "PX");
@@ -208,22 +210,47 @@ ClickHandler, MouseWheelHandler{
 		
 		cv.addMouseDownHandler(this);
 		cv.addMouseUpHandler(this);
-		cv.addClickHandler(this);
 		cv.addMouseWheelHandler(this);
+		cv.addMouseMoveHandler(this);
 		
 		
-	try {			
-		//CircuitElm newce = createCe("Wire",width/2, height/2, (width/2)+10, (height/2)+50, 0,0);
-		//newce.setPoints();
-		//elmList.add(newce);
+		try {			
+		CircuitElm newce = createCe("Wire",200,125,150,125, 0,0);
+		newce.setPoints();
+		elmList.add(newce);
 		
-		CircuitElm newce2 = createCe("And",width/2, height/2, (width/2)+45, (height/2), 0, 2);
-		newce2.setPoints();
-		elmList.add(newce2);
+		//CircuitElm newce2 = createCe("And",width/2, height/2, (width/2)+45, (height/2), 0, 2);
+		//newce2.setPoints();
+		//elmList.add(newce2);
 		
-		CircuitElm newce3 = createCe("Linput",10, 100, 50, 100, 0, 2);
-		newce3.setPoints();
-		elmList.add(newce3);
+		//CircuitElm newce3 = createCe("Linput",10, 100, 50, 100, 0, 2);
+		//newce3.setPoints();
+		//SwitchElm se  = (SwitchElm)newce3;
+		//se.toggle();
+		//elmList.add(newce3);
+		
+		
+		
+		
+		CircuitElm newce33 = createCe("Linput",100, 110, 50, 115, 0, 2);
+		newce33.setPoints();
+		elmList.add(newce33);
+		
+		CircuitElm newce44 = createCe("Linput",100, 140, 50, 145, 0, 2);
+		newce44.setPoints();
+		elmList.add(newce44);
+		
+		CircuitElm newce55 = createCe("Or",100,125,150,125, 0, 2);
+		newce55.setPoints();
+		elmList.add(newce55);
+		
+		//CircuitElm newce66 = createCe("Loutput",150, 125, 50, 200, 0, 2);
+		//newce66.setPoints();
+		//elmList.add(newce66);
+		
+		
+		
+		
 		
 		CircuitElm newce4 = createCe("Loutput",10, 200, 50, 200, 0, 2);
 		newce4.setPoints();
@@ -249,10 +276,10 @@ ClickHandler, MouseWheelHandler{
 		newce9.setPoints();
 		elmList.add(newce9);
 	
-	} catch (Exception ee) {
+		} catch (Exception ee) {
 	    ee.printStackTrace();
 	    GWT.log("exception while undumping " + ee);
-	}
+		}
 		
 
 		centreCircuit();
@@ -260,7 +287,7 @@ ClickHandler, MouseWheelHandler{
 		timer.scheduleRepeating(REFRESH_RATE);
 			
 				
- }
+  	}
   
 	final Timer timer = new Timer() {
 	      public void run() {
@@ -270,7 +297,6 @@ ClickHandler, MouseWheelHandler{
 
     public void updateCircuit() {
     	
-    //	GWT.log("ms");
     	setCanvasSize();
     	
     	Graphics g = new Graphics(backcontext);
@@ -314,11 +340,446 @@ ClickHandler, MouseWheelHandler{
     	cvcontext.drawImage(backcontext.getCanvas(),0.0,0.0);
     	
     }
+ 
     
+    
+     public CircuitElm getElm(int n) {
+		if (n >= elmList.size())
+		    return null;
+		return elmList.elementAt(n);
+    }
+    
+     public static CircuitElm createCe(String marker, int x1, int y1, int x2, int y2, int f, int inputcount) {
+    	
+    	if(marker.equals("Wire")) {
+    		return (CircuitElm) new WireElm(x1, y1, x2, y2, f);
+    	}
+    	if(marker.equals("And")) {
+        	return (CircuitElm) new AndGateElm(x1, y1, x2, y2, f, inputcount);
+        }
+    	if(marker.equals("Linput")) {
+    		return (CircuitElm) new LogicInputElm(x1, y1, x2, y2, f);
+    	}
+    	if(marker.equals("Loutput")) {
+    		return (CircuitElm) new LogicOutputElm(x1, y1, x2, y2, f);
+    	}
+    	if(marker.equals("Or")) {
+    		return (CircuitElm) new OrGateElm(x1, y1, x2, y2, f, inputcount);
+    	}
+    	if(marker.equals("XOR")) {
+    		return (CircuitElm) new XorGateElm(x1, y1, x2, y2, f, inputcount);
+    	}
+    	if(marker.equals("Nor")) {
+    		return (CircuitElm) new NorGateElm(x1, y1, x2, y2, f, inputcount);
+    	}
+    	if(marker.equals("Nand")) {
+    		return (CircuitElm) new NandGateElm(x1, y1, x2, y2, f, inputcount);
+    	}
+    	if(marker.equals("Invertor")) {
+    		return (CircuitElm) new InverterElm(x1, y1, x2, y2, f);
+    	}
+    	else {return null;}
+    	
+    }
+     
+     
+     class NodeMapEntry {
+    		int node;
+    		NodeMapEntry() { node = -1; }
+    		NodeMapEntry(int n) { node = n; }
+    	    }
+     
+     class WireInfo {
+    		WireElm wire;
+    		Vector<CircuitElm> neighbors;
+    		int post;
+    		WireInfo(WireElm w) {
+    		    wire = w;
+    		}
+    	    }
+     
+     Vector<CircuitNode> nodeList;
+     Vector<Point> postDrawList = new Vector<Point>();
+     Vector<Point> badConnectionList = new Vector<Point>();
+     CircuitElm voltageSources[];
+     
+     HashMap<Point,NodeMapEntry> nodeMap;
+     HashMap<Point,Integer> postCountMap;
+     Vector<WireInfo> wireInfoList;
+     
+     void calculateWireClosure() {
+    		int i;
+    		nodeMap = new HashMap<Point,NodeMapEntry>();
+//    		int mergeCount = 0;
+    		wireInfoList = new Vector<WireInfo>();
+    		for (i = 0; i != elmList.size(); i++) {
+    		    CircuitElm ce = getElm(i);
+    		    if (!(ce instanceof WireElm))
+    			continue;
+    		    WireElm we = (WireElm) ce;
+    		    we.hasWireInfo = false;
+    		    wireInfoList.add(new WireInfo(we));
+    		    NodeMapEntry cn  = nodeMap.get(ce.getPost(0));
+    		    NodeMapEntry cn2 = nodeMap.get(ce.getPost(1));
+    		    if (cn != null && cn2 != null) {
+    			// merge nodes; go through map and change all keys pointing to cn2 to point to cn
+    			for (Map.Entry<Point, NodeMapEntry> entry : nodeMap.entrySet()) {
+    			    if (entry.getValue() == cn2)
+    				entry.setValue(cn);
+    			}
+//    			mergeCount++;
+    			continue;
+    		    }
+    		    if (cn != null) {
+    			nodeMap.put(ce.getPost(1), cn);
+    			continue;
+    		    }
+    		    if (cn2 != null) {
+    			nodeMap.put(ce.getPost(0), cn2);
+    			continue;
+    		    }
+    		    // new entry
+    		    cn = new NodeMapEntry();
+    		    nodeMap.put(ce.getPost(0), cn);
+    		    nodeMap.put(ce.getPost(1), cn);
+    		}
+    		
+//    		console("got " + (groupCount-mergeCount) + " groups with " + nodeMap.size() + " nodes " + mergeCount);
+    	    }
+    	    
+     
+     
+     void analyzeCircuit() {
+    	 
+    	 if (elmList.isEmpty()) {
+    		    postDrawList = new Vector<Point>();
+    		    badConnectionList = new Vector<Point>();
+    		    return;
+    		}
+    		//stopMessage = null;
+    		//stopElm = null;
+    		int i, j;
+    		int vscount = 0;
+    		nodeList = new Vector<CircuitNode>();
+    		postCountMap = new HashMap<Point,Integer>();
+    		boolean gotGround = false;
+    		boolean gotRail = false;
+    		CircuitElm volt = null;
+
+    		calculateWireClosure();
+    		
+    		//System.out.println("ac1");
+    		// look for voltage or ground element
+    		/*
+    		for (i = 0; i != elmList.size(); i++) {
+    		    CircuitElm ce = getElm(i);
+    		    if (ce instanceof GroundElm) {
+    			gotGround = true;
+    			break;
+    		    }
+    		    if (ce instanceof RailElm)
+    		    	gotRail = true;
+    		    if (volt == null && ce instanceof VoltageElm)
+    		    	volt = ce;
+    		}
+    		*/
+
+    		// if no ground, and no rails, then the voltage elm's first terminal
+    		// is ground
+    		if (!gotGround && volt != null && !gotRail) {
+    		    CircuitNode cn = new CircuitNode();
+    		    Point pt = volt.getPost(0);
+    		    nodeList.addElement(cn);
+
+    		    // update node map
+    		    NodeMapEntry cln = nodeMap.get(pt);
+    		    if (cln != null)
+    			cln.node = 0;
+    		    else
+    			nodeMap.put(pt, new NodeMapEntry(0));
+    		} else {
+    		    // otherwise allocate extra node for ground
+    		    CircuitNode cn = new CircuitNode();
+    		    nodeList.addElement(cn);
+    		}
+    		//System.out.println("ac2");
+
+    		// allocate nodes and voltage sources
+    		//LabeledNodeElm.resetNodeList();
+    		for (i = 0; i != elmList.size(); i++) {
+    		    CircuitElm ce = getElm(i);
+    		    int inodes = ce.getInternalNodeCount();
+    		    int ivs = ce.getVoltageSourceCount();
+    		    int posts = ce.getPostCount();
+    		    
+    		    // allocate a node for each post and match posts to nodes
+    		    for (j = 0; j != posts; j++) {
+    			Point pt = ce.getPost(j);
+    			Integer g = postCountMap.get(pt);
+    			postCountMap.put(pt, g == null ? 1 : g+1);
+    			NodeMapEntry cln = nodeMap.get(pt);
+    			
+    			// is this node not in map yet?  or is the node number unallocated?
+    			// (we don't allocate nodes before this because changing the allocation order
+    			// of nodes changes circuit behavior and breaks backward compatibility;
+    			// the code below to connect unconnected nodes may connect a different node to ground) 
+    			if (cln == null || cln.node == -1) {
+    			    CircuitNode cn = new CircuitNode();
+    			    CircuitNodeLink cnl = new CircuitNodeLink();
+    			    cnl.num = j;
+    			    cnl.elm = ce;
+    			    cn.links.addElement(cnl);
+    			    ce.setNode(j, nodeList.size());
+    			    if (cln != null)
+    				cln.node = nodeList.size();
+    			    else
+    				nodeMap.put(pt, new NodeMapEntry(nodeList.size()));
+    			    nodeList.addElement(cn);
+    			} else {
+    			    int n = cln.node;
+    			    CircuitNodeLink cnl = new CircuitNodeLink();
+    			    cnl.num = j;
+    			    cnl.elm = ce;
+    			    getCircuitNode(n).links.addElement(cnl);
+    			    ce.setNode(j, n);
+    			    // if it's the ground node, make sure the node voltage is 0,
+    			    // cause it may not get set later
+    			    if (n == 0)
+    				ce.setNodeVoltage(j, 0);
+    			}
+    		    }
+    		    for (j = 0; j != inodes; j++) {
+    			CircuitNode cn = new CircuitNode();
+    			cn.internal = true;
+    			CircuitNodeLink cnl = new CircuitNodeLink();
+    			cnl.num = j+posts;
+    			cnl.elm = ce;
+    			cn.links.addElement(cnl);
+    			ce.setNode(cnl.num, nodeList.size());
+    			nodeList.addElement(cn);
+    		    }
+    		    vscount += ivs;
+    		}
+    		
+    		makePostDrawList();
+    		if (!calcWireInfo())
+    		    return;
+    		nodeMap = null; // done with this
+    		
+    		voltageSources = new CircuitElm[vscount];
+    		vscount = 0;
+    		circuitNonLinear = false;
+    		//System.out.println("ac3");
+
+    		// determine if circuit is nonlinear
+    		for (i = 0; i != elmList.size(); i++) {
+    		    CircuitElm ce = getElm(i);
+    		    if (ce.nonLinear())
+    			circuitNonLinear = true;
+    		    int ivs = ce.getVoltageSourceCount();
+    		    for (j = 0; j != ivs; j++) {
+    			voltageSources[vscount] = ce;
+    			ce.setVoltageSource(j, vscount++);
+    		    }
+    		}
+    		voltageSourceCount = vscount;
+
+    		int matrixSize = nodeList.size()-1 + vscount;
+    		circuitMatrix = new double[matrixSize][matrixSize];
+    		circuitRightSide = new double[matrixSize];
+    		origMatrix = new double[matrixSize][matrixSize];
+    		origRightSide = new double[matrixSize];
+    		circuitMatrixSize = circuitMatrixFullSize = matrixSize;
+    		circuitRowInfo = new RowInfo[matrixSize];
+    		circuitPermute = new int[matrixSize];
+    		for (i = 0; i != matrixSize; i++)
+    		    circuitRowInfo[i] = new RowInfo();
+    		circuitNeedsMap = false;
+    		
+    		// stamp linear circuit elements
+    		for (i = 0; i != elmList.size(); i++) {
+    		    CircuitElm ce = getElm(i);
+    		    ce.stamp();
+    		}
+    		//System.out.println("ac4");
+
+    		// determine nodes that are not connected indirectly to ground
+    		boolean closure[] = new boolean[nodeList.size()];
+    		boolean changed = true;
+    		closure[0] = true;
+    		while (changed) {
+    		    changed = false;
+    		    for (i = 0; i != elmList.size(); i++) {
+    			CircuitElm ce = getElm(i);
+    			if (ce instanceof WireElm)
+    			    continue;
+    			// loop through all ce's nodes to see if they are connected
+    			// to other nodes not in closure
+    			for (j = 0; j < ce.getConnectionNodeCount(); j++) {
+    			    if (!closure[ce.getConnectionNode(j)]) {
+    				if (ce.hasGroundConnection(j))
+    				    closure[ce.getConnectionNode(j)] = changed = true;
+    				continue;
+    			    }
+    			    int k;
+    			    for (k = 0; k != ce.getConnectionNodeCount(); k++) {
+    				if (j == k)
+    				    continue;
+    				int kn = ce.getConnectionNode(k);
+    				if (ce.getConnection(j, k) && !closure[kn]) {
+    				    closure[kn] = true;
+    				    changed = true;
+    				}
+    			    }
+    			}
+    		    }
+    		    if (changed)
+    			continue;
+
+    		    // connect one of the unconnected nodes to ground with a big resistor, then try again
+    		    for (i = 0; i != nodeList.size(); i++)
+    			if (!closure[i] && !getCircuitNode(i).internal) {
+    			    console("node " + i + " unconnected");
+    			    stampResistor(0, i, 1e8);
+    			    closure[i] = true;
+    			    changed = true;
+    			    break;
+    			}
+    		}
+    		//System.out.println("ac5");
+
+    		for (i = 0; i != elmList.size(); i++) {
+    		    CircuitElm ce = getElm(i);
+    		    // look for inductors with no current path
+    		    if (ce instanceof InductorElm) {
+    			FindPathInfo fpi = new FindPathInfo(FindPathInfo.INDUCT, ce,
+    							    ce.getNode(1));
+    			// first try findPath with maximum depth of 5, to avoid slowdowns
+    			if (!fpi.findPath(ce.getNode(0), 5) &&
+    			    !fpi.findPath(ce.getNode(0))) {
+//    			    console(ce + " no path");
+    			    ce.reset();
+    			}
+    		    }
+    		    // look for current sources with no current path
+    		    if (ce instanceof CurrentElm) {
+    			CurrentElm cur = (CurrentElm) ce;
+    			FindPathInfo fpi = new FindPathInfo(FindPathInfo.INDUCT, ce,
+    							    ce.getNode(1));
+    			// first try findPath with maximum depth of 5, to avoid slowdowns
+    			if (!fpi.findPath(ce.getNode(0), 5) &&
+    			    !fpi.findPath(ce.getNode(0))) {
+    			    cur.stampCurrentSource(true);
+    			} else
+    			    cur.stampCurrentSource(false);
+    		    }
+    		    if (ce instanceof VCCSElm) {
+    			VCCSElm cur = (VCCSElm) ce;
+    			FindPathInfo fpi = new FindPathInfo(FindPathInfo.INDUCT, ce,
+    							    cur.getOutputNode(0));
+    			if (cur.hasCurrentOutput() && !fpi.findPath(cur.getOutputNode(1))) {
+    			    cur.broken = true;
+    			} else
+    			    cur.broken = false;
+    		    }
+    		    // look for voltage source or wire loops.  we do this for voltage sources or wire-like elements (not actual wires
+    		    // because those are optimized out, so the findPath won't work)
+    		    if (ce.getPostCount() == 2) {
+    			if (ce instanceof VoltageElm || (ce.isWire() && !(ce instanceof WireElm))) {
+    			    FindPathInfo fpi = new FindPathInfo(FindPathInfo.VOLTAGE, ce,
+    							    ce.getNode(1));
+    			    if (fpi.findPath(ce.getNode(0))) {
+    				stop("Voltage source/wire loop with no resistance!", ce);
+    				return;
+    			    }
+    			}
+    		    }
+    		    
+    		    // look for path from rail to ground
+    		    if (ce instanceof RailElm) {
+    			FindPathInfo fpi = new FindPathInfo(FindPathInfo.VOLTAGE, ce,
+    				    ce.getNode(0));
+    			if (fpi.findPath(0)) {
+    			    stop("Path to ground with no resistance!", ce);
+    			    return;
+    			}
+    		    }
+    		    
+    		    // look for shorted caps, or caps w/ voltage but no R
+    		    if (ce instanceof CapacitorElm) {
+    			FindPathInfo fpi = new FindPathInfo(FindPathInfo.SHORT, ce,
+    							    ce.getNode(1));
+    			if (fpi.findPath(ce.getNode(0))) {
+    			    console(ce + " shorted");
+    			    ce.reset();
+    			} else {
+    			    // a capacitor loop used to cause a matrix error. but we changed the capacitor model
+    			    // so it works fine now. The only issue is if a capacitor is added in parallel with
+    			    // another capacitor with a nonzero voltage; in that case we will get oscillation unless
+    			    // we reset both capacitors to have the same voltage. Rather than check for that, we just
+    			    // give an error.
+    			    fpi = new FindPathInfo(FindPathInfo.CAP_V, ce, ce.getNode(1));
+    			    if (fpi.findPath(ce.getNode(0))) {
+    				stop("Capacitor loop with no resistance!", ce);
+    				return;
+    			    }
+    			}
+    		    }
+    		}
+    		//System.out.println("ac6");
+
+    		if (!simplifyMatrix(matrixSize))
+    		    return;
+    		
+    		/*
+    		System.out.println("matrixSize = " + matrixSize + " " + circuitNonLinear);
+    		for (j = 0; j != circuitMatrixSize; j++) {
+    		    for (i = 0; i != circuitMatrixSize; i++)
+    			System.out.print(circuitMatrix[j][i] + " ");
+    		    System.out.print("  " + circuitRightSide[j] + "\n");
+    		}
+    		System.out.print("\n");*/
+
+    		// check if we called stop()
+    		if (circuitMatrix == null)
+    		    return;
+    		
+    		// if a matrix is linear, we can do the lu_factor here instead of
+    		// needing to do it every frame
+    		if (!circuitNonLinear) {
+    		    if (!lu_factor(circuitMatrix, circuitMatrixSize, circuitPermute)) {
+    			stop("Singular matrix!", null);
+    			return;
+    		    }
+    		}
+    		
+    		// show resistance in voltage sources if there's only one
+    		boolean gotVoltageSource = false;
+    		showResistanceInVoltageSources = true;
+    		for (i = 0; i != elmList.size(); i++) {
+    		    CircuitElm ce = getElm(i);
+    		    if (ce instanceof VoltageElm) {
+    			if (gotVoltageSource)
+    			    showResistanceInVoltageSources = false;
+    			else
+    			    gotVoltageSource = true;
+    		    }
+    		}
+
+    	 
+    	 
+    	 
+     }
+     
+    
+    
+// *****************************************************************
+//  BEHAVIOUR
+        
     void setGrid() {
-	gridSize = 8;
-	gridMask = ~(gridSize-1);
-	gridRound = gridSize/2-1;
+		gridSize = 8;
+		gridMask = ~(gridSize-1);
+		gridRound = gridSize/2-1;
     }
 
     void zoomCircuit(int dy) {
@@ -366,20 +827,147 @@ ClickHandler, MouseWheelHandler{
     	}
     	
     }
-        
-    Rectangle getCircuitBounds() {
+       
+    
+// *****************************************************************
+//  MOUSE EVENTS
+    
+	@Override
+	public void onMouseWheel(MouseWheelEvent e) {
+		e.preventDefault();
+		zoomCircuit(e.getDeltaY());
+	}
+
+	@Override
+	public void onMouseUp(MouseUpEvent e) {
+		e.preventDefault();
+		if (e.getNativeButton()==NativeEvent.BUTTON_RIGHT) {return;}
+		dragging = false;
+	}
+	
+	@Override
+	public void onMouseDown(MouseDownEvent e) {
+		e.preventDefault();
+	
+		if (e.getNativeButton() != NativeEvent.BUTTON_LEFT && 
+			e.getNativeButton() != NativeEvent.BUTTON_MIDDLE
+			)
+	    	{return;}
+		
+		CircuitElm newMouseElm=null;
+		int sx = e.getX();
+    	int sy = e.getY();
+    	int gx = inverseTransformX(sx);
+    	int gy = inverseTransformY(sy);
+				
+		if(e.getNativeButton()==NativeEvent.BUTTON_MIDDLE) {
+			dragging = true;
+		}
+		
+		if(e.getNativeButton()==NativeEvent.BUTTON_LEFT) {
+			
+			if (mouseElm != null && mouseElm.getHandleGrabbedClose(gx, gy, POSTGRABSQ, MINPOSTGRABSIZE)>=0) {
+	    		newMouseElm = mouseElm;
+	    	} else { 
+	    		
+	    		int bestDist = 100000000;
+	    		int bestArea = 100000000;
+	    		for (int i = 0; i != elmList.size(); i++) {
+	    			CircuitElm ce = getElm(i);
+	    			if (ce.boundingBox.contains(gx, gy)) {
+	    				int j;
+	    				int area = ce.boundingBox.width * ce.boundingBox.height;
+	    				int jn = ce.getPostCount();
+	    				if (jn > 2)
+	    					jn = 2;
+	    				for (j = 0; j != jn; j++) {
+	    					Point pt = ce.getPost(j);
+	    					int dist = Graphics.distanceSq(gx, gy, pt.x, pt.y);
+
+	    					// if multiple elements have overlapping bounding boxes,
+	    					// we prefer selecting elements that have posts close
+	    					// to the mouse pointer and that have a small bounding
+	    					// box area.
+	    					if (dist <= bestDist && area <= bestArea) {
+	    						bestDist = dist;
+	    						bestArea = area;
+	    						newMouseElm = ce;
+	    					}
+	    				}
+	    				// prefer selecting elements that have small bounding box area (for
+	    				// elements with no posts)
+	    				if (ce.getPostCount() == 0 && area <= bestArea) {
+	    				    newMouseElm = ce;
+	    				    bestArea = area;
+	    				}
+	    			}
+	    		}	
+	    		
+	    	}
+		
+			setMouseElm(newMouseElm);
+		}
+		
+		dragScreenX = e.getX();
+	 	dragScreenY = e.getY();
+	 	
+	}
+	
+	public void onMouseMove(MouseMoveEvent e) {
+		e.preventDefault();
+		
+		if(dragging == true) {
+			dragAll(e.getX(), e.getY());
+		}
+		
+	}
+	
+	void dragAll (int x, int y) {
+		
+    	int dx = x-dragScreenX;
+    	int dy = y-dragScreenY;
+    	if (dx == 0 && dy == 0) {return;}
+    	transform[4] += dx;
+    	transform[5] += dy;
+    	dragScreenX = x;
+    	dragScreenY = y;
+		
+	}
+	
+    void setMouseElm(CircuitElm ce) {
+    	if (ce!=mouseElm) {
+    		if (mouseElm!=null)
+    			mouseElm.setMouseElm(false);
+    		if (ce!=null)
+    			ce.setMouseElm(true);
+    		mouseElm=ce;
+    	}
+    	if (mouseElm != null && (mouseElm instanceof SwitchElm)) {
+    		SwitchElm se = (SwitchElm) mouseElm;
+    		se.toggle();
+    	}
+    }
+	
+    
+// *****************************************************************
+//  TOOLS    
+    
+    int getrand(int x) {
+		int q = random.nextInt();
+		if (q < 0)
+			q = -q;
+		return q % x;
+	}
+       
+    static SafeHtml LSHTML(String s) { return SafeHtmlUtils.fromTrustedString(s); }
+
+    public Rectangle getCircuitBounds() {
     	
     	int i;
     	int minx = 1000, maxx = 0, miny = 1000, maxy = 0;
     	
     	for (i = 0; i != elmList.size(); i++) {
     		CircuitElm ce = getElm(i);
-    		// centered text causes problems when trying to center the circuit,
-    		// so we special-case it here
-    		//if (!ce.isCenteredText()) {
-    			//minx = min(ce.x, min(ce.x2, minx));
-    			//maxx = max(ce.x, max(ce.x2, maxx));
-    		//}
     		miny = min(ce.y, min(ce.y2, miny));
     		maxy = max(ce.y, max(ce.y2, maxy));
     	}
@@ -388,8 +976,9 @@ ClickHandler, MouseWheelHandler{
     	
     	return new Rectangle(minx, miny, maxx-minx, maxy-miny);
     }
-        
+   
     int min(int a, int b) { return (a < b) ? a : b; }
+    
     int max(int a, int b) { return (a > b) ? a : b; }
         
     // convert screen coordinates to grid coordinates by inverting circuit transform
@@ -408,99 +997,6 @@ ClickHandler, MouseWheelHandler{
     
     int transformY(double y) {
     	return (int) ((y*transform[3]) + transform[5]);
-    }
+    }    
     
-    public CircuitElm getElm(int n) {
-		if (n >= elmList.size())
-		    return null;
-		return elmList.elementAt(n);
-    }
-    
-    public static CircuitElm createCe(String marker, int x1, int y1, int x2, int y2, int f, int inputcount) {
-    	
-    	if(marker.equals("Wire")) {
-    	return (CircuitElm) new WireElm(x1, y1, x2, y2, f);
-    	}
-    	if(marker.equals("And")) {
-        	return (CircuitElm) new AndGateElm(x1, y1, x2, y2, f, inputcount);
-        }
-    	if(marker.equals("Linput")) {
-    		return (CircuitElm) new LogicInputElm(x1, y1, x2, y2, f);
-    	}
-    	if(marker.equals("Loutput")) {
-    		return (CircuitElm) new LogicOutputElm(x1, y1, x2, y2, f);
-    	}
-    	if(marker.equals("Or")) {
-    		return (CircuitElm) new OrGateElm(x1, y1, x2, y2, f, inputcount);
-    	}
-    	if(marker.equals("XOR")) {
-    		return (CircuitElm) new XorGateElm(x1, y1, x2, y2, f, inputcount);
-    	}
-    	if(marker.equals("Nor")) {
-    		return (CircuitElm) new NorGateElm(x1, y1, x2, y2, f, inputcount);
-    	}
-    	if(marker.equals("Nand")) {
-    		return (CircuitElm) new NandGateElm(x1, y1, x2, y2, f, inputcount);
-    	}
-    	if(marker.equals("Invertor")) {
-    		return (CircuitElm) new InverterElm(x1, y1, x2, y2, f);
-    	}
-    	else {return null;}
-    	
-    }
-    
-    static SafeHtml LSHTML(String s) { return SafeHtmlUtils.fromTrustedString(s); }
-	
-    int getrand(int x) {
-		int q = random.nextInt();
-		if (q < 0)
-			q = -q;
-		return q % x;
-	}
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-	@Override
-	public void onClick(ClickEvent e) {
-
-		
-	}
-
-	@Override
-	public void onMouseWheel(MouseWheelEvent e) {
-		
-		e.preventDefault();
-		//boolean zoomOnly = System.currentTimeMillis() < zoomTime+1000;
-		GWT.log("asd");
-		//if(zoomOnly) {
-			GWT.log(Integer.toString(e.getDeltaY()));
-		    zoomCircuit(e.getDeltaY());
-		    //zoomTime = System.currentTimeMillis();
-	   // }
-		
-	}
-
-	@Override
-	public void onMouseUp(MouseUpEvent event) {
-		// TODO Auto-generated method stub
-		GWT.log("asd");
-	}
-
-	@Override
-	public void onMouseDown(MouseDownEvent event) {
-		// TODO Auto-generated method stub
-		GWT.log("asd");
-	}
-	
 }

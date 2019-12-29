@@ -20,9 +20,11 @@
 package com.pplosstudio.avroralogicgame.client;
 
     class LogicInputElm extends SwitchElm {
+    	
 	final int FLAG_TERNARY = 1;
 	final int FLAG_NUMERIC = 2;
 	double hiV=5, loV=0;
+	
 	public LogicInputElm(int xx, int yy) {
 	    super(xx, yy, false);
 	    numHandles=1;
@@ -30,6 +32,7 @@ package com.pplosstudio.avroralogicgame.client;
 	    loV = 0;
 	    
 	}
+	
 	public LogicInputElm(int xa, int ya, int xb, int yb, int f) {
 	    super(xa, ya, xb, yb, f);
 	    numHandles=1;
@@ -43,6 +46,7 @@ package com.pplosstudio.avroralogicgame.client;
 	    if (isTernary())
 		posCount = 3;
 	}
+	
 	boolean isTernary() { return (flags & FLAG_TERNARY) != 0; }
 	
 	boolean isNumeric() { return (flags & (FLAG_TERNARY|FLAG_NUMERIC)) != 0; }
