@@ -47,9 +47,9 @@ package com.pplosstudio.avroralogicgame.client;
 	
 	int getPostCount() { return 1; }
 	
-	boolean isTernary() { return (flags & FLAG_TERNARY) != 0; }
+	//boolean isTernary() { return (flags & FLAG_TERNARY) != 0; }
 	
-	boolean isNumeric() { return (flags & (FLAG_TERNARY|FLAG_NUMERIC)) != 0; }
+	boolean isNumeric() { return true; }
 	
 	boolean needsPullDown() { return (flags & FLAG_PULLDOWN) != 0; }
 	
@@ -65,6 +65,7 @@ package com.pplosstudio.avroralogicgame.client;
 	    //g.setColor(needsHighlight() ? selectColor : lightGrayColor);
 	    g.setColor(lightGrayColor);
 	    String s = (volts[0] < threshold) ? "L" : "H";
+	   /*
 	    if (isTernary()) {
 		if (volts[0] > 3.75)
 		    s = "2";
@@ -73,6 +74,7 @@ package com.pplosstudio.avroralogicgame.client;
 		else
 		    s = "0";
 	    } else if (isNumeric())
+	    	*/
 		s = (volts[0] < threshold) ? "0" : "1";
 	    value = s;
 	    setBbox(point1, lead1, 0);
@@ -84,8 +86,8 @@ package com.pplosstudio.avroralogicgame.client;
 	}
 	
 	void stamp() {
-	   // if (needsPullDown())
-		//sim.stampResistor(nodes[0], 0, 1e6);
+	    if (needsPullDown())
+		sim.stampResistor(nodes[0], 0, 1e6);
 	}
 	
 	double getVoltageDiff() { return volts[0]; }

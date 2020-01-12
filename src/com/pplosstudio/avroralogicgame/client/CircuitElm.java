@@ -110,6 +110,7 @@ public abstract class CircuitElm  {
     static void setColorScale() {
 
 		for (int i = 0; i != colorScaleCount; i++) {
+			
 		    double v = i * 2. / colorScaleCount - 1;
 		    
 		    if (v < 0) {
@@ -132,6 +133,7 @@ public abstract class CircuitElm  {
 				}
 				
 		    }
+		    
 		}
 
     }
@@ -815,9 +817,10 @@ public abstract class CircuitElm  {
     }
     
     Color getVoltageColor(Graphics g, double volts) {
-    	if (needsHighlight()) {
-    	    	return (selectColor);
-    	}
+    	
+    	//if (needsHighlight()) {
+    	  //  	return (selectColor);
+    //	}
     	//if (!sim.voltsCheckItem.getState()) {
     	    	//return(whiteColor);
     	//}

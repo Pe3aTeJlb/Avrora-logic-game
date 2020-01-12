@@ -43,13 +43,14 @@ package com.pplosstudio.avroralogicgame.client;
 		hiV = 5;
 		loV = 0;
 	    }
-	    if (isTernary())
-		posCount = 3;
+	    //if (isTernary())
+		//posCount = 3;
 	}
 	
-	boolean isTernary() { return (flags & FLAG_TERNARY) != 0; }
+	//boolean isTernary() { return (flags & FLAG_TERNARY) != 0; }
 	
-	boolean isNumeric() { return (flags & (FLAG_TERNARY|FLAG_NUMERIC)) != 0; }
+	boolean isNumeric() { return true;
+	}
 	
 	int getDumpType() { return 'L'; }
 	
@@ -92,7 +93,7 @@ package com.pplosstudio.avroralogicgame.client;
 	    double v = (position == 0) ? loV : hiV;
 	    //if (isTernary())
 		//v = position * 2.5;
-	    //sim.stampVoltageSource(0, nodes[0], voltSource, v);
+	    sim.stampVoltageSource(0, nodes[0], voltSource, v);
 	}
 	
 	int getVoltageSourceCount() { return 1; }

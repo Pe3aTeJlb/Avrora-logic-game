@@ -49,7 +49,7 @@ package com.pplosstudio.avroralogicgame.client;
 	}
 	
 	void stamp() {
-//	    sim.stampVoltageSource(nodes[0], nodes[1], voltSource, 0);
+	   // sim.stampVoltageSource(nodes[0], nodes[1], voltSource, 0);
 	}
 	
 	boolean mustShowCurrent() {

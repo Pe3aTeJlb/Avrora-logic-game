@@ -40,10 +40,6 @@ package com.pplosstudio.avroralogicgame.client;
 	    noDiagonal = true;
 	    slewRate = .5;
 	    highVoltage = 5;
-	    try {
-		//slewRate = new Double (st.nextToken()).doubleValue();
-		//highVoltage = new Double (st.nextToken()).doubleValue();
-	    } catch (Exception e) {}
 	    
 	}
 	String dump() {
@@ -98,18 +94,19 @@ package com.pplosstudio.avroralogicgame.client;
 	int getVoltageSourceCount() { return 1; }
 	
 	void stamp() {
-	    //sim.stampVoltageSource(0, nodes[1], voltSource);
+	    sim.stampVoltageSource(0, nodes[1], voltSource);
 	}
 	
 	void doStep() {
 	    double v0 = volts[1];
 	    double out = volts[0] > highVoltage*.5 ? 0 : highVoltage;
-	   // double maxStep = slewRate * sim.timeStep * 1e9;
-	    //out = Math.max(Math.min(v0+maxStep, out), v0-maxStep);
-	    //sim.updateVoltageSource(0, nodes[1], voltSource, out);
+	    double maxStep = slewRate * sim.timeStep * 1e9;
+	    out = Math.max(Math.min(v0+maxStep, out), v0-maxStep);
+	    sim.updateVoltageSource(0, nodes[1], voltSource, out);
 	}
 	
 	double getVoltageDiff() { return volts[0]; }
+	
 	void getInfo(String arr[]) {
 	    arr[0] = "inverter";
 	    arr[1] = "Vi = " + getVoltageText(volts[0]);
@@ -130,6 +127,7 @@ package com.pplosstudio.avroralogicgame.client;
 	    if (n == 1)
 		highVoltage = GateElm.lastHighVoltage = ei.value;
 	}*/
+	
 	// there is no current path through the inverter input, but there
 	// is an indirect path through the output to ground.
 	boolean getConnection(int n1, int n2) { return false; }

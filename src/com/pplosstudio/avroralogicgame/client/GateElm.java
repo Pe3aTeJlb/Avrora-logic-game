@@ -169,7 +169,7 @@ abstract class GateElm extends CircuitElm {
 	}
 	
 	void stamp() {
-	   // sim.stampVoltageSource(0, nodes[inputCount], voltSource);
+	    sim.stampVoltageSource(0, nodes[inputCount], voltSource);
 	}
 	
 	boolean hasSchmittInputs() { return (flags & FLAG_SCHMITT) != 0; }
@@ -204,7 +204,7 @@ abstract class GateElm extends CircuitElm {
 	    
 	    lastOutput = f;
 	    double res = f ? highVoltage : 0;
-	    //sim.updateVoltageSource(0, nodes[inputCount], voltSource, res);
+	    sim.updateVoltageSource(0, nodes[inputCount], voltSource, res);
 	}
 	
 	/*
