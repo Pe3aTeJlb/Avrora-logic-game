@@ -36,7 +36,6 @@ public class Main implements EntryPoint {
             public void onResize(ResizeEvent event)
             {               
             	mysim.setCanvasSize();
-                	
             }
         });
 		   

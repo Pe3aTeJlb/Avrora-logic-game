@@ -34,9 +34,15 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	//this
 	static CirSim theSim;
 	
+	public Vector<CircuitElm> elmList;
+	
+	//Circuit settings fields
+	boolean euroGates = false;
+    Random random;
+	
 	private final int REFRESH_RATE = 30;
 	
-	//Set UI fields
+	//Set UI fields//
 	RootLayoutPanel root;
 	
     Canvas cv;
@@ -59,17 +65,9 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     private final int MENUBARHEIGHT=30;
     public int width,height;
     
-    int gridSize, gridMask, gridRound;
-     
-    public Vector<CircuitElm> elmList;
-
     double transform[];
-        
-    boolean euroGates = false;
     
-    Random random;
-    
-    //Events
+    //Events//
     long zoomTime;
     int dragScreenX, dragScreenY, initDragGridX, initDragGridY;
     boolean dragging;
@@ -80,10 +78,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     double timeStep = 5e-6;
     
     
-    
-    
-    
-    
+    //Fileds for circuit processing//
     double circuitMatrix[][],circuitRightSide[],
 	origRightSide[], origMatrix[][];
     RowInfo circuitRowInfo[];
@@ -102,6 +97,12 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     HashMap<Point,NodeMapEntry> nodeMap;
     HashMap<Point,Integer> postCountMap;
     Vector<WireInfo> wireInfoList;
+    
+    
+    int gridSize, gridMask, gridRound;
+    
+////////////////////////////////////////    
+    
     
     CirSim() {
     	theSim = this;
@@ -348,9 +349,9 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
   		}
   		else {
   		
-  		CircuitElm newce99 = createCe("Wire",out.OperativePoints.get(0).x, out.OperativePoints.get(0).y, in.OperativePoints.get(0).x, in.OperativePoints.get(0).y, 0, 0);
-		newce99.setPoints();
-		elmList.add(newce99);
+	  		CircuitElm newce99 = createCe("Wire",out.OperativePoints.get(0).x, out.OperativePoints.get(0).y, in.OperativePoints.get(0).x, in.OperativePoints.get(0).y, 0, 0);
+			newce99.setPoints();
+			elmList.add(newce99);
 		
   		}
 		
@@ -388,7 +389,38 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
   	
   	
   	
-  	
+  	public static CircuitElm createCe(String marker, int x1, int y1, int x2, int y2, int f, int inputcount) {
+    	
+    	if(marker.equals("Wire")) {
+    		return (CircuitElm) new WireElm(x1, y1, x2, y2, f);
+    	}
+    	if(marker.equals("And")) {
+        	return (CircuitElm) new AndGateElm(x1, y1, x2, y2, f, inputcount);
+        }
+    	if(marker.equals("Linput")) {
+    		return (CircuitElm) new LogicInputElm(x1, y1, x2, y2, f);
+    	}
+    	if(marker.equals("Loutput")) {
+    		return (CircuitElm) new LogicOutputElm(x1, y1, x2, y2, f);
+    	}
+    	if(marker.equals("Or")) {
+    		return (CircuitElm) new OrGateElm(x1, y1, x2, y2, f, inputcount);
+    	}
+    	if(marker.equals("XOR")) {
+    		return (CircuitElm) new XorGateElm(x1, y1, x2, y2, f, inputcount);
+    	}
+    	if(marker.equals("Nor")) {
+    		return (CircuitElm) new NorGateElm(x1, y1, x2, y2, f, inputcount);
+    	}
+    	if(marker.equals("Nand")) {
+    		return (CircuitElm) new NandGateElm(x1, y1, x2, y2, f, inputcount);
+    	}
+    	if(marker.equals("Invertor")) {
+    		return (CircuitElm) new InverterElm(x1, y1, x2, y2, f);
+    	}
+    	else {return null;}
+    	
+    }
   	
   	
   	
@@ -399,9 +431,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	        updateCircuit();
 	      }
 	 };
-	 
-	 
-
+	
     public void updateCircuit() {
     	
     	setCanvasSize();
@@ -459,22 +489,9 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	
     }
  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+       
+ // *****************************************************************
+//  SOLVE CIRCUIT
     
     long lastTime = 0, lastFrameTime, lastIterTime, secTime = 0; 
     int frames = 0;
@@ -482,6 +499,131 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     int framerate = 0, steprate = 0;
     boolean converged;
     int subIterations;
+    
+    
+    class NodeMapEntry {
+    		int node;
+    		NodeMapEntry() { node = -1; }
+    		NodeMapEntry(int n) { node = n; }
+    }
+     
+    class WireInfo {
+    		WireElm wire;
+    		Vector<CircuitElm> neighbors;
+    		int post;
+    		WireInfo(WireElm w) {
+    		    wire = w;
+    		}
+    }
+     
+    class FindPathInfo {
+    	 
+    	static final int INDUCT  = 1;
+    	static final int VOLTAGE = 2;
+    	static final int SHORT   = 3;
+    	static final int CAP_V   = 4;
+    	boolean used[];
+    	int dest;
+    	CircuitElm firstElm;
+    	int type;
+    	FindPathInfo(int t, CircuitElm e, int d) {
+    		    dest = d;
+    		    type = t;
+    		    firstElm = e;
+    		    used = new boolean[nodeList.size()];
+    		}
+    	boolean findPath(int n1) { return findPath(n1, -1); }
+    	boolean findPath(int n1, int depth) {
+    		    if (n1 == dest)
+    			return true;
+    		    if (depth-- == 0)
+    			return false;
+    		    if (used[n1]) {
+    			//System.out.println("used " + n1);
+    			return false;
+    		    }
+    		    used[n1] = true;
+    		    int i;
+    		    for (i = 0; i != elmList.size(); i++) {
+    			CircuitElm ce = getElm(i);
+    			if (ce == firstElm)
+    			    continue;
+    			if (type == INDUCT) {
+    			    // inductors need a path free of current sources
+    			    //if (ce instanceof CurrentElm)
+    				//continue;
+    			}
+    			if (type == VOLTAGE) {
+    			    // when checking for voltage loops, we only care about voltage sources/wires/ground
+    			    if (!(ce.isWire()))
+    				continue;
+    			}
+    			// when checking for shorts, just check wires
+    			if (type == SHORT && !ce.isWire())
+    			    continue;
+    			if (type == CAP_V) {
+    			    // checking for capacitor/voltage source loops
+    			    if (!(ce.isWire()))
+    				continue;
+    			}
+    			if (n1 == 0) {
+    			    // look for posts which have a ground connection;
+    			    // our path can go through ground
+    			    int j;
+    			    for (j = 0; j != ce.getConnectionNodeCount(); j++)
+    				if (ce.hasGroundConnection(j) &&
+    				    findPath(ce.getConnectionNode(j), depth)) {
+    				    used[n1] = false;
+    				    return true;
+    				}
+    			}
+    			int j;
+    			for (j = 0; j != ce.getConnectionNodeCount(); j++) {
+    			    //System.out.println(ce + " " + ce.getNode(j));
+    			    if (ce.getConnectionNode(j) == n1)
+    				break;
+    			}
+    			if (j == ce.getConnectionNodeCount())
+    			    continue;
+    			if (ce.hasGroundConnection(j) && findPath(0, depth)) {
+    			    //System.out.println(ce + " has ground");
+    			    used[n1] = false;
+    			    return true;
+    			}
+    			int k;
+    			for (k = 0; k != ce.getConnectionNodeCount(); k++) {
+    			    if (j == k)
+    				continue;
+
+    			    if (ce.getConnection(j, k) && findPath(ce.getConnectionNode(k), depth)) {
+    				//System.out.println("got findpath " + n1);
+    				used[n1] = false;
+    				return true;
+    			    }
+    			    //System.out.println("back on findpath " + n1);
+    			}
+    		    }
+    		    used[n1] = false;
+    		    //System.out.println(n1 + " failed");
+    		    return false;
+    		}
+     
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     void runCircuit() {
     	
@@ -635,250 +777,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	
     }
     
-        
-    
-    static void lu_solve(double a[][], int n, int ipvt[], double b[]) {
-    	int i;
-
-    	// find first nonzero b element
-    	for (i = 0; i != n; i++) {
-    	    int row = ipvt[i];
-
-    	    double swap = b[row];
-    	    b[row] = b[i];
-    	    b[i] = swap;
-    	    if (swap != 0)
-    		break;
-    	}
-    	
-    	int bi = i++;
-    	for (; i < n; i++) {
-    	    int row = ipvt[i];
-    	    int j;
-    	    double tot = b[row];
-    	    
-    	    b[row] = b[i];
-    	    // forward substitution using the lower triangular matrix
-    	    for (j = bi; j < i; j++)
-    		tot -= a[i][j]*b[j];
-    	    b[i] = tot;
-    	}
-    	for (i = n-1; i >= 0; i--) {
-    	    double tot = b[i];
-    	    
-    	    // back-substitution using the upper triangular matrix
-    	    int j;
-    	    for (j = i+1; j != n; j++)
-    		tot -= a[i][j]*b[j];
-    	    b[i] = tot/a[i][i];
-    	}
-        }
-
-    
-    
-    void calcWireCurrents() {
-    	int i;
-    	
-    	// for debugging
-    	//for (i = 0; i != wireInfoList.size(); i++)
-    	 //   wireInfoList.get(i).wire.setCurrent(-1, 1.23);
-    	
-    	for (i = 0; i != wireInfoList.size(); i++) {
-    	    WireInfo wi = wireInfoList.get(i);
-    	    double cur = 0;
-    	    int j;
-    	    Point p = wi.wire.getPost(wi.post);
-    	    for (j = 0; j != wi.neighbors.size(); j++) {
-    		CircuitElm ce = wi.neighbors.get(j);
-    		int n = ce.getNodeAtPoint(p.x, p.y);
-    		cur += ce.getCurrentIntoNode(n);
-    	    }
-    	    if (wi.post == 0)
-    		wi.wire.setCurrent(-1, cur);
-    	    else
-    		wi.wire.setCurrent(-1, -cur);
-    	}
-        }
-    
-    
-     public CircuitElm getElm(int n) {
-		if (n >= elmList.size())
-		    return null;
-		return elmList.elementAt(n);
-    }
-    
-     public static CircuitElm createCe(String marker, int x1, int y1, int x2, int y2, int f, int inputcount) {
-    	
-    	if(marker.equals("Wire")) {
-    		return (CircuitElm) new WireElm(x1, y1, x2, y2, f);
-    	}
-    	if(marker.equals("And")) {
-        	return (CircuitElm) new AndGateElm(x1, y1, x2, y2, f, inputcount);
-        }
-    	if(marker.equals("Linput")) {
-    		return (CircuitElm) new LogicInputElm(x1, y1, x2, y2, f);
-    	}
-    	if(marker.equals("Loutput")) {
-    		return (CircuitElm) new LogicOutputElm(x1, y1, x2, y2, f);
-    	}
-    	if(marker.equals("Or")) {
-    		return (CircuitElm) new OrGateElm(x1, y1, x2, y2, f, inputcount);
-    	}
-    	if(marker.equals("XOR")) {
-    		return (CircuitElm) new XorGateElm(x1, y1, x2, y2, f, inputcount);
-    	}
-    	if(marker.equals("Nor")) {
-    		return (CircuitElm) new NorGateElm(x1, y1, x2, y2, f, inputcount);
-    	}
-    	if(marker.equals("Nand")) {
-    		return (CircuitElm) new NandGateElm(x1, y1, x2, y2, f, inputcount);
-    	}
-    	if(marker.equals("Invertor")) {
-    		return (CircuitElm) new InverterElm(x1, y1, x2, y2, f);
-    	}
-    	else {return null;}
-    	
-    }
-     
-     
-     class NodeMapEntry {
-    		int node;
-    		NodeMapEntry() { node = -1; }
-    		NodeMapEntry(int n) { node = n; }
-    	    }
-     
-     class WireInfo {
-    		WireElm wire;
-    		Vector<CircuitElm> neighbors;
-    		int post;
-    		WireInfo(WireElm w) {
-    		    wire = w;
-    		}
-    	    }
-     
-
-     
-     void calculateWireClosure() {
-    		int i;
-    		nodeMap = new HashMap<Point,NodeMapEntry>();
-//    		int mergeCount = 0;
-    		wireInfoList = new Vector<WireInfo>();
-    		for (i = 0; i != elmList.size(); i++) {
-    		    CircuitElm ce = getElm(i);
-    		    if (!(ce instanceof WireElm))
-    			continue;
-    		    WireElm we = (WireElm) ce;
-    		    we.hasWireInfo = false;
-    		    wireInfoList.add(new WireInfo(we));
-    		    NodeMapEntry cn  = nodeMap.get(ce.getPost(0));
-    		    NodeMapEntry cn2 = nodeMap.get(ce.getPost(1));
-    		    if (cn != null && cn2 != null) {
-    			// merge nodes; go through map and change all keys pointing to cn2 to point to cn
-    			for (Map.Entry<Point, NodeMapEntry> entry : nodeMap.entrySet()) {
-    			    if (entry.getValue() == cn2)
-    				entry.setValue(cn);
-    			}
-//    			mergeCount++;
-    			continue;
-    		    }
-    		    if (cn != null) {
-    			nodeMap.put(ce.getPost(1), cn);
-    			continue;
-    		    }
-    		    if (cn2 != null) {
-    			nodeMap.put(ce.getPost(0), cn2);
-    			continue;
-    		    }
-    		    // new entry
-    		    cn = new NodeMapEntry();
-    		    nodeMap.put(ce.getPost(0), cn);
-    		    nodeMap.put(ce.getPost(1), cn);
-    		}
-    		
-//    		console("got " + (groupCount-mergeCount) + " groups with " + nodeMap.size() + " nodes " + mergeCount);
-    	    }
-    	    
-     
-     
-     static boolean lu_factor(double a[][], int n, int ipvt[]) {
-    		int i,j,k;
-    		
-    		// check for a possible singular matrix by scanning for rows that
-    		// are all zeroes
-    		for (i = 0; i != n; i++) { 
-    		    boolean row_all_zeros = true;
-    		    for (j = 0; j != n; j++) {
-    			if (a[i][j] != 0) {
-    			    row_all_zeros = false;
-    			    break;
-    			}
-    		    }
-    		    // if all zeros, it's a singular matrix
-    		    if (row_all_zeros)
-    			return false;
-    		}
-    		
-    	        // use Crout's method; loop through the columns
-    		for (j = 0; j != n; j++) {
-    		    
-    		    // calculate upper triangular elements for this column
-    		    for (i = 0; i != j; i++) {
-    			double q = a[i][j];
-    			for (k = 0; k != i; k++)
-    			    q -= a[i][k]*a[k][j];
-    			a[i][j] = q;
-    		    }
-
-    		    // calculate lower triangular elements for this column
-    		    double largest = 0;
-    		    int largestRow = -1;
-    		    for (i = j; i != n; i++) {
-    			double q = a[i][j];
-    			for (k = 0; k != j; k++)
-    			    q -= a[i][k]*a[k][j];
-    			a[i][j] = q;
-    			double x = Math.abs(q);
-    			if (x >= largest) {
-    			    largest = x;
-    			    largestRow = i;
-    			}
-    		    }
-    		    
-    		    // pivoting
-    		    if (j != largestRow) {
-    			double x;
-    			for (k = 0; k != n; k++) {
-    			    x = a[largestRow][k];
-    			    a[largestRow][k] = a[j][k];
-    			    a[j][k] = x;
-    			}
-    		    }
-
-    		    // keep track of row interchanges
-    		    ipvt[j] = largestRow;
-
-    		    // avoid zeros
-    		    if (a[j][j] == 0.0) {
-    			System.out.println("avoided zero");
-    			a[j][j]=1e-18;
-    		    }
-
-    		    if (j != n-1) {
-    			double mult = 1.0/a[j][j];
-    			for (i = j+1; i != n; i++)
-    			    a[i][j] *= mult;
-    		    }
-    		}
-    		return true;
-    	    }
-     
-     
-     void updateVoltageSource(int n1, int n2, int vs, double v) {
-    		int vn = nodeList.size()+vs;
-    		stampRightSide(vn, v);
-    	    }
-     
-     void analyzeCircuit() {
+    void analyzeCircuit() {
     	 
     	 if (elmList.isEmpty()) {
     		    postDrawList = new Vector<Point>();
@@ -1227,233 +1126,347 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 
     	 
     	 
-    		} 
-     
-     
+    } 
+         
+    void calculateWireClosure() {
+    	
+    		int i;
+    		nodeMap = new HashMap<Point,NodeMapEntry>();
+//    		int mergeCount = 0;
+    		wireInfoList = new Vector<WireInfo>();
+    		
+    		for (i = 0; i != elmList.size(); i++) {
+    			
+    		    CircuitElm ce = getElm(i);
+    		    
+    		    if (!(ce instanceof WireElm))
+    			continue;
+    		    
+    		    WireElm we = (WireElm) ce;
+    		    we.hasWireInfo = false;
+    		    wireInfoList.add(new WireInfo(we));
+    		    NodeMapEntry cn  = nodeMap.get(ce.getPost(0));
+    		    NodeMapEntry cn2 = nodeMap.get(ce.getPost(1));
+    		    
+    		    if (cn != null && cn2 != null) {
+	    			// merge nodes; go through map and change all keys pointing to cn2 to point to cn
+	    			for (Map.Entry<Point, NodeMapEntry> entry : nodeMap.entrySet()) {
+	    			    if (entry.getValue() == cn2)
+	    				entry.setValue(cn);
+	    			}
+	    			continue;
+    		    }
+    		    if (cn != null) {
+	    			nodeMap.put(ce.getPost(1), cn);
+	    			continue;
+    		    }
+    		    if (cn2 != null) {
+	    			nodeMap.put(ce.getPost(0), cn2);
+	    			continue;
+    		    }
+    		    // new entry
+    		    cn = new NodeMapEntry();
+    		    nodeMap.put(ce.getPost(0), cn);
+    		    nodeMap.put(ce.getPost(1), cn);
+    		}
+    		
+    }
+    	
     
-     class FindPathInfo {
-    		static final int INDUCT  = 1;
-    		static final int VOLTAGE = 2;
-    		static final int SHORT   = 3;
-    		static final int CAP_V   = 4;
-    		boolean used[];
-    		int dest;
-    		CircuitElm firstElm;
-    		int type;
-    		FindPathInfo(int t, CircuitElm e, int d) {
-    		    dest = d;
-    		    type = t;
-    		    firstElm = e;
-    		    used = new boolean[nodeList.size()];
-    		}
-    		boolean findPath(int n1) { return findPath(n1, -1); }
-    		boolean findPath(int n1, int depth) {
-    		    if (n1 == dest)
-    			return true;
-    		    if (depth-- == 0)
-    			return false;
-    		    if (used[n1]) {
-    			//System.out.println("used " + n1);
-    			return false;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    static void lu_solve(double a[][], int n, int ipvt[], double b[]) {
+    	int i;
+
+    	// find first nonzero b element
+    	for (i = 0; i != n; i++) {
+    	    int row = ipvt[i];
+
+    	    double swap = b[row];
+    	    b[row] = b[i];
+    	    b[i] = swap;
+    	    if (swap != 0)
+    		break;
+    	}
+    	
+    	int bi = i++;
+    	
+    	for (; i < n; i++) {
+    	    int row = ipvt[i];
+    	    int j;
+    	    double tot = b[row];
+    	    
+    	    b[row] = b[i];
+    	    // forward substitution using the lower triangular matrix
+    	    for (j = bi; j < i; j++)
+    		tot -= a[i][j]*b[j];
+    	    b[i] = tot;
+    	}
+    	
+    	for (i = n-1; i >= 0; i--) {
+    	    double tot = b[i];
+    	    
+    	    // back-substitution using the upper triangular matrix
+    	    int j;
+    	    for (j = i+1; j != n; j++)
+    		tot -= a[i][j]*b[j];
+    	    b[i] = tot/a[i][i];
+    	}
+    	
+    }  
+     
+    static boolean lu_factor(double a[][], int n, int ipvt[]) {
+    		int i,j,k;
+    		
+    		// check for a possible singular matrix by scanning for rows that
+    		// are all zeroes
+    		for (i = 0; i != n; i++) { 
+    		    boolean row_all_zeros = true;
+    		    for (j = 0; j != n; j++) {
+	    			if (a[i][j] != 0) {
+	    			    row_all_zeros = false;
+	    			    break;
+	    			}
     		    }
-    		    used[n1] = true;
-    		    int i;
-    		    for (i = 0; i != elmList.size(); i++) {
-    			CircuitElm ce = getElm(i);
-    			if (ce == firstElm)
-    			    continue;
-    			if (type == INDUCT) {
-    			    // inductors need a path free of current sources
-    			    //if (ce instanceof CurrentElm)
-    				//continue;
-    			}
-    			if (type == VOLTAGE) {
-    			    // when checking for voltage loops, we only care about voltage sources/wires/ground
-    			    if (!(ce.isWire()))
-    				continue;
-    			}
-    			// when checking for shorts, just check wires
-    			if (type == SHORT && !ce.isWire())
-    			    continue;
-    			if (type == CAP_V) {
-    			    // checking for capacitor/voltage source loops
-    			    if (!(ce.isWire()))
-    				continue;
-    			}
-    			if (n1 == 0) {
-    			    // look for posts which have a ground connection;
-    			    // our path can go through ground
-    			    int j;
-    			    for (j = 0; j != ce.getConnectionNodeCount(); j++)
-    				if (ce.hasGroundConnection(j) &&
-    				    findPath(ce.getConnectionNode(j), depth)) {
-    				    used[n1] = false;
-    				    return true;
-    				}
-    			}
-    			int j;
-    			for (j = 0; j != ce.getConnectionNodeCount(); j++) {
-    			    //System.out.println(ce + " " + ce.getNode(j));
-    			    if (ce.getConnectionNode(j) == n1)
-    				break;
-    			}
-    			if (j == ce.getConnectionNodeCount())
-    			    continue;
-    			if (ce.hasGroundConnection(j) && findPath(0, depth)) {
-    			    //System.out.println(ce + " has ground");
-    			    used[n1] = false;
-    			    return true;
-    			}
-    			/*
-    			if (type == INDUCT && ce instanceof InductorElm) {
-    			    // inductors can use paths with other inductors of matching current
-    			    double c = ce.getCurrent();
-    			    if (j == 0)
-    				c = -c;
-    			    //System.out.println("matching " + c + " to " + firstElm.getCurrent());
-    			    //System.out.println(ce + " " + firstElm);
-    			    if (Math.abs(c-firstElm.getCurrent()) > 1e-10)
-    				continue;
-    			}
-    			*/
-    			int k;
-    			for (k = 0; k != ce.getConnectionNodeCount(); k++) {
-    			    if (j == k)
-    				continue;
-//    			    console(ce + " " + ce.getNode(j) + "-" + ce.getNode(k));
-    			    if (ce.getConnection(j, k) && findPath(ce.getConnectionNode(k), depth)) {
-    				//System.out.println("got findpath " + n1);
-    				used[n1] = false;
-    				return true;
-    			    }
-    			    //System.out.println("back on findpath " + n1);
-    			}
-    		    }
-    		    used[n1] = false;
-    		    //System.out.println(n1 + " failed");
-    		    return false;
+    		    // if all zeros, it's a singular matrix
+    		    if (row_all_zeros)
+    			return false;
     		}
-    	    }
+    		
+    	        // use Crout's method; loop through the columns
+    		for (j = 0; j != n; j++) {
+    		    
+    		    // calculate upper triangular elements for this column
+    		    for (i = 0; i != j; i++) {
+	    			double q = a[i][j];
+	    			for (k = 0; k != i; k++)
+	    			    q -= a[i][k]*a[k][j];
+	    			a[i][j] = q;
+    		    }
 
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     // simplify the matrix; this speeds things up quite a bit, especially for digital circuits
-     boolean simplifyMatrix(int matrixSize) {
- 	int i, j;
- 	for (i = 0; i != matrixSize; i++) {
- 	    int qp = -1;
- 	    double qv = 0;
- 	    RowInfo re = circuitRowInfo[i];
- 	    /*System.out.println("row " + i + " " + re.lsChanges + " " + re.rsChanges + " " +
- 			       re.dropRow);*/
-// 	    if (qp != -100) continue;   // uncomment to disable matrix simplification
- 	    if (re.lsChanges || re.dropRow || re.rsChanges)
- 		continue;
- 	    double rsadd = 0;
+    		    // calculate lower triangular elements for this column
+    		    double largest = 0;
+    		    int largestRow = -1;
+    		    
+    		    for (i = j; i != n; i++) {
+	    			double q = a[i][j];
+	    			for (k = 0; k != j; k++)
+	    			    q -= a[i][k]*a[k][j];
+	    			a[i][j] = q;
+	    			double x = Math.abs(q);
+	    			if (x >= largest) {
+	    			    largest = x;
+	    			    largestRow = i;
+	    			}
+    		    }
+    		    
+    		    // pivoting
+    		    if (j != largestRow) {
+	    			double x;
+	    			for (k = 0; k != n; k++) {
+	    			    x = a[largestRow][k];
+	    			    a[largestRow][k] = a[j][k];
+	    			    a[j][k] = x;
+	    			}
+    		    }
 
- 	    // look for rows that can be removed
- 	    for (j = 0; j != matrixSize; j++) {
- 		double q = circuitMatrix[i][j];
- 		if (circuitRowInfo[j].type == RowInfo.ROW_CONST) {
- 		    // keep a running total of const values that have been
- 		    // removed already
- 		    rsadd -= circuitRowInfo[j].value*q;
- 		    continue;
- 		}
- 		// ignore zeroes
- 		if (q == 0)
- 		    continue;
- 		// keep track of first nonzero element that is not ROW_CONST
- 		if (qp == -1) {
- 		    qp = j;
- 		    qv = q;
- 		    continue;
- 		}
- 		// more than one nonzero element?  give up
- 		break;
- 	    }
- 	    if (j == matrixSize) {
- 		if (qp == -1) {
- 		    // probably a singular matrix, try disabling matrix simplification above to check this
- 		    //stop("Matrix error", null);
- 		    return false;
- 		}
- 		RowInfo elt = circuitRowInfo[qp];
- 		// we found a row with only one nonzero nonconst entry; that value
- 		// is a constant
- 		if (elt.type != RowInfo.ROW_NORMAL) {
- 		    System.out.println("type already " + elt.type + " for " + qp + "!");
- 		    continue;
- 		}
- 		elt.type = RowInfo.ROW_CONST;
-// 		console("ROW_CONST " + i + " " + rsadd);
- 		elt.value = (circuitRightSide[i]+rsadd)/qv;
- 		circuitRowInfo[i].dropRow = true;
- 		i = -1; // start over from scratch
- 	    }
- 	}
- 	//System.out.println("ac7");
+    		    // keep track of row interchanges
+    		    ipvt[j] = largestRow;
 
- 	// find size of new matrix
- 	int nn = 0;
- 	for (i = 0; i != matrixSize; i++) {
- 	    RowInfo elt = circuitRowInfo[i];
- 	    if (elt.type == RowInfo.ROW_NORMAL) {
- 		elt.mapCol = nn++;
- 		//System.out.println("col " + i + " maps to " + elt.mapCol);
- 		continue;
- 	    }
- 	    if (elt.type == RowInfo.ROW_CONST)
- 		elt.mapCol = -1;
- 	}
+    		    // avoid zeros
+    		    if (a[j][j] == 0.0) {
+	    			System.out.println("avoided zero");
+	    			a[j][j]=1e-18;
+    		    }
 
- 	// make the new, simplified matrix
- 	int newsize = nn;
- 	double newmatx[][] = new double[newsize][newsize];
- 	double newrs  []   = new double[newsize];
- 	int ii = 0;
- 	for (i = 0; i != matrixSize; i++) {
- 	    RowInfo rri = circuitRowInfo[i];
- 	    if (rri.dropRow) {
- 		rri.mapRow = -1;
- 		continue;
- 	    }
- 	    newrs[ii] = circuitRightSide[i];
- 	    rri.mapRow = ii;
- 	    //System.out.println("Row " + i + " maps to " + ii);
- 	    for (j = 0; j != matrixSize; j++) {
- 		RowInfo ri = circuitRowInfo[j];
- 		if (ri.type == RowInfo.ROW_CONST)
- 		    newrs[ii] -= ri.value*circuitMatrix[i][j];
- 		else
- 		    newmatx[ii][ri.mapCol] += circuitMatrix[i][j];
- 	    }
- 	    ii++;
- 	}
+    		    if (j != n-1) {
+	    			double mult = 1.0/a[j][j];
+	    			for (i = j+1; i != n; i++)
+	    			    a[i][j] *= mult;
+    		    }
+    		}
+    		return true;
+    }
 
-// 	console("old size = " + matrixSize + " new size = " + newsize);
- 	
- 	circuitMatrix = newmatx;
- 	circuitRightSide = newrs;
- 	matrixSize = circuitMatrixSize = newsize;
- 	for (i = 0; i != matrixSize; i++)
- 	    origRightSide[i] = circuitRightSide[i];
- 	for (i = 0; i != matrixSize; i++)
- 	    for (j = 0; j != matrixSize; j++)
- 		origMatrix[i][j] = circuitMatrix[i][j];
- 	circuitNeedsMap = true;
- 	return true;
-     }
+    void updateVoltageSource(int n1, int n2, int vs, double v) {
+    		int vn = nodeList.size()+vs;
+    		stampRightSide(vn, v);
+    }
+
+    // simplify the matrix; this speeds things up quite a bit, especially for digital circuits
+    boolean simplifyMatrix(int matrixSize) {
+	 	
+    	int i, j;
+	 	for (i = 0; i != matrixSize; i++) {
+	 		
+	 	    int qp = -1;
+	 	    double qv = 0;
+	 	    RowInfo re = circuitRowInfo[i];
+	// 	    if (qp != -100) continue;   // uncomment to disable matrix simplification
+	 	    
+	 	    if (re.lsChanges || re.dropRow || re.rsChanges)
+	 		continue;
+	 	    double rsadd = 0;
+	
+	 	    // look for rows that can be removed
+	 	    for (j = 0; j != matrixSize; j++) {
+		 		double q = circuitMatrix[i][j];
+		 		if (circuitRowInfo[j].type == RowInfo.ROW_CONST) {
+		 		    // keep a running total of const values that have been
+		 		    // removed already
+		 		    rsadd -= circuitRowInfo[j].value*q;
+		 		    continue;
+		 		}
+		 		// ignore zeroes
+		 		if (q == 0)
+		 		    continue;
+		 		// keep track of first nonzero element that is not ROW_CONST
+		 		if (qp == -1) {
+		 		    qp = j;
+		 		    qv = q;
+		 		    continue;
+		 		}
+		 		// more than one nonzero element?
+		 		break;
+	 	    }
+	 	    
+	 	    if (j == matrixSize) {
+	 	    	
+		 		if (qp == -1) {
+		 		    // probably a singular matrix, try disabling matrix simplification above to check this
+		 		    //stop("Matrix error", null);
+		 		    return false;
+		 		}
+		 		RowInfo elt = circuitRowInfo[qp];
+		 		
+		 		// we found a row with only one nonzero nonconst entry; that value
+		 		// is a constant
+		 		if (elt.type != RowInfo.ROW_NORMAL) {
+		 		    System.out.println("type already " + elt.type + " for " + qp + "!");
+		 		    continue;
+		 		}
+		 		
+		 		elt.type = RowInfo.ROW_CONST;
+		 		elt.value = (circuitRightSide[i]+rsadd)/qv;
+		 		circuitRowInfo[i].dropRow = true;
+		 		i = -1; // start over from scratch
+	 	    }
+	 	}
+	
+	 	// find size of new matrix
+	 	int nn = 0;
+	 	for (i = 0; i != matrixSize; i++) {
+	 	    RowInfo elt = circuitRowInfo[i];
+	 	    if (elt.type == RowInfo.ROW_NORMAL) {
+	 		elt.mapCol = nn++;
+	 		//System.out.println("col " + i + " maps to " + elt.mapCol);
+	 		continue;
+	 	    }
+	 	    if (elt.type == RowInfo.ROW_CONST)
+	 		elt.mapCol = -1;
+	 	}
+	
+	 	// make the new, simplified matrix
+	 	int newsize = nn;
+	 	double newmatx[][] = new double[newsize][newsize];
+	 	double newrs  []   = new double[newsize];
+	 	int ii = 0;
+	 	for (i = 0; i != matrixSize; i++) {
+	 	    RowInfo rri = circuitRowInfo[i];
+	 	    if (rri.dropRow) {
+	 		rri.mapRow = -1;
+	 		continue;
+	 	    }
+	 	    newrs[ii] = circuitRightSide[i];
+	 	    rri.mapRow = ii;
+	 	    //System.out.println("Row " + i + " maps to " + ii);
+	 	    for (j = 0; j != matrixSize; j++) {
+	 		RowInfo ri = circuitRowInfo[j];
+	 		if (ri.type == RowInfo.ROW_CONST)
+	 		    newrs[ii] -= ri.value*circuitMatrix[i][j];
+	 		else
+	 		    newmatx[ii][ri.mapCol] += circuitMatrix[i][j];
+	 	    }
+	 	    ii++;
+	 	}
+	
+	// 	console("old size = " + matrixSize + " new size = " + newsize);
+	 	
+	 	circuitMatrix = newmatx;
+	 	circuitRightSide = newrs;
+	 	matrixSize = circuitMatrixSize = newsize;
+	 	for (i = 0; i != matrixSize; i++)
+	 	    origRightSide[i] = circuitRightSide[i];
+	 	for (i = 0; i != matrixSize; i++)
+	 	    for (j = 0; j != matrixSize; j++)
+	 		origMatrix[i][j] = circuitMatrix[i][j];
+	 	circuitNeedsMap = true;
+	 	return true;
+    }
      
+    public CircuitNode getCircuitNode(int n) {
+    		if (n >= nodeList.size()) {return null;}
+    		return nodeList.elementAt(n);
+    }
      
-     void stampResistor(int n1, int n2, double r) {
+    void makePostDrawList() {
+    	
+    		postDrawList = new Vector<Point>();
+    		badConnectionList = new Vector<Point>();
+    		
+    		for (Map.Entry<Point, Integer> entry : postCountMap.entrySet()) {
+    		    
+    			if (entry.getValue() != 2) {
+    		    	postDrawList.add(entry.getKey());
+    			}
+    		    
+    		    // look for bad connections, posts not connected to other elements which intersect
+    		    // other elements' bounding boxes
+    		    if (entry.getValue() == 1) {
+	    			int j;
+	    			boolean bad = false;
+	    			Point cn = entry.getKey();
+	    			
+	    			for (j = 0; j != elmList.size() && !bad; j++) {
+	    			    CircuitElm ce = getElm(j);
+	    			    //if ( ce instanceof GraphicElm )
+	    				//continue;
+	    			    // does this post intersect elm's bounding box?
+	    			    if (!ce.boundingBox.contains(cn.x, cn.y))
+	    				continue;
+	    			    int k;
+	    			    // does this post belong to the elm?
+	    			    int pc = ce.getPostCount();
+	    			    for (k = 0; k != pc; k++)
+	    				if (ce.getPost(k).equals(cn))
+	    				    break;
+	    			    if (k == pc)
+	    				bad = true;
+	    			}
+	    			
+	    			if (bad) {
+	    			    badConnectionList.add(cn);
+	    			}
+    			
+    		    }
+    		}
+    		postCountMap = null;
+    }
+     
+    void stampResistor(int n1, int n2, double r) {
     		double r0 = 1/r;
     		if (Double.isNaN(r0) || Double.isInfinite(r0)) {
     		    System.out.print("bad resistance " + r + " " + r0 + "\n");
@@ -1464,163 +1477,74 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     		stampMatrix(n2, n2, r0);
     		stampMatrix(n1, n2, -r0);
     		stampMatrix(n2, n1, -r0);
-    	    }
+    }
      
-     
-     
-     public CircuitNode getCircuitNode(int n) {
-    		if (n >= nodeList.size())
-    		    return null;
-    		return nodeList.elementAt(n);
-     }
-     
-     
-     void makePostDrawList() {
-    		postDrawList = new Vector<Point>();
-    		badConnectionList = new Vector<Point>();
-    		for (Map.Entry<Point, Integer> entry : postCountMap.entrySet()) {
-    		    if (entry.getValue() != 2)
-    			postDrawList.add(entry.getKey());
-    		    
-    		    // look for bad connections, posts not connected to other elements which intersect
-    		    // other elements' bounding boxes
-    		    if (entry.getValue() == 1) {
-    			int j;
-    			boolean bad = false;
-    			Point cn = entry.getKey();
-    			for (j = 0; j != elmList.size() && !bad; j++) {
-    			    CircuitElm ce = getElm(j);
-    			    //if ( ce instanceof GraphicElm )
-    				//continue;
-    			    // does this post intersect elm's bounding box?
-    			    if (!ce.boundingBox.contains(cn.x, cn.y))
-    				continue;
-    			    int k;
-    			    // does this post belong to the elm?
-    			    int pc = ce.getPostCount();
-    			    for (k = 0; k != pc; k++)
-    				if (ce.getPost(k).equals(cn))
-    				    break;
-    			    if (k == pc)
-    				bad = true;
-    			}
-    			if (bad)
-    			    badConnectionList.add(cn);
-    		    }
-    		}
-    		postCountMap = null;
-    	    }
-     
-    
-     
-     
-     
-     // use this if the amount of voltage is going to be updated in doStep(), by updateVoltageSource()
-     void stampVoltageSource(int n1, int n2, int vs) {
+    // use this if the amount of voltage is going to be updated in doStep(), by updateVoltageSource()
+    void stampVoltageSource(int n1, int n2, int vs) {
 	 	int vn = nodeList.size()+vs;
 	 	stampMatrix(vn, n1, -1);
 	 	stampMatrix(vn, n2, 1);
 	 	stampRightSide(vn);
 	 	stampMatrix(n1, vn, 1);
 	 	stampMatrix(n2, vn, -1);
-     }
+    }
      
-     // stamp independent voltage source #vs, from n1 to n2, amount v
-     void stampVoltageSource(int n1, int n2, int vs, double v) {
+    // stamp independent voltage source #vs, from n1 to n2, amount v
+    void stampVoltageSource(int n1, int n2, int vs, double v) {
 	 	int vn = nodeList.size()+vs;
 	 	stampMatrix(vn, n1, -1);
 	 	stampMatrix(vn, n2, 1);
 	 	stampRightSide(vn, v);
 	 	stampMatrix(n1, vn, 1);
 	 	stampMatrix(n2, vn, -1);
-     }
+    }
      
-     
-     
-     void stampMatrix(int i, int j, double x) {
-    		if (i > 0 && j > 0) {
+    void stampMatrix(int i, int j, double x) {
+    	if (i > 0 && j > 0) {
+    		
     		    if (circuitNeedsMap) {
-    			i = circuitRowInfo[i-1].mapRow;
-    			RowInfo ri = circuitRowInfo[j-1];
-    			if (ri.type == RowInfo.ROW_CONST) {
-    			    //System.out.println("Stamping constant " + i + " " + j + " " + x);
-    			    circuitRightSide[i] -= x*ri.value;
-    			    return;
-    			}
-    			j = ri.mapCol;
-    			//System.out.println("stamping " + i + " " + j + " " + x);
-    		    } else {
-    			i--;
-    			j--;
+	    			i = circuitRowInfo[i-1].mapRow;
+	    			RowInfo ri = circuitRowInfo[j-1];
+	    			
+	    			if (ri.type == RowInfo.ROW_CONST) {
+		    			    //System.out.println("Stamping constant " + i + " " + j + " " + x);
+		    			    circuitRightSide[i] -= x*ri.value;
+		    			    return;
+	    			}
+	    			
+	    			j = ri.mapCol;
+
+    		    } 
+    		    else {
+	    			i--;
+	    			j--;
     		    }
     		    circuitMatrix[i][j] += x;
-    		}
-    	    }
+    	}	
+    }
      
-     // stamp value x on the right side of row i, representing an
-     // independent current source flowing into node i
-     void stampRightSide(int i, double x) {
+    // stamp value x on the right side of row i, representing an
+    // independent current source flowing into node i
+    void stampRightSide(int i, double x) {
 	 	if (i > 0) {
 	 	    if (circuitNeedsMap) {
-	 		i = circuitRowInfo[i-1].mapRow;
-	 		//System.out.println("stamping " + i + " " + x);
-	 	    } else
-	 		i--;
+	 	    	i = circuitRowInfo[i-1].mapRow;
+	 	    } 
+	 	    else {
+	 	    	i--;
+	 	    }
 	 	    circuitRightSide[i] += x;
 	 	}
-     }
+    }
      
-     // indicate that the value on the right side of row i changes in doStep()
-     void stampRightSide(int i) {
-	 	//System.out.println("rschanges true " + (i-1));
-	 	if (i > 0)
-	 	    circuitRowInfo[i-1].rsChanges = true;
-     }
-     
-     
+    // indicate that the value on the right side of row i changes in doStep()
+    void stampRightSide(int i) {
+	 	if (i > 0) {
+	 		circuitRowInfo[i-1].rsChanges = true;
+	 	}
+    }
      
      
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-    
 // *****************************************************************
 //  BEHAVIOUR
         
@@ -1846,5 +1770,10 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     int transformY(double y) {
     	return (int) ((y*transform[3]) + transform[5]);
     }    
+    
+    public CircuitElm getElm(int n) {
+		if (n >= elmList.size()){return null;}
+		return elmList.elementAt(n);
+    }
     
 }

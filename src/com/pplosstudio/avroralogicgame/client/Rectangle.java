@@ -1,22 +1,5 @@
-//	  Extracted from file
-//    Copyright 1995-2006 Sun Microsystems, Inc.  All Rights Reserved
-//
-//    This program is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation, either version 2 of the License, or
-//    (at your option) any later version.
-//
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-//
-//    You should have received a copy of the GNU General Public License
-//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.pplosstudio.avroralogicgame.client;
-
-// Via http://grepcode.com/file_/repository.grepcode.com/java/root/jdk/openjdk/6-b14/java/awt/Rectangle.java/?v=source
 
 public class Rectangle {
 	int x;
@@ -81,12 +64,6 @@ public class Rectangle {
                 (h < y || h > Y));
     }
     
-    /*
-    public void move(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-    */
     
     public boolean intersects(Rectangle r) {
         int tw = this.width;
@@ -169,4 +146,5 @@ public class Rectangle {
         
         return super.equals(obj);
     }
+    
 }
