@@ -138,23 +138,6 @@ class SwitchElm extends CircuitElm {
     
     boolean isWire() { return position == 0; }
     
-    /*
-    public EditInfo getEditInfo(int n) {
-	if (n == 0) {
-	    EditInfo ei = new EditInfo("", 0, -1, -1);
-	    ei.checkbox = new Checkbox("Momentary Switch", momentary);
-	    return ei;
-	}
-	return null;
-    }
-    */
-    /*
-    public void setEditValue(int n, EditInfo ei) {
-	if (n == 0)
-	    momentary = ei.checkbox.getState();
-    }
-    */
-    
     int getShortcut() { return 's'; }
     
 }

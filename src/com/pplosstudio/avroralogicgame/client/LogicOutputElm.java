@@ -26,6 +26,7 @@ package com.pplosstudio.avroralogicgame.client;
 	final int FLAG_PULLDOWN = 4;
 	double threshold = 2.5;
 	String value;
+	public Point InputPoint = new Point();
 	
 	public LogicOutputElm(int xx, int yy) {
 	    super(xx, yy);
@@ -34,11 +35,14 @@ package com.pplosstudio.avroralogicgame.client;
 	
 	public LogicOutputElm(int xa, int ya, int xb, int yb, int f) {
 	    super(xa, ya, xb, yb, f);
-	    try {
+	    InputPoint.x = xa;
+	    InputPoint.y = ya;
+	   // try {
 		//threshold = new Double(st.nextToken()).doubleValue();
-	    } catch (Exception e) {
+	    //} catch (Exception e) {
 		threshold = 2.5;
-	    }
+		
+	    //}
 	}
 	
 	String dump() {return super.dump() + " " + threshold;}
@@ -59,12 +63,14 @@ package com.pplosstudio.avroralogicgame.client;
 	}
 	
 	void draw(Graphics g) {
+		
 		Font oldf=g.getFont();
 	    Font f = new Font("SansSerif", Font.BOLD, 20);
 	    g.setFont(f);
 	    //g.setColor(needsHighlight() ? selectColor : lightGrayColor);
 	    g.setColor(lightGrayColor);
 	    String s = (volts[0] < threshold) ? "L" : "H";
+	    
 	   /*
 	    if (isTernary()) {
 		if (volts[0] > 3.75)
@@ -75,8 +81,10 @@ package com.pplosstudio.avroralogicgame.client;
 		    s = "0";
 	    } else if (isNumeric())
 	    	*/
+	    
 		s = (volts[0] < threshold) ? "0" : "1";
 	    value = s;
+	    
 	    setBbox(point1, lead1, 0);
 	    drawCenteredText(g, s, x2, y2, true);
 	    setVoltageColor(g, volts[0]);

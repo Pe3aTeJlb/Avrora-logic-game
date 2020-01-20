@@ -24,6 +24,7 @@ package com.pplosstudio.avroralogicgame.client;
 	final int FLAG_TERNARY = 1;
 	final int FLAG_NUMERIC = 2;
 	double hiV=5, loV=0;
+
 	
 	public LogicInputElm(int xx, int yy) {
 	    super(xx, yy, false);
@@ -35,14 +36,18 @@ package com.pplosstudio.avroralogicgame.client;
 	
 	public LogicInputElm(int xa, int ya, int xb, int yb, int f) {
 	    super(xa, ya, xb, yb, f);
-	    numHandles=1;
-	    try {
+	    numHandles=1;		
+	    hiV = 5;
+		loV = 0;
+		
+		
+		
+	   // try {
 		//hiV = new Double(st.nextToken()).doubleValue();
 		//loV = new Double(st.nextToken()).doubleValue();
-	    } catch (Exception e) {
-		hiV = 5;
-		loV = 0;
-	    }
+	   // } catch (Exception e) {
+
+	  //  }
 	    //if (isTernary())
 		//posCount = 3;
 	}
@@ -66,6 +71,7 @@ package com.pplosstudio.avroralogicgame.client;
 	}
 	
 	void draw(Graphics g) {
+		
 		Font oldf=g.getFont();
 	    Font f = new Font("SansSerif", Font.BOLD, 20);
 	    g.setFont(f);
@@ -73,6 +79,7 @@ package com.pplosstudio.avroralogicgame.client;
 	    String s = position == 0 ? "L" : "H";
 	    if (isNumeric())
 		s = "" + position;
+	    
 	    setBbox(point1, lead1, 0);
 	    drawCenteredText(g, s, x2, y2, true);
 	    setVoltageColor(g, volts[0]);
@@ -81,6 +88,7 @@ package com.pplosstudio.avroralogicgame.client;
 	    //drawDots(g, point1, lead1, curcount);
 	    drawPosts(g);
 	    g.setFont(oldf);
+	    
 	}
 	
 	Rectangle getSwitchRect() {

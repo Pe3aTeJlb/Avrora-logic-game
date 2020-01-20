@@ -203,14 +203,27 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		cv.addMouseDownHandler(this);
 		cv.addMouseUpHandler(this);
 		cv.addMouseWheelHandler(this);
-		cv.addMouseMoveHandler(this);
+		cv.addMouseMoveHandler(this);	
+
+		SomeVeirdShit();
 		
+		centreCircuit();
 		
-		try {	
+		//analyzeCircuit();
+		
+		timer.scheduleRepeating(REFRESH_RATE);
 			
-		//CircuitElm newce = createCe("Wire",200,125,150,125, 0,0);
-		//newce.setPoints();
-		//elmList.add(newce);
+				
+  	}
+  	
+  	
+  	
+  	public void SomeVeirdShit() {
+  			
+			
+	//	CircuitElm newce = createCe("Wire",200,125,150,125, 0,0);
+	//	newce.setPoints();
+	//	elmList.add(newce);
 		
 		
 		
@@ -220,10 +233,20 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		
 		CircuitElm newce3 = createCe("Linput",250, 100, 200, 100, 0, 2);
 		newce3.setPoints();
+		newce3.getConnectionPoints();
 		elmList.add(newce3);
+			
+		CircuitElm newce4 = createCe("Loutput",300, 125, 350, 125, 0, 2);
+		newce4.setPoints();
+		newce4.getConnectionPoints();
+		elmList.add(newce4);	
 		
 		
+		//CircuitElm newce55 = createCe("And",100,250,150,250, 0, 2);
+	//	newce55.setPoints();
+		//elmList.add(newce55);
 		
+		/*
 		
 		CircuitElm newce33 = createCe("Linput",100, 109, 50, 110, 0, 2);
 		newce33.setPoints();
@@ -240,10 +263,10 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		CircuitElm newce66 = createCe("Loutput",150, 125, 200, 125, 0, 2);
 		newce66.setPoints();
 		elmList.add(newce66);
+		*/
 		
 		
-		
-		
+		/*
 		CircuitElm newce111 = createCe("Linput",200, 200, 100, 200, 0, 2);
 		newce111.setPoints();
 		elmList.add(newce111);
@@ -260,7 +283,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		CircuitElm newce777 = createCe("Invertor",500, 200, 550, 200, 0, 2);
 		newce777.setPoints();
 		elmList.add(newce777);
-		
+		*/
 		
 		/*
 		CircuitElm newce4 = createCe("Loutput",10, 200, 50, 200, 0, 2);
@@ -287,27 +310,96 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		newce9.setPoints();
 		elmList.add(newce9);
 		*/
-	
-		} catch (Exception ee) {
-	    ee.printStackTrace();
-	    GWT.log("exception while undumping " + ee);
-		}
 		
-
-		centreCircuit();
+		ConnectElements(newce3,newce4);
 		
-		//analyzeCircuit();
 		
-		timer.scheduleRepeating(REFRESH_RATE);
-			
-				
+  		
   	}
+  	
+  	
+  	//сделать для случая разных y координат.
+  	//оптимальная расстановка скобок говна
+  	
+  	public void ConnectElements(CircuitElm out, CircuitElm in) {
+  		
+  		
+  		if(out.OperativePoints.get(0).y != in.OperativePoints.get(0).y) {
+  			
+  			int xDiff = Math.abs(in.OperativePoints.get(0).x - out.OperativePoints.get(0).x)/2+out.OperativePoints.get(0).x;
+  			//int yDiff
+  			
+  			CircuitElm shit1 = createCe("Wire",out.OperativePoints.get(0).x, out.OperativePoints.get(0).y, xDiff, out.OperativePoints.get(0).y, 0, 0);
+  			shit1.setPoints();
+  			elmList.add(shit1);
+  			
+  			
+  			CircuitElm shit2 = createCe("Wire",xDiff, out.OperativePoints.get(0).y, xDiff, in.OperativePoints.get(0).y, 0, 0);
+  			shit2.setPoints();
+  			elmList.add(shit2);
+  			
+  			
+  			CircuitElm shit3 = createCe("Wire",xDiff, in.OperativePoints.get(0).y, in.OperativePoints.get(0).x, in.OperativePoints.get(0).y, 0, 0);
+  			shit3.setPoints();
+  			elmList.add(shit3);
+  			
+  			
+  			
+  		}
+  		else {
+  		
+  		CircuitElm newce99 = createCe("Wire",out.OperativePoints.get(0).x, out.OperativePoints.get(0).y, in.OperativePoints.get(0).x, in.OperativePoints.get(0).y, 0, 0);
+		newce99.setPoints();
+		elmList.add(newce99);
+		
+  		}
+		
+		Graphics g = new Graphics(backcontext);
+		
+    	for (int i = 0; i != elmList.size(); i++) {
+    		
+    		if(printableCheckItem.getState()){
+    			g.setColor(Color.black);	
+    		}else {
+    			g.setColor(Color.white);
+    		}
+    		
+    		try {
+    			getElm(i).draw(g);
+    	    }catch(Exception ee) {
+    	    	ee.printStackTrace();
+    		    GWT.log("exception while drawing " + ee);
+    	    }
+    		
+    	}
+    	
+
+    	cvcontext.drawImage(backcontext.getCanvas(),0.0,0.0);
+		
+  		
+  	}
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
   
 	final Timer timer = new Timer() {
 	      public void run() {
 	        updateCircuit();
 	      }
 	 };
+	 
 	 
 
     public void updateCircuit() {
@@ -367,6 +459,21 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	
     }
  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     long lastTime = 0, lastFrameTime, lastIterTime, secTime = 0; 
@@ -503,7 +610,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     		}
     	    
     	    //if (!delayWireProcessing)
-    		calcWireCurrents();
+    	//	calcWireCurrents();
     	   
     	    /*
     	    for (i = 0; i != scopeCount; i++)
@@ -524,7 +631,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	} // for (iter = 1; ; iter++)
     	lastIterTime = lit;
     	//if (delayWireProcessing)
-    	    calcWireCurrents();
+    	//calcWireCurrents();
     	
     }
     

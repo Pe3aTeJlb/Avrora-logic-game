@@ -19,8 +19,11 @@
 
 package com.pplosstudio.avroralogicgame.client;
 
+import java.util.ArrayList;
+
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d.LineCap;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.NumberFormat;
 
 // circuit element class
@@ -33,6 +36,7 @@ public abstract class CircuitElm  {
     
     // scratch points for convenience
     static Point ps1, ps2;
+    public ArrayList<Point> OperativePoints = new ArrayList<Point>(); 
     
     static CirSim sim;
     static Color whiteColor, selectColor, lightGrayColor;
@@ -444,6 +448,18 @@ public abstract class CircuitElm  {
     }
     
     
+    
+    void getConnectionPoints() {
+    	
+		for (int i = 0; i != getPostCount(); i++) {
+		    Point p = getPost(i);
+		   // GWT.log(p.toString());
+		    OperativePoints.add(p);
+		    
+		}
+    	
+    }
+    
     void drawPosts(Graphics g) {
 		// we normally do this in updateCircuit() now because the logic is more complicated.
 		// we only handle the case where we have to draw all the posts.  That happens when
@@ -454,6 +470,7 @@ public abstract class CircuitElm  {
 		    Point p = getPost(i);
 		    drawPost(g, p);
 		}
+		
     }
     
     void drawHandles(Graphics g, Color c) {

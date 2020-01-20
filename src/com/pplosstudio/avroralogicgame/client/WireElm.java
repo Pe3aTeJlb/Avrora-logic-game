@@ -33,9 +33,10 @@ package com.pplosstudio.avroralogicgame.client;
 	static final int FLAG_SHOWVOLTAGE = 2;
 	
 	void draw(Graphics g) {
+		
 	    setVoltageColor(g, volts[0]);
 	    drawThickLine(g, point1, point2);
-	    doDots(g);
+	    //doDots(g);
 	    setBbox(point1, point2, 3);
 	    String s = "";
 	    if (mustShowCurrent()) {
@@ -49,7 +50,7 @@ package com.pplosstudio.avroralogicgame.client;
 	}
 	
 	void stamp() {
-	   // sim.stampVoltageSource(nodes[0], nodes[1], voltSource, 0);
+	    //sim.stampVoltageSource(nodes[0], nodes[1], voltSource, 0);
 	}
 	
 	boolean mustShowCurrent() {
@@ -60,7 +61,7 @@ package com.pplosstudio.avroralogicgame.client;
 	    return (flags & FLAG_SHOWVOLTAGE) != 0;
 	}
 	
-//	int getVoltageSourceCount() { return 1; }
+	//int getVoltageSourceCount() { return 1; }
 	
 	void getInfo(String arr[]) {
 	    arr[0] = "wire";
