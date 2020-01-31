@@ -206,20 +206,30 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		cv.addMouseWheelHandler(this);
 		cv.addMouseMoveHandler(this);	
 
-		SomeVeirdShit();
+		GetConfigurationFile();
+		
+		GenerateCircuit();
 		
 		centreCircuit();
 		
 		//analyzeCircuit();
 		
 		timer.scheduleRepeating(REFRESH_RATE);
-			
+					   
 				
   	}
   	
+  	public void GetConfigurationFile() {
+  		
+  	}
+  	
+  	public void GenerateVectorFunction() {
+  		
+  		
+  	}
   	
   	
-  	public void SomeVeirdShit() {
+  	public void GenerateCircuit() {
   			
 			
 	//	CircuitElm newce = createCe("Wire",200,125,150,125, 0,0);
@@ -311,11 +321,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		newce9.setPoints();
 		elmList.add(newce9);
 		*/
-		
-		ConnectElements(newce3,newce4);
-		
-		
-  		
+		  		
   	}
   	
   	
