@@ -3,7 +3,6 @@ package com.pplosstudio.avroralogicgame.client;
 
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Window;
 
 public class CheckboxMenuItem extends MenuItem implements Command {
 	

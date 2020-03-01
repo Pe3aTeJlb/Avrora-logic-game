@@ -42,7 +42,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	
 	private final int REFRESH_RATE = 30;
 	
-	//Set UI fields//
+ /////////////////////
+//Set UI Fields//
 	RootLayoutPanel root;
 	
     Canvas cv;
@@ -67,7 +68,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     
     double transform[];
     
-    //Events//
+ /////////////////////
+//Events//
     long zoomTime;
     int dragScreenX, dragScreenY, initDragGridX, initDragGridY;
     boolean dragging;
@@ -77,8 +79,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     
     double timeStep = 5e-6;
     
-    
-    //Fileds for circuit processing//
+ ////////////////////////
+//Circuit procession
     double circuitMatrix[][],circuitRightSide[],
 	origRightSide[], origMatrix[][];
     RowInfo circuitRowInfo[];
@@ -101,7 +103,9 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     
     int gridSize, gridMask, gridRound;
     
-////////////////////////////////////////    
+ ////////////////////////
+//Circuit Construction
+
     
     
     CirSim() {
@@ -172,15 +176,19 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 					CircuitElm.setColorScale();
 				}}));
 		alternativeColorCheckItem.setState(false);
+		
 		//initialize wire color
 		CircuitElm.setColorScale();
 		
-		mainBar.addItem("Options",extrasBar);
 		
+		
+		mainBar.addItem("Options",extrasBar);
 		///
 		///
      	mainBar.addItem("Info", infoBar);
 		
+     	
+     	
 		
 		layoutPanel.addNorth(mainBar, MENUBARHEIGHT);
 	 
@@ -193,7 +201,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		cvcontext=cv.getContext2d();
 		
 		backcv = Canvas.createIfSupported();
-		backcontext=backcv.getContext2d();
+		backcontext = backcv.getContext2d();
 		
 		setCanvasSize();	  
 		
@@ -205,12 +213,32 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		cv.addMouseUpHandler(this);
 		cv.addMouseWheelHandler(this);
 		cv.addMouseMoveHandler(this);	
-
-		GetConfigurationFile();
 		
-		GenerateCircuit();
+		//14.02.2020
+		/*
+		 * теперть этот скрипт должен называться simulator
+		 * Так же вызывается GetConfigurationFile
+		 * далее
+		 * Создается объект LogicFunctionGenerator
+		 * Создается объект LogicFunctionSimplificator
+		 * Создается объект LogicBasisConverter ili
+		 * Создается объект LogicFunctionDeCompositor
+		 * Создается объект LogicFunctionReader который выдаёт AST дерево или массив таких деревьев
+		 * 
+		 * Сюда передаётся AST дерево
+		 * 
+		*/
+
+		//GetConfigurationFile();
+		
 		
 		centreCircuit();
+		
+		CircuitSynthesizer v = new CircuitSynthesizer();
+		v.Synthesis();
+		elmList = v.elmList;
+		
+		//GenerateCircuit();
 		
 		//analyzeCircuit();
 		
@@ -218,17 +246,16 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 					   
 				
   	}
-  	
+  
+  	/*
   	public void GetConfigurationFile() {
   		
+  		LogicFunctionGenerator generator = new LogicFunctionGenerator(2, 1); 
+  	
   	}
-  	
-  	public void GenerateVectorFunction() {
-  		
-  		
-  	}
-  	
-  	
+  	*/
+
+  	/*
   	public void GenerateCircuit() {
   			
 			
@@ -252,6 +279,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		newce4.getConnectionPoints();
 		elmList.add(newce4);	
 		
+		
+		ConnectElements(newce3,newce4);
 		
 		//CircuitElm newce55 = createCe("And",100,250,150,250, 0, 2);
 	//	newce55.setPoints();
@@ -320,14 +349,14 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		CircuitElm newce9 = createCe("Invertor",10, 700, 50, 700, 0, 2);
 		newce9.setPoints();
 		elmList.add(newce9);
-		*/
+		
 		  		
   	}
-  	
+  	*/
   	
   	//сделать для случая разных y координат.
   	//оптимальная расстановка скобок говна
-  	
+  	/*
   	public void ConnectElements(CircuitElm out, CircuitElm in) {
   		
   		
@@ -361,6 +390,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		
   		}
 		
+  		/*
 		Graphics g = new Graphics(backcontext);
 		
     	for (int i = 0; i != elmList.size(); i++) {
@@ -386,6 +416,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
   		
   	}
   	
+  	*/
   	
   	
   	
@@ -393,8 +424,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
   	
   	
   	
-  	
-  	
+  	/*
   	public static CircuitElm createCe(String marker, int x1, int y1, int x2, int y2, int f, int inputcount) {
     	
     	if(marker.equals("Wire")) {
@@ -428,9 +458,11 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	
     }
   	
+  */	
   	
   	
-  	
+ // *****************************************************************
+//  Void Update	
   
 	final Timer timer = new Timer() {
 	      public void run() {
