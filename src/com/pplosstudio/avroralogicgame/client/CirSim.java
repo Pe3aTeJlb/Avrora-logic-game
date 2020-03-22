@@ -216,16 +216,16 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		
 		//14.02.2020
 		/*
-		 * теперть этот скрипт должен называться simulator
-		 * Так же вызывается GetConfigurationFile
-		 * далее
-		 * Создается объект LogicFunctionGenerator
-		 * Создается объект LogicFunctionSimplificator
-		 * Создается объект LogicBasisConverter ili
-		 * Создается объект LogicFunctionDeCompositor
-		 * Создается объект LogicFunctionReader который выдаёт AST дерево или массив таких деревьев
+		 * пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ simulator
+		 * пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ GetConfigurationFile
+		 * пїЅпїЅпїЅпїЅпїЅ
+		 * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ LogicFunctionGenerator
+		 * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ LogicFunctionSimplificator
+		 * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ LogicBasisConverter ili
+		 * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ LogicFunctionDeCompositor
+		 * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ LogicFunctionReader пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ AST пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		 * 
-		 * Сюда передаётся AST дерево
+		 * пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ AST пїЅпїЅпїЅпїЅпїЅпїЅ
 		 * 
 		*/
 
@@ -238,8 +238,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		v.Synthesis();
 		elmList = v.elmList;
 		
-		//GenerateCircuit();
-		
 		//analyzeCircuit();
 		
 		timer.scheduleRepeating(REFRESH_RATE);
@@ -247,115 +245,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 				
   	}
   
-  	/*
-  	public void GetConfigurationFile() {
-  		
-  		LogicFunctionGenerator generator = new LogicFunctionGenerator(2, 1); 
-  	
-  	}
-  	*/
-
-  	/*
-  	public void GenerateCircuit() {
-  			
-			
-	//	CircuitElm newce = createCe("Wire",200,125,150,125, 0,0);
-	//	newce.setPoints();
-	//	elmList.add(newce);
-		
-		
-		
-		//CircuitElm newce2 = createCe("And",width/2, height/2, (width/2)+45, (height/2), 0, 2);
-		//newce2.setPoints();
-		//elmList.add(newce2);
-		
-		CircuitElm newce3 = createCe("Linput",250, 100, 200, 100, 0, 2);
-		newce3.setPoints();
-		newce3.getConnectionPoints();
-		elmList.add(newce3);
-			
-		CircuitElm newce4 = createCe("Loutput",300, 125, 350, 125, 0, 2);
-		newce4.setPoints();
-		newce4.getConnectionPoints();
-		elmList.add(newce4);	
-		
-		
-		ConnectElements(newce3,newce4);
-		
-		//CircuitElm newce55 = createCe("And",100,250,150,250, 0, 2);
-	//	newce55.setPoints();
-		//elmList.add(newce55);
-		
-		/*
-		
-		CircuitElm newce33 = createCe("Linput",100, 109, 50, 110, 0, 2);
-		newce33.setPoints();
-		elmList.add(newce33);
-		
-		CircuitElm newce44 = createCe("Linput",100, 141, 50, 140, 0, 2);
-		newce44.setPoints();
-		elmList.add(newce44);
-		
-		CircuitElm newce55 = createCe("And",100,125,150,125, 0, 2);
-		newce55.setPoints();
-		elmList.add(newce55);
-		
-		CircuitElm newce66 = createCe("Loutput",150, 125, 200, 125, 0, 2);
-		newce66.setPoints();
-		elmList.add(newce66);
-		*/
-		
-		
-		/*
-		CircuitElm newce111 = createCe("Linput",200, 200, 100, 200, 0, 2);
-		newce111.setPoints();
-		elmList.add(newce111);
-		
-		CircuitElm newce222 = createCe("Invertor",200, 200, 250, 200, 0, 2);
-		newce222.setPoints();
-		elmList.add(newce222);
-		
-		CircuitElm newce333 = createCe("Loutput",250, 200, 300, 200, 0, 2);
-		newce333.setPoints();
-		elmList.add(newce333);
-		
-		
-		CircuitElm newce777 = createCe("Invertor",500, 200, 550, 200, 0, 2);
-		newce777.setPoints();
-		elmList.add(newce777);
-		*/
-		
-		/*
-		CircuitElm newce4 = createCe("Loutput",10, 200, 50, 200, 0, 2);
-		newce4.setPoints();
-		elmList.add(newce4);
-		
-		CircuitElm newce5 = createCe("Or",10,300,50,300, 0, 2);
-		newce5.setPoints();
-		elmList.add(newce5);
-		
-		CircuitElm newce6 = createCe("XOR",10,400,50,400, 0, 2);
-		newce6.setPoints();
-		elmList.add(newce6);
-		
-		CircuitElm newce7 = createCe("Nor",10,500,50,500, 0, 2);
-		newce7.setPoints();
-		elmList.add(newce7);
-		
-		CircuitElm newce8 = createCe("Nand",10,600,50,600, 0, 2);
-		newce8.setPoints();
-		elmList.add(newce8);
-		
-		CircuitElm newce9 = createCe("Invertor",10, 700, 50, 700, 0, 2);
-		newce9.setPoints();
-		elmList.add(newce9);
-		
-		  		
-  	}
-  	*/
-  	
-  	//сделать для случая разных y координат.
-  	//оптимальная расстановка скобок говна
+  	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ y пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+  	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
   	/*
   	public void ConnectElements(CircuitElm out, CircuitElm in) {
   		
@@ -418,49 +309,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
   	
   	*/
   	
-  	
-  	
-  	
-  	
-  	
-  	
-  	/*
-  	public static CircuitElm createCe(String marker, int x1, int y1, int x2, int y2, int f, int inputcount) {
     	
-    	if(marker.equals("Wire")) {
-    		return (CircuitElm) new WireElm(x1, y1, x2, y2, f);
-    	}
-    	if(marker.equals("And")) {
-        	return (CircuitElm) new AndGateElm(x1, y1, x2, y2, f, inputcount);
-        }
-    	if(marker.equals("Linput")) {
-    		return (CircuitElm) new LogicInputElm(x1, y1, x2, y2, f);
-    	}
-    	if(marker.equals("Loutput")) {
-    		return (CircuitElm) new LogicOutputElm(x1, y1, x2, y2, f);
-    	}
-    	if(marker.equals("Or")) {
-    		return (CircuitElm) new OrGateElm(x1, y1, x2, y2, f, inputcount);
-    	}
-    	if(marker.equals("XOR")) {
-    		return (CircuitElm) new XorGateElm(x1, y1, x2, y2, f, inputcount);
-    	}
-    	if(marker.equals("Nor")) {
-    		return (CircuitElm) new NorGateElm(x1, y1, x2, y2, f, inputcount);
-    	}
-    	if(marker.equals("Nand")) {
-    		return (CircuitElm) new NandGateElm(x1, y1, x2, y2, f, inputcount);
-    	}
-    	if(marker.equals("Invertor")) {
-    		return (CircuitElm) new InverterElm(x1, y1, x2, y2, f);
-    	}
-    	else {return null;}
-    	
-    }
-  	
-  */	
-  	
-  	
  // *****************************************************************
 //  Void Update	
   
