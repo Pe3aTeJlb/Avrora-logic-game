@@ -98,7 +98,7 @@ abstract class GateElm extends CircuitElm {
 	    for (int i = 0; i != inputCount; i++) {
 			setVoltageColor(g, volts[i]);
 			//GWT.log(inPosts[i].toString());
-			GWT.log(inGates[i].toString());
+			//GWT.log(inGates[i].toString());
 			drawThickLine(g, inPosts[i], inGates[i]);
 	    }
 	    

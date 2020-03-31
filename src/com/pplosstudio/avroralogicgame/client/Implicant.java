@@ -94,11 +94,9 @@ public class Implicant implements Comparable {
     }
 
     public int getV() {
-    	//GWT.log(Integer.toString(v)+" From V");
         return v;
     }
     public int getM() {
-    	//GWT.log(Integer.toString(v)+" From M");
         return m;
     }
     public void setC(boolean c) {

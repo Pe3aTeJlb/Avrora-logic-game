@@ -214,101 +214,19 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		cv.addMouseWheelHandler(this);
 		cv.addMouseMoveHandler(this);	
 		
-		//14.02.2020
-		/*
-		 * ������� ���� ������ ������ ���������� simulator
-		 * ��� �� ���������� GetConfigurationFile
-		 * �����
-		 * ��������� ������ LogicFunctionGenerator
-		 * ��������� ������ LogicFunctionSimplificator
-		 * ��������� ������ LogicBasisConverter ili
-		 * ��������� ������ LogicFunctionDeCompositor
-		 * ��������� ������ LogicFunctionReader ������� ����� AST ������ ��� ������ ����� ��������
-		 * 
-		 * ���� ��������� AST ������
-		 * 
-		*/
-
-		//GetConfigurationFile();
-		
-		
 		centreCircuit();
 		
 		CircuitSynthesizer v = new CircuitSynthesizer();
-		v.Synthesis();
+		v.Synthesis(width, height);
 		elmList = v.elmList;
 		
+	
 		//analyzeCircuit();
 		
 		timer.scheduleRepeating(REFRESH_RATE);
 					   
 				
   	}
-  
-  	//������� ��� ������ ������ y ���������.
-  	//����������� ����������� ������ �����
-  	/*
-  	public void ConnectElements(CircuitElm out, CircuitElm in) {
-  		
-  		
-  		if(out.OperativePoints.get(0).y != in.OperativePoints.get(0).y) {
-  			
-  			int xDiff = Math.abs(in.OperativePoints.get(0).x - out.OperativePoints.get(0).x)/2+out.OperativePoints.get(0).x;
-  			//int yDiff
-  			
-  			CircuitElm shit1 = createCe("Wire",out.OperativePoints.get(0).x, out.OperativePoints.get(0).y, xDiff, out.OperativePoints.get(0).y, 0, 0);
-  			shit1.setPoints();
-  			elmList.add(shit1);
-  			
-  			
-  			CircuitElm shit2 = createCe("Wire",xDiff, out.OperativePoints.get(0).y, xDiff, in.OperativePoints.get(0).y, 0, 0);
-  			shit2.setPoints();
-  			elmList.add(shit2);
-  			
-  			
-  			CircuitElm shit3 = createCe("Wire",xDiff, in.OperativePoints.get(0).y, in.OperativePoints.get(0).x, in.OperativePoints.get(0).y, 0, 0);
-  			shit3.setPoints();
-  			elmList.add(shit3);
-  			
-  			
-  			
-  		}
-  		else {
-  		
-	  		CircuitElm newce99 = createCe("Wire",out.OperativePoints.get(0).x, out.OperativePoints.get(0).y, in.OperativePoints.get(0).x, in.OperativePoints.get(0).y, 0, 0);
-			newce99.setPoints();
-			elmList.add(newce99);
-		
-  		}
-		
-  		/*
-		Graphics g = new Graphics(backcontext);
-		
-    	for (int i = 0; i != elmList.size(); i++) {
-    		
-    		if(printableCheckItem.getState()){
-    			g.setColor(Color.black);	
-    		}else {
-    			g.setColor(Color.white);
-    		}
-    		
-    		try {
-    			getElm(i).draw(g);
-    	    }catch(Exception ee) {
-    	    	ee.printStackTrace();
-    		    GWT.log("exception while drawing " + ee);
-    	    }
-    		
-    	}
-    	
-
-    	cvcontext.drawImage(backcontext.getCanvas(),0.0,0.0);
-		
-  		
-  	}
-  	
-  	*/
-  	
     	
  // *****************************************************************
 //  Void Update	
@@ -426,7 +344,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     		    if (depth-- == 0)
     			return false;
     		    if (used[n1]) {
-    			//System.out.println("used " + n1);
     			return false;
     		    }
     		    used[n1] = true;
@@ -466,14 +383,12 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     			}
     			int j;
     			for (j = 0; j != ce.getConnectionNodeCount(); j++) {
-    			    //System.out.println(ce + " " + ce.getNode(j));
     			    if (ce.getConnectionNode(j) == n1)
     				break;
     			}
     			if (j == ce.getConnectionNodeCount())
     			    continue;
     			if (ce.hasGroundConnection(j) && findPath(0, depth)) {
-    			    //System.out.println(ce + " has ground");
     			    used[n1] = false;
     			    return true;
     			}
@@ -483,11 +398,9 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     				continue;
 
     			    if (ce.getConnection(j, k) && findPath(ce.getConnectionNode(k), depth)) {
-    				//System.out.println("got findpath " + n1);
     				used[n1] = false;
     				return true;
     			    }
-    			    //System.out.println("back on findpath " + n1);
     			}
     		    }
     		    used[n1] = false;
@@ -601,8 +514,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     			res = ri.value;
     		    else
     			res = circuitRightSide[ri.mapCol];
-    		    /*System.out.println(j + " " + res + " " +
-    		      ri.type + " " + ri.mapCol);*/
     		    if (Double.isNaN(res)) {
     			converged = false;
     			//debugprint = true;
@@ -683,7 +594,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 
     		calculateWireClosure();
     		
-    		//System.out.println("ac1");
     		// look for voltage or ground element
     		/*
     		for (i = 0; i != elmList.size(); i++) {
@@ -719,7 +629,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     		    CircuitNode cn = new CircuitNode();
     		    nodeList.addElement(cn);
     		}
-    		//System.out.println("ac2");
 
     		// allocate nodes and voltage sources
     		//LabeledNodeElm.resetNodeList();
@@ -786,7 +695,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     		voltageSources = new CircuitElm[vscount];
     		vscount = 0;
     		circuitNonLinear = false;
-    		//System.out.println("ac3");
 
     		// determine if circuit is nonlinear
     		for (i = 0; i != elmList.size(); i++) {
@@ -821,7 +729,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     		    CircuitElm ce = getElm(i);
     		    ce.stamp();
     		}
-    		//System.out.println("ac4");
 
     		// determine nodes that are not connected indirectly to ground
     		boolean closure[] = new boolean[nodeList.size()];
@@ -867,7 +774,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     			    break;
     			}
     		}
-    		//System.out.println("ac5");
 
     	for (i = 0; i != elmList.size(); i++) {
     		    CircuitElm ce = getElm(i);
@@ -975,15 +881,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     		if (!simplifyMatrix(matrixSize)) {return;}
     		    
     		
-    		/*
-    		System.out.println("matrixSize = " + matrixSize + " " + circuitNonLinear);
-    		
-    		for (j = 0; j != circuitMatrixSize; j++) {
-    		    for (i = 0; i != circuitMatrixSize; i++)
-    			System.out.print(circuitMatrix[j][i] + " ");
-    		    System.out.print("  " + circuitRightSide[j] + "\n");
-    		}
-    		System.out.print("\n");*/
 
     		// check if we called stop()
     		if (circuitMatrix == null)
@@ -1175,7 +1072,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 
     		    // avoid zeros
     		    if (a[j][j] == 0.0) {
-	    			System.out.println("avoided zero");
 	    			a[j][j]=1e-18;
     		    }
 
@@ -1242,7 +1138,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		 		// we found a row with only one nonzero nonconst entry; that value
 		 		// is a constant
 		 		if (elt.type != RowInfo.ROW_NORMAL) {
-		 		    System.out.println("type already " + elt.type + " for " + qp + "!");
+		 	
 		 		    continue;
 		 		}
 		 		
@@ -1259,7 +1155,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	 	    RowInfo elt = circuitRowInfo[i];
 	 	    if (elt.type == RowInfo.ROW_NORMAL) {
 	 		elt.mapCol = nn++;
-	 		//System.out.println("col " + i + " maps to " + elt.mapCol);
+	 		
 	 		continue;
 	 	    }
 	 	    if (elt.type == RowInfo.ROW_CONST)
@@ -1279,7 +1175,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	 	    }
 	 	    newrs[ii] = circuitRightSide[i];
 	 	    rri.mapRow = ii;
-	 	    //System.out.println("Row " + i + " maps to " + ii);
+	 	    
 	 	    for (j = 0; j != matrixSize; j++) {
 	 		RowInfo ri = circuitRowInfo[j];
 	 		if (ri.type == RowInfo.ROW_CONST)
@@ -1356,7 +1252,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     void stampResistor(int n1, int n2, double r) {
     		double r0 = 1/r;
     		if (Double.isNaN(r0) || Double.isInfinite(r0)) {
-    		    System.out.print("bad resistance " + r + " " + r0 + "\n");
     		    int a = 0;
     		    a /= a;
     		}
@@ -1394,7 +1289,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	    			RowInfo ri = circuitRowInfo[j-1];
 	    			
 	    			if (ri.type == RowInfo.ROW_CONST) {
-		    			    //System.out.println("Stamping constant " + i + " " + j + " " + x);
+		    			    
 		    			    circuitRightSide[i] -= x*ri.value;
 		    			    return;
 	    			}

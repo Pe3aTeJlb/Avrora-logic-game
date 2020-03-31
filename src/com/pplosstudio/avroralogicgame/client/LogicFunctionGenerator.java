@@ -29,7 +29,6 @@ public class LogicFunctionGenerator {
         for(int i = 0; i < varCount; i++){
             String varName = "x"+(i);
             VarNames[i] = varName;
-            //System.out.println(varName);
            // GWT.log(varName);
         }
 
@@ -46,7 +45,7 @@ public class LogicFunctionGenerator {
             for(int j = 1; j < totalVarCount; j++)
             {
                 VectorFunctions[j][i] = buffVector[j][0];
-                GWT.log("Generator " +Character.toString(VectorFunctions[j][i]));
+                //GWT.log("Generator " +Character.toString(VectorFunctions[j][i]));
             }
 
         }

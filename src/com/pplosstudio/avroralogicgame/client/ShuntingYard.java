@@ -1,6 +1,9 @@
 package com.pplosstudio.avroralogicgame.client;
 
 import java.util.Stack;
+
+import com.google.gwt.core.client.GWT;
+
 import java.util.*;
 
 /**
@@ -189,6 +192,7 @@ public class ShuntingYard {
         int newTerm = 0;
         String prevOperation = "";
         String term = "";
+        boolean fromSlot = false;
 
         while (tokenizer.hasMoreTokens()) {
 
@@ -207,13 +211,9 @@ public class ShuntingYard {
                 String operand2 = stack.pop();
                 String operand1 = stack.empty() ? "" : stack.pop();
 
-                //System.out.println(token);
-               // System.out.println(prevOperation);
-                //System.out.println(newTerm);
 
                 if(token.equals(prevOperation)){
 
-                    System.out.println("Like prev");
 
                     if(operands.size()>0 && !list.contains(operands))list.add(operands);
                     if(newTerm>=2){
@@ -222,6 +222,7 @@ public class ShuntingYard {
                         if(!term.equals("")) {
                             operands.add(token);
                             operands.add(term);
+                          
                         }
 
                         operands=new ArrayList<>();
@@ -233,9 +234,10 @@ public class ShuntingYard {
 
                     }
                     operands.add(operand2);
+                    if(fromSlot){term+=token; fromSlot = false;}
                     term += operand2+token;
 
-                    System.out.println(operands);
+                  
 
                     String NewOperand = operand1.concat(token+operand2);
                     stack.push(NewOperand);
@@ -245,12 +247,11 @@ public class ShuntingYard {
 
                 }
                 else{
-
                     System.out.println("Not Like prev");
 
-                    if(term.length()>1)term = removeByIndex(term, term.length()-1);
-                    operands.add(prevOperation);
-                    operands.add(term);
+                    if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+')term = removeByIndex(term, term.length()-1);
+                    if(!operands.contains(prevOperation) && operands.size()>=2)operands.add(prevOperation);
+                    if(!operands.contains(term) && operands.size()>=2)operands.add(term);
                     term = "";
                     System.out.println(operands);
 
@@ -260,23 +261,32 @@ public class ShuntingYard {
                     if(!operand1.equals(""))operands.add(operand1);
                     operands.add(operand2);
 
-                    System.out.println(operands);
-
+                    System.out.println("new slot");
+                    fromSlot = true;
                     String NewOperand = operand1.concat(token+operand2);
+                    term = NewOperand;
                     stack.push(NewOperand);
                     newTerm=0;
                     prevOperation = token;
 
-                    operands.add(token);
-                    operands.add(NewOperand);
-
+                    //operands.add(token);
+                    //operands.add(newBlock);
+                    //System.out.println(operands);
+                    //operands = new ArrayList<>();
                 }
 
 
             }
         }
 
-        System.out.println(list);
+        operands.add(prevOperation);
+        operands.add(term);
+
+        if(list.size() == 1 && list.get(0).get(list.get(0).size()-2) != "*"){
+            list.get(0).add("*");
+            term = removeByIndex(term, term.length()-1);
+            list.get(0).add(term);
+        }
 
     }
 
@@ -309,7 +319,7 @@ public class ShuntingYard {
         lastTerm.add("And");
         lastTerm.add(input);
         list.add(lastTerm);
-        System.out.println(list);
+        
     }
 
     private String removeByIndex(String str, int index) {

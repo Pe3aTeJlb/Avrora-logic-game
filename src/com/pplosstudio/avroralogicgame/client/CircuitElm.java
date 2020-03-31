@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d.LineCap;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.NumberFormat;
 
 // circuit element class
@@ -430,15 +431,15 @@ public abstract class CircuitElm  {
     
     
     
-    void getConnectionPoints() {
-    	
-		for (int i = 0; i != getPostCount(); i++) {
+    void getConnectionPoints(boolean isWire) {
+    	    	
+    	 for (int i = 0; i != getPostCount(); i++) {
 		    Point p = getPost(i);
 		   // GWT.log(p.toString());
 		    OperativePoints.add(p);
 		    
 		}
-    	
+	
     }
     
     void drawPosts(Graphics g) {

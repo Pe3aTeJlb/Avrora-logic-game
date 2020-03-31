@@ -26,7 +26,7 @@ public class Point {
 		 y=p.y;
 	}
 	 
-    public String toString() { return "Point(" + x + "," + y + ")"; }
+    public String toString() { return "Point(" + Integer.toString(x) + "," + Integer.toString(y) + ")"; }
 
     @Override 
     public boolean equals(Object other) {

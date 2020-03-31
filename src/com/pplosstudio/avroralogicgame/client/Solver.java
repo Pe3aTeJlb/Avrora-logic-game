@@ -147,8 +147,7 @@ public class Solver implements Runnable {
                     for(int j = e[i]; j < e[i+1]; j++) {
                         Implicant tempj = lstPrimes[j];
                         
-                        for(int k = e[i+1]; k < e[i+2]; k++) { //!!!!!!!!!!!!!!!!!!!!!! i+2
-                        	GWT.log(tempj +"" + lstPrimes[k]);
+                        for(int k = e[i+1]; k < e[i+1]; k++) { //!!!!!!!!!!!!!!!!!!!!!! i+2
                             if(tempj.getM() == lstPrimes[k].getM()) { // same mask?
                                 int d = tempj.getV() ^ lstPrimes[k].getV();
                                 if (Integer.bitCount(d) == 1) { // Hamming distance is 1?
@@ -180,7 +179,6 @@ public class Solver implements Runnable {
 //                                    System.out.print("trying " + tempj + " with " + lstPrimes[k] + " " + d);
                                     if(d < 0) { // new prime implicant found
                                         if (maxs == ctdc1)
-                                        	GWT.log("123214");
                                         	//throw new 
                                            // throw new OutOfMemoryError(java.util.ResourceBundle.getBundle("QMC").getString("LSTPRIME"));
 
@@ -191,7 +189,7 @@ public class Solver implements Runnable {
                                         {
                                             if(r1 != null && r2 != null) {
                                         		return  (((r1.getV() - r2.getV()) << Implicant.MAX_IN_VAR) + r1.getM() - r2.getM());
-                                            }else {GWT.log("Shit is null");return 2;}
+                                            }else {GWT.log("Shit is null"); return 2;}
                                         });
 //                                            System.out.println(" OK " + ctdc1);
                                     }
