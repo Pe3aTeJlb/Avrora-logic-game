@@ -1,7 +1,7 @@
 
 package com.pplosstudio.avroralogicgame.client;
 
-import com.google.gwt.core.client.GWT;
+//import com.google.gwt.core.client.GWT;
 
 abstract class GateElm extends CircuitElm {
     	

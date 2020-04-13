@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d.LineCap;
-import com.google.gwt.core.client.GWT;
+//import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.NumberFormat;
 
 // circuit element class
@@ -21,7 +21,7 @@ public abstract class CircuitElm  {
     public ArrayList<Point> OperativePoints = new ArrayList<Point>(); 
     
     static CirSim sim;
-    static Color whiteColor, selectColor, lightGrayColor;
+    static Color whiteColor, selectColor, lightGrayColor,gray;
     static Font unitsFont;
 
     static NumberFormat showFormat, shortFormat;//, noCommaFormat;
@@ -537,6 +537,7 @@ public abstract class CircuitElm  {
     }
     */
     static void drawPost(Graphics g, Point pt) {
+		//g.setColor(gray);
 		g.setColor(whiteColor);
 		g.fillOval(pt.x-3, pt.y-3, 7, 7);
     }
@@ -664,7 +665,14 @@ public abstract class CircuitElm  {
 
     static void drawThickLine(Graphics g, Point pa, Point pb) {
     	g.setLineWidth(3.0);
-    	g.drawLine(pa.x, pa.y, pb.x, pb.y);
+    	//Чтобы убрать неровности при перпендикулярном соединении
+    	if(pa.y==pb.y) {
+    		g.drawLine(pa.x-1, pa.y, pb.x+1, pb.y);
+    	}else {
+    		if(pb.y<pa.y) {
+    			g.drawLine(pa.x, pa.y-1, pb.x, pb.y-1);
+    		}else {g.drawLine(pa.x, pa.y-1, pb.x, pb.y+1);}
+    		}
     	g.setLineWidth(1.0);
     }
 

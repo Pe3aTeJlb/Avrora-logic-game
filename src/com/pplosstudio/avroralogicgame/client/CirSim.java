@@ -29,6 +29,11 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 
+/*
+ Скрипт расчёта схемы, он же UI и управление им.
+ Категорически не рекомендуется лезть в расчёт схемы и в классы для отрисовки графики
+ */
+
 public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandler, MouseWheelHandler{
 
 	//this
@@ -219,13 +224,9 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		CircuitSynthesizer v = new CircuitSynthesizer();
 		v.Synthesis(width, height);
 		elmList = v.elmList;
-		
-	
-		//analyzeCircuit();
-		
-		timer.scheduleRepeating(REFRESH_RATE);
-					   
 				
+		timer.scheduleRepeating(REFRESH_RATE);
+					   	
   	}
     	
  // *****************************************************************
@@ -288,10 +289,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	    g.setColor(Color.red);
     	    g.fillOval(cn.x-3, cn.y-3, 7, 7);
     	}
-    	
-    	
+
     	cvcontext.drawImage(backcontext.getCanvas(),0.0,0.0);
-    	
     }
  
        
@@ -487,10 +486,10 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     		}
     		if (printit) {
     		    for (j = 0; j != circuitMatrixSize; j++) {
-    			String x = "";
-    			for (i = 0; i != circuitMatrixSize; i++)
-    			    x += circuitMatrix[j][i] + ",";
-    			x += "\n";
+    			//String x = "";
+    			//for (i = 0; i != circuitMatrixSize; i++)
+    			   // x += circuitMatrix[j][i] + ",";
+    			//x += "\n";
     			//console(x);
     		    }
     		    //console("");
@@ -896,7 +895,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     		}
     		
     		// show resistance in voltage sources if there's only one
-    		boolean gotVoltageSource = false;
+    		//boolean gotVoltageSource = false;
     		//showResistanceInVoltageSources = true;
     		//for (i = 0; i != elmList.size(); i++) {
     		  //  CircuitElm ce = getElm(i);

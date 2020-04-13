@@ -2,7 +2,7 @@ package com.pplosstudio.avroralogicgame.client;
 
 import java.util.Stack;
 
-import com.google.gwt.core.client.GWT;
+//import com.google.gwt.core.client.GWT;
 
 import java.util.*;
 
@@ -17,7 +17,7 @@ public class ShuntingYard {
     public ArrayList<ArrayList<String>> list = new ArrayList<>();
     public ArrayList<String> out = new ArrayList<>();
 
-     public ShuntingYard(){
+    public ShuntingYard(){
     }
 
     /**
@@ -174,122 +174,37 @@ public class ShuntingYard {
         return sortingStation(expression, operations, "(", ")");
     }
 
-    /**
-     * Вычисляет значение выражения, записанного в инфиксной нотации. Выражение может содержать скобки, числа с
-     * плавающей точкой, четыре основных математических операндов.
-     *
-     * @param expression выражение.
-     * @return результат вычисления.
-     */
-    public void calculateExpression(String expression) {
+    public void calculateMDNF(String input){
 
-        String rpn = sortingStation(expression, MAIN_MATH_OPERATIONS);
-        StringTokenizer tokenizer = new StringTokenizer(rpn, " ");
-        Stack<String> stack = new Stack<String>();
+        ArrayList<String> data = new ArrayList<>();
+        ArrayList<String> lastTerm = new ArrayList<>();
 
-        ArrayList<String> operands = new ArrayList<>();
-        ArrayList<String> terms = new ArrayList<>();
-        int newTerm = 0;
-        String prevOperation = "";
-        String term = "";
-        boolean fromSlot = false;
+        input = input.replace(" ", "");
+        input = input.replace("(", "");
+        input = input.replace(")", "");
+        String[] terms = input.split("\\+");
 
-        while (tokenizer.hasMoreTokens()) {
+        for(int i = 0; i <terms.length; i++){
 
-            String token = tokenizer.nextToken();
-            // Операнд.
-            if (!MAIN_MATH_OPERATIONS.keySet().contains(token)) {
+            String[] operands = terms[i].split("\\*");
 
-                stack.push(new String(token));
-                newTerm++;
-
-            } else {
-
-                if(prevOperation.equals("")){
-                    prevOperation = token;
-                }
-                String operand2 = stack.pop();
-                String operand1 = stack.empty() ? "" : stack.pop();
-
-
-                if(token.equals(prevOperation)){
-
-
-                    if(operands.size()>0 && !list.contains(operands))list.add(operands);
-                    if(newTerm>=2){
-
-                        if(term.length()>0)term = removeByIndex(term, term.length()-1);
-                        if(!term.equals("")) {
-                            operands.add(token);
-                            operands.add(term);
-                          
-                        }
-
-                        operands=new ArrayList<>();
-                        list.add(operands);
-                        operands.add(operand1);
-
-                        term = "";
-                        term += operand1 + token;
-
-                    }
-                    operands.add(operand2);
-                    if(fromSlot){term+=token; fromSlot = false;}
-                    term += operand2+token;
-
-                  
-
-                    String NewOperand = operand1.concat(token+operand2);
-                    stack.push(NewOperand);
-
-                    newTerm=0;
-                    prevOperation = token;
-
-                }
-                else{
-                    System.out.println("Not Like prev");
-
-                    if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+')term = removeByIndex(term, term.length()-1);
-                    if(!operands.contains(prevOperation) && operands.size()>=2)operands.add(prevOperation);
-                    if(!operands.contains(term) && operands.size()>=2)operands.add(term);
-                    term = "";
-                    System.out.println(operands);
-
-                    //if(operands.size()>0)list.add(operands);
-                    operands = new ArrayList<>();
-                    list.add(operands);
-                    if(!operand1.equals(""))operands.add(operand1);
-                    operands.add(operand2);
-
-                    System.out.println("new slot");
-                    fromSlot = true;
-                    String NewOperand = operand1.concat(token+operand2);
-                    term = NewOperand;
-                    stack.push(NewOperand);
-                    newTerm=0;
-                    prevOperation = token;
-
-                    //operands.add(token);
-                    //operands.add(newBlock);
-                    //System.out.println(operands);
-                    //operands = new ArrayList<>();
-                }
-
-
+            for(int j = 0; j<operands.length; j++){
+                data.add(operands[j]);
             }
+            
+            data.add("*");
+            data.add(terms[i]);
+            list.add(data);
+            lastTerm.add(terms[i]);
+            data = new ArrayList<>();
         }
 
-        operands.add(prevOperation);
-        operands.add(term);
-
-        if(list.size() == 1 && list.get(0).get(list.get(0).size()-2) != "*"){
-            list.get(0).add("*");
-            term = removeByIndex(term, term.length()-1);
-            list.get(0).add(term);
-        }
-
+        lastTerm.add("+");
+        lastTerm.add(input);
+        list.add(lastTerm);
+        
     }
-
+    
     public void calculateMKNF(String input){
 
         ArrayList<String> data = new ArrayList<>();
@@ -309,20 +224,127 @@ public class ShuntingYard {
                 data.add(operands[j]);
 
             }
-            data.add("or");
+            data.add("+");
             data.add(terms[i]);
             list.add(data);
             lastTerm.add(terms[i]);
             data = new ArrayList<>();
         }
 
-        lastTerm.add("And");
+        lastTerm.add("*");
         lastTerm.add(input);
         list.add(lastTerm);
         
-    }
+    }   
 
+    
+    
+    
+    /**
+     * Вычисляет значение выражения, записанного в инфиксной нотации. Выражение может содержать скобки, числа с
+     * плавающей точкой, четыре основных математических операндов.
+     *
+     * @param expression выражение.
+     * @return результат вычисления.
+     */
+    public void calculateExpression(String expression) {
+
+        String rpn = sortingStation(expression, MAIN_MATH_OPERATIONS);
+        StringTokenizer tokenizer = new StringTokenizer(rpn, " ");
+        Stack<String> stack = new Stack<String>();
+
+        ArrayList<String> operands = new ArrayList<>();
+        int newTerm = 0;
+        String prevOperation = "";
+        String term = "";
+        
+        while (tokenizer.hasMoreTokens()) {
+
+            String token = tokenizer.nextToken();
+            // Операнд.
+            if (!MAIN_MATH_OPERATIONS.keySet().contains(token)) {
+
+                stack.push(new String(token));
+                newTerm++;
+
+            } else {
+
+                if(prevOperation.equals("")){
+                    prevOperation = token;
+                }
+                String operand2 = stack.pop();
+                String operand1 = stack.empty() ? "" : stack.pop();
+
+                if(token.equals(prevOperation)){
+
+
+                    if(operands.size()>0 && !list.contains(operands))list.add(operands);
+                    if(newTerm>=2){
+
+                    	if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+')term = removeByIndex(term, term.length()-1);
+                        if(!term.equals("")) {
+                            operands.add(token);
+                            operands.add(term);
+                          
+                        }
+
+                        operands=new ArrayList<>();
+                        list.add(operands);
+                        operands.add(operand1);
+
+                        term = "";
+                        term += operand1 + token;
+
+                    }
+                    operands.add(operand2);
+                    if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+'){term += operand2+token;}
+                    else {term += token+operand2;}
+
+                    String NewOperand = operand1.concat(token+operand2);
+                    stack.push(NewOperand);
+
+                    newTerm=0;
+                    prevOperation = token;
+
+                }
+                else{
+
+                	if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+')term = removeByIndex(term, term.length()-1);
+                    operands.add(prevOperation);
+                    operands.add(term);
+                    term = "";
+ 
+                    operands = new ArrayList<>();
+                    list.add(operands);
+                    if(!operand1.equals(""))operands.add(operand1);
+                    operands.add(operand2);
+
+                    String NewOperand = operand1.concat(token+operand2);
+                    term = NewOperand;
+                    stack.push(NewOperand);
+                    newTerm=0;
+                    prevOperation = token;
+
+                }
+
+
+            }
+        }
+
+        operands.add(prevOperation);
+        operands.add(term);
+
+        if(list.size() == 1 && list.get(0).get(list.get(0).size()-2) != "*"){
+            list.get(0).add("*");
+            term = removeByIndex(term, term.length()-1);
+            list.get(0).add(term);
+        }
+
+    }
+    
+    
     private String removeByIndex(String str, int index) {
         return str.substring(0,index)+str.substring(index+1);
     }
+    
 }

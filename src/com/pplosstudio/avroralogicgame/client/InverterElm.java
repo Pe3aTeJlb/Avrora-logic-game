@@ -33,7 +33,7 @@ package com.pplosstudio.avroralogicgame.client;
 	Point center;
 	
 	void draw(Graphics g) {
-	    drawPosts(g);
+	    //drawPosts(g);
 	    draw2Leads(g);
 	    g.setColor(needsHighlight() ? selectColor : lightGrayColor);
 	    drawThickPolygon(g, gatePoly);

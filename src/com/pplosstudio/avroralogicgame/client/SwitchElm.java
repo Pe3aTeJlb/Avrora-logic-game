@@ -1,6 +1,8 @@
 
 package com.pplosstudio.avroralogicgame.client;
 
+import com.google.gwt.core.client.GWT;
+
 // SPST switch
 class SwitchElm extends CircuitElm {
     
@@ -91,6 +93,7 @@ class SwitchElm extends CircuitElm {
 		position++;
 		if (position >= posCount)
 		    position = 0;
+		//sim.updateCircuit();
 		//sim.analyzeCircuit();
     }
     

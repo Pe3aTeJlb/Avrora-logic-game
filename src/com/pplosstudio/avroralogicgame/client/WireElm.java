@@ -28,7 +28,7 @@ package com.pplosstudio.avroralogicgame.client;
 	        s = (s.length() > 0 ? s + " " : "") + getShortUnitText(volts[0], "V");
 	    }
 	    drawValues(g, s, 4);
-	    drawPosts(g);
+	    //drawPosts(g);
 	}
 	
 	void stamp() {

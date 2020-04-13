@@ -1,8 +1,8 @@
 package com.pplosstudio.avroralogicgame.client;
 
-import java.util.Comparator;
+//import java.util.Comparator;
 
-import com.google.gwt.core.client.GWT;
+//import com.google.gwt.core.client.GWT;
 
 public class Implicant implements Comparable {
     public int v;     // value = 1 indicate that non complement and 0 complement variable
@@ -63,7 +63,7 @@ public class Implicant implements Comparable {
         for(int i = 0; i < number_of_in_var; i++) {
             tmp = in_var_names[i].trim();
             invar_e[i] = new StringBuilder(tmp);
-            String vars[] = tmp.split("_");
+            //String vars[] = tmp.split("_");
             StringBuilder tmpc = new StringBuilder();
            // for(int j = 0; j < vars[0].length(); j++) {
                 //tmpc.append(vars[0].charAt(j));

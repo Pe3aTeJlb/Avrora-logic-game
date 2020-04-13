@@ -3,6 +3,8 @@ package com.pplosstudio.avroralogicgame.client;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.google.gwt.core.client.GWT;
+
 public class Factorisator_V_2 {
 
     //Символы разделители
@@ -12,7 +14,7 @@ public class Factorisator_V_2 {
     private static String insideSeparator = "*";
 
     //массив термов
-    private String[] v = new String[0];
+    public String[] v = new String[0];
 
     //строка невостребованных переменных
     String unclaimedBuff = "";
@@ -21,14 +23,13 @@ public class Factorisator_V_2 {
     ArrayList<String> operands = new ArrayList<>();
     ArrayList<String> binaryTerms = new ArrayList<>();
 
-    public String output = "";
+    String output = "";
     private String expr = "";
 
     CustomData data = new CustomData();
 
     public void PrepareData(String expression) {
 
-        System.out.println(expression);
         expr = expression;
 
         expression = expression.replace(" ", "");
@@ -60,7 +61,6 @@ public class Factorisator_V_2 {
         for(int i = 0; i<v.length; i++){
             String[] buffer = v[i].split(splitSymbol2);
             String binaryString = "";
-            System.out.println(v[i]);
 
             int l = 0;
             while (buffer[0].equals(operands.get(l))==false){
@@ -80,11 +80,6 @@ public class Factorisator_V_2 {
 
             binaryTerms.add(binaryString);
 
-        }
-
-        for (String a: binaryTerms
-             ) {
-            //System.out.println(a);
         }
 
         Factorisation();
@@ -113,10 +108,7 @@ public class Factorisator_V_2 {
         data.alphabet = operands;
         data.positions = collisionTerms;
         data.Sort();
-        //data.PrintAlphabet();
-        //data.PrintCollisions();
-        System.out.println("End");
-
+   
         //Если таких вхождений нет, то функцию нельзя факторизировать.
         if(data.positions.get(0).size()>1){
             ReconstructFunction();
@@ -134,7 +126,6 @@ public class Factorisator_V_2 {
         for(int i = 0; i<data.positions.size(); i++){
 
             if(data.positions.get(i).size() == binaryTerms.size()){
-                System.out.println("Global operands "+data.alphabet.get(i));
                 globalExist = true;
                 tmp += data.alphabet.get(i)+insideSeparator;
                 d.add(i);
@@ -144,14 +135,8 @@ public class Factorisator_V_2 {
         if(globalExist){
             tmp = removeByIndex(tmp, tmp.length()-1);
             tmp = "("+tmp+")"+insideSeparator;
-            System.out.println(tmp);
         }
 
-        System.out.println("/**********");
-        data.PrintAlphabet();
-        System.out.println("______");
-        data.PrintCollisions();
-        System.out.println("**********/");
 
         //Если есть только глобальные переменные, то вынесем их из исходной строки и завершим факторизацию
         String c = expr;
@@ -189,20 +174,16 @@ public class Factorisator_V_2 {
                 tmp += interstitialSeparator + unclaimedBuff;
             }
             output = tmp;
-            System.out.println(tmp);
         }
 
     }
 
     private String RecurcivePart(CustomData container, ArrayList<Integer> prevTerms){
 
-        System.out.println("Enter Rec");
-        System.out.println(container.alphabet +" " + prevTerms);
 
         int lastIndex = 0;
         int maxIndex = container.positions.get(0).size();
 
-        System.out.println(maxIndex);
 
         //Глубокое копирование необходимых данных
         ArrayList<String> buffAlphabet = new ArrayList<>();
@@ -241,8 +222,6 @@ public class Factorisator_V_2 {
         buff.alphabet = buffAlphabet;
         buff.positions = buffPositions;
 
-        System.out.println(container.positions+" " +buff.alphabet);
-
         if(maxIndex != 1){
             collisions.add(0);
         }
@@ -261,11 +240,8 @@ public class Factorisator_V_2 {
             for (int i = 1; i != container.positions.size(); i++) {
 
                 if (!Collections.disjoint(prevTerms, container.positions.get(i))) {
-                    //System.out.println(prevTerms);
                     if (container.positions.get(i).size() == maxIndex && container.positions.get(i).containsAll(container.positions.get(i-1))) {
 
-                        System.out.println("Added from index 0 " + container.alphabet.get(i)+ " on iter " + i);
-                        //tmp += container.alphabet.get(i) + interstitialSeparator;
                         tmp += container.alphabet.get(i) + insideSeparator;
 
                     }else {
@@ -274,7 +250,7 @@ public class Factorisator_V_2 {
                     }
 
                 }else {
-                    System.out.println("Added to unclaimed " + container.alphabet.get(i) + " on iter " + i);
+                   
                     unclaimed += container.alphabet.get(i) + insideSeparator;
                 }
 
@@ -290,7 +266,7 @@ public class Factorisator_V_2 {
                     if (container.positions.get(i).size() == maxIndex) {
 
                         if (container.positions.get(i).containsAll(container.positions.get(lastIndex))) {
-                            System.out.println("Added");
+                        
                             collisions.add(i);
                             tmp += container.alphabet.get(i) + insideSeparator;
                             lastIndex = i;
@@ -310,10 +286,10 @@ public class Factorisator_V_2 {
 
         if(container.positions.size()>0 && maxIndex != 1){
 
-            System.out.println("Delete max indexes");
+
 
             if(crossCollision.size()>0) {
-                System.out.println("REmove exclusive");
+
                 container.RemoveExclusive(crossCollision, container.positions.get(0));
                 container.Sort();
                 container.DeleteOutOfBounds(container.positions.get(0));
@@ -323,7 +299,7 @@ public class Factorisator_V_2 {
 
             if(container.positions.size()>0){
                 container.DeleteMaxIndexes();
-                System.out.println(container.MaxIndexesCount());
+
                 container.PrintAlphabet();
                 if(container.positions.size()>0) {
                     tmp += insideSeparator  + RecurcivePart(container,terms);
@@ -331,43 +307,36 @@ public class Factorisator_V_2 {
             }
         }
 
-         if(buff.positions.size() > 0 && maxIndex != 1 && ( collisions.size()>1 || crossCollision2.size()>0)){
+        if(buff.positions.size() > 0 && maxIndex != 1 && ( collisions.size()>1 || crossCollision2.size()>0)){
 
-             System.out.println("Delete coll");
-             String unc = "";
+            String unc = "";
 
-             buff.Delete(collisions);
-             System.out.println(buff.positions);
-             System.out.println(buff.alphabet);
+            buff.Delete(collisions);
+   
 
-             if(crossCollision2.size()>0) {
+            if(crossCollision2.size()>0) {
 
-                 System.out.println("REmove match" + buffer);
-                 buff.RemoveMatch(crossCollision2, buffer);
-                 //buff.Sort();
-                 buff.DeleteOutOfBounds(buff.positions.get(0));
-                 buff.PrintAlphabet();
-                 buff.PrintCollisions();
+                buff.RemoveMatch(crossCollision2, buffer);
+                //buff.Sort();
+                buff.DeleteOutOfBounds(buff.positions.get(0));
+                buff.PrintAlphabet();
+                buff.PrintCollisions();
 
-                 unc = buff.GetUnclaimedOperands(insideSeparator, interstitialSeparator);
+                unc = buff.GetUnclaimedOperands(insideSeparator, interstitialSeparator);
 
-                 System.out.println("unc " + unc);
-             }
-             if(!buff.positions.get(0).containsAll(container.positions.get(0))){
-                 if(buff.positions.size() > 0){
-                     tmp2 += interstitialSeparator + RecurcivePart(buff,(ArrayList<Integer>)buff.positions.get(0));
-                 }
-             }
-         }
+            }
+            if(!buff.positions.get(0).containsAll(container.positions.get(0))){
+                if(buff.positions.size() > 0){
+                    tmp2 += interstitialSeparator + RecurcivePart(buff,(ArrayList<Integer>)buff.positions.get(0));
+                }
+            }
+        }
 
-         //разделить это говно на 2 списка. 1 уйдёт в совпадение по 1 циклу, второй уйдёт в buff
+        //разделить это говно на 2 списка. 1 уйдёт в совпадение по 1 циклу, второй уйдёт в buff
 
         tmp += tmp2;
         if(unclaimed.length()>0){tmp += interstitialSeparator + unclaimed;}
 
-        System.out.println("Exit Rec");
-        System.out.println(tmp);
-        System.out.println(unclaimed);
 
         return tmp;
     }
@@ -377,12 +346,11 @@ public class Factorisator_V_2 {
     }
 
     public void Exit(String out){
-        System.out.println(out);
         output = out;
     }
 }
 
- class CustomData{
+class CustomData{
 
     public ArrayList<String> alphabet = new ArrayList<>();
     public ArrayList<ArrayList<Integer>> positions = new ArrayList<>();
@@ -426,17 +394,17 @@ public class Factorisator_V_2 {
     }
 
     //Поиск количества элементов с макс индексом вхождения
-     public int MaxIndexesCount(){
+    public int MaxIndexesCount(){
         int max = positions.get(0).size();
         int count = 0;
-         for (ArrayList<Integer> a: positions) {
-             if(a.size()==max){count++;}
-         }
-         return count;
-     }
+        for (ArrayList<Integer> a: positions) {
+            if(a.size()==max){count++;}
+        }
+        return count;
+    }
 
-     //Удаляет элементы с макс. индексом вхождения
-     public void DeleteMaxIndexes(){
+    //Удаляет элементы с макс. индексом вхождения
+    public void DeleteMaxIndexes(){
         if(positions.size()>0) {
             int maxIndex = positions.get(0).size();
             for (int i = positions.size() - 1; i >= 0; i--) {
@@ -446,9 +414,9 @@ public class Factorisator_V_2 {
             }
         }
         else{}
-     }
+    }
 
-     //Удаления нескольких операндов
+    //Удаления нескольких операндов
     public void Delete(ArrayList<Integer> b){
 
         for(int i = b.size()-1; i>=0; i--){
@@ -464,17 +432,17 @@ public class Factorisator_V_2 {
 
     public void PrintAlphabet(){
         for (String a: alphabet) {
-            System.out.println(a);
+           // System.out.println(a);
         }
     }
 
     public void PrintCollisions(){
         for (ArrayList<Integer> a: positions) {
-            System.out.println(a);
+           // System.out.println(a);
         }
     }
 
-     //Удаляет операнды которые не входят в данный терм
+    //Удаляет операнды которые не входят в данный терм
     public void DeleteOutOfBounds(ArrayList<Integer> a){
 
         for(int i = positions.size()-1; i>=0; i--){
@@ -485,7 +453,7 @@ public class Factorisator_V_2 {
 
     }
 
-     //Возвращяет строку невостребованных термов
+    //Возвращяет строку невостребованных термов
     public String GetUnclaimedOperands(String inside, String interstitial, String[] v){
         String output = "";
         int maxIndexCount = MaxIndexesCount();
@@ -544,16 +512,15 @@ public class Factorisator_V_2 {
         return output;
     }
 
-     //Удаляет совпадающие элементы двух операндов
+    //Удаляет совпадающие элементы двух операндов
     public void RemoveMatch(ArrayList<ArrayList<Integer>> a, ArrayList<Integer> b){
 
         for (ArrayList<Integer> c: a) {
             ArrayList<Integer> buff = new ArrayList<>();
             for(int i = 0; i<c.size();i++){
-                System.out.println(c);
                 if(b.contains(c.get(i))){
                     buff.add(i);
-                    System.out.println("Remove match " + i);
+
                 }else{
                 }
             }
@@ -562,7 +529,7 @@ public class Factorisator_V_2 {
 
     }
 
-     //Удаляет различающиеся элементы двух операндов
+    //Удаляет различающиеся элементы двух операндов
     public void RemoveExclusive(ArrayList<ArrayList<Integer>> a, ArrayList<Integer> b){
 
         for (ArrayList<Integer> c: a) {
@@ -578,7 +545,7 @@ public class Factorisator_V_2 {
 
     }
 
-     //Удаляет вхождение операнда в терм т.е индекс из списка вхождений
+    //Удаляет вхождение операнда в терм т.е индекс из списка вхождений
     public void DeleteOperands(int operand, ArrayList<Integer> term){
         for(int i = term.size()-1; i>=0; i--){
             int n = term.get(i);

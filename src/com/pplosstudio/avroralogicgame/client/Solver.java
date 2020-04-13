@@ -16,7 +16,7 @@ public class Solver implements Runnable {
     private final int number_of_out_var;
 
     private final String[] in_var_names;
-    private final String[] out_var_names;
+    //private final String[] out_var_names;
 
     private final boolean sum_of_products_not_product_of_sums;
     private final boolean all_possible_not_just_one;
@@ -40,7 +40,7 @@ public class Solver implements Runnable {
         this.number_of_in_var = number_of_in_var;
         this.in_var_names = in_var_names;
         this.number_of_out_var = number_of_out_var;
-        this.out_var_names = out_var_names;
+        //this.out_var_names = out_var_names;
         this.sum_of_products_not_product_of_sums = sum_of_products_not_product_of_sums;
         this.all_possible_not_just_one = all_possible_not_just_one;
         this.optimize_number_of_terms_not_variables = optimize_number_of_terms_not_variables;
@@ -57,7 +57,7 @@ public class Solver implements Runnable {
 
     public void Solve() {
 
-        solutions = new ArrayList(number_of_out_var);
+        solutions = new ArrayList<Solutions>(number_of_out_var);
 
         int maxs; // maximum number of implicants
         Implicant [] lstPrimes;
