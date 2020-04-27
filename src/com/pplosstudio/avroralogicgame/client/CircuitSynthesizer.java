@@ -31,8 +31,10 @@ public class CircuitSynthesizer {
 	private int varCount = 0;
 	
 	private Point input_freeSpace = new Point(50,80); //Точка начала отрисовки входов схемы
-	private Point StartPoint = new Point(1,1); // фиксация текущей свободной точки
-	private Point freeSpace = new Point(10,100); //текущая свободнеая точка
+	
+	private Point StartPoint = new Point(1,1); // фиксация начальной точки текущей функции
+	private Point NextStartPoint = new Point(2,2); //фиксация начальной точки следующей функции
+	private Point freeSpace = new Point(3,3); //текущая свободнеая точка
 	
 	ArrayList<ArrayList<String>> list = new ArrayList<>();
 	
@@ -60,12 +62,12 @@ public class CircuitSynthesizer {
 	void GetConfigurationFile() {
 		
 		 MDNF = true;
-		 factorize = true;
+		 factorize = false;
 		 basis = "Default";
 		 //basis = "Nor";
 		// basis = "Zhegalkin";
-		 funcCount = 1;
-		 varCount = 3 ;
+		 funcCount = 2;
+		 varCount = 3;
 		
 	}
 	
@@ -90,40 +92,52 @@ public class CircuitSynthesizer {
                              true
         						);
         sol.run();
-        
-		GWT.log(sol.getSolution());
 		
 		CreateInputElm(generator.VarNames);
         
 		String functions[] = sol.getSolution().split("\n");
+	      for(int i = 0; i<functions.length; i++) {
+	    	  GWT.log(functions[i]);
+	      }
 		
+      	GWT.log(Integer.toString(NextStartPoint.x));
+      	GWT.log(Integer.toString(NextStartPoint.y));
+	      
         for(int i = 0; i<functions.length; i++) {
-		
+        	
+        	StartPoint.y = NextStartPoint.y;
+        	StartPoint.x = NextStartPoint.x;
+        	
+        	freeSpace.y = NextStartPoint.y;
+        	freeSpace.x = NextStartPoint.x;
+        	
+        	GWT.log("Start "+Integer.toString(NextStartPoint.x));
+        	GWT.log("Start "+Integer.toString(NextStartPoint.y));
+        	
 	        if(basis.equals("Default")) {
 		        if(MDNF) {
 		        	if(factorize) {
-			        	factorizator.PrepareData(sol.getSolution());
+			        	factorizator.PrepareData(functions[i]);
 			        	GWT.log(factorizator.output);
 		        		//GWT.log("((~x1)*(x0)*(x2+~x2)+(~x0)*(~x2+x2))+~x0*x1*~x2");
 			        	shuntingYard.calculateExpression(factorizator.output);
 			        	//shuntingYard.calculateExpression("((~x1)*(x0)*(x2+~x2)+(~x0)*(~x2+x2))+~x0*x1*~x2");
-			        	//(~x1)*(x0)*(x2+~x2)+(~x0)*(~x2+x2))+~x0*x1*~x2
 		        	}else {
-		        		shuntingYard.calculateMDNF(sol.getSolution());
+		        		shuntingYard.calculateMDNF(functions[i]);
 		        	}
 		        	list = shuntingYard.list;
 		        }
 		        else {
-		        	shuntingYard.calculateMKNF(sol.getSolution());
+		        	shuntingYard.calculateMKNF(functions[i]);
 		        	list = shuntingYard.list;
 		        }
 	        }
 	        else if(basis.equals("Nor")) {
-	        	converter.ToNor(sol.getSolution(), MDNF);
+	        	converter.ToNor(functions[i], MDNF);
 	        	list = converter.list;
 	        }
 	        else if(basis.equals("Nand")) {
-	        	converter.ToNand(sol.getSolution(), MDNF);
+	        	converter.ToNand(functions[i], MDNF);
 	        	list = converter.list;
 	        }
 	        else if(basis.equals("Zhegalkin")) {
@@ -143,6 +157,17 @@ public class CircuitSynthesizer {
 		
 		String blockName = "";
 		
+		/*
+		String ll2 = "";
+		for(int i = 0; i<list.size(); i++) {
+			for(int j = 0; j<list.get(i).size(); j++) {
+				ll2+=list.get(i).get(j) + "  ";
+			}
+			ll2 += "\n";
+		}
+		GWT.log(ll2);
+		*/
+		
 		for(int i = 0; i<list.size(); i++) {
 			
 				//GWT.log(Integer.toString(list.get(i).size())+ "!!!!!!!");
@@ -150,7 +175,7 @@ public class CircuitSynthesizer {
 				int inputCount = list.get(i).size()-2;
 				String operation= list.get(i).get(list.get(i).size()-2);
 				blockName = list.get(i).get(list.get(i).size()-1);
-				GWT.log("new Block Name " + blockName);
+				//GWT.log("new Block Name " + blockName);
 				
 				
 				//Сдвигаем 
@@ -158,8 +183,8 @@ public class CircuitSynthesizer {
 					
 					if(i>=1 && list.get(i).get(list.get(i).size()-1).length()/list.get(i-1).get(list.get(i-1).size()-1).length()>=1) {
 						
-						freeSpace.x += 150;
-						freeSpace.y += 50;
+						//freeSpace.x += 200;
+						//freeSpace.y += 50;
 					}
 					//else if(i>=1 && list.get(i).get(list.get(i).size()-1).length()/list.get(i-1).get(list.get(i-1).size()-1).length()<1 ) {
 					//	freeSpace.x -= 150;
@@ -167,6 +192,8 @@ public class CircuitSynthesizer {
 				//	}
 					else {freeSpace.y += 150;}
 					
+					freeSpace.x += 200;
+					freeSpace.y += 50;
 					
 				}
 				else {
@@ -181,26 +208,31 @@ public class CircuitSynthesizer {
 							
 							freeSpace.x += 100;
 							freeSpace.y = StartPoint.y;
-							
+							//NextStartPoint.x -= 100;
 						}
 						
 					}else if (i==list.size()-1) {
 						
+						NextStartPoint.y = freeSpace.y;
+						
 						freeSpace.x += 250;
-						freeSpace.y = (int)((input_freeSpace.y - StartPoint.y)/2);
+						freeSpace.y = (int)(( freeSpace.y - StartPoint.y)/2);
 						
 					}
 				}
 				
+				/*
 				String ll = "";
 				for(int j = 0; j<list.get(i).size(); j++) {
 					ll+=list.get(i).get(j) + "  ";
 				}
 				GWT.log(ll);
+				*/
 				
 				if(!dictionary.containsKey(blockName)) {
 				
 					CircuitElm newce = createCe(operation,freeSpace.x,freeSpace.y,freeSpace.x+60,freeSpace.y, 0, inputCount);
+					GWT.log("Freespace " + Integer.toString(freeSpace.x));
 					newce.setPoints();
 					newce.getConnectionPoints(false);
 					elmList.add(newce);
@@ -250,8 +282,14 @@ public class CircuitSynthesizer {
 					
 				}
 				
-				GWT.log("END OF BLOCJ !!!!!!!!!!!!!!!!!!!!!!!!!");
+				//GWT.log("END OF BLOCJ !!!!!!!!!!!!!!!!!!!!!!!!!");
 		}
+		
+		GWT.log("X " + Integer.toString(NextStartPoint.x));
+    	GWT.log("Y "+Integer.toString(NextStartPoint.y));
+		
+		NextStartPoint.y += 100;
+		NextStartPoint.x = StartPoint.x-200;
 		
 		CreateCircuitOutput(blockName);
 		
@@ -268,10 +306,13 @@ public class CircuitSynthesizer {
 		
 		AWL = 100;
 		int minus = 0;
+		int x = input_freeSpace.x;
+		int y = input_freeSpace.y;
 		//AWL = 2*varNames.length * 50;
 		
-		freeSpace = new Point(input_freeSpace.x+AWL+varNames.length*100,input_freeSpace.y);
-		StartPoint = new Point(input_freeSpace.x+AWL+varNames.length*100,input_freeSpace.y);
+		freeSpace = new Point(x+AWL+varNames.length*100, y);
+		StartPoint = new Point(x+AWL+varNames.length*100, y);
+		NextStartPoint = new Point(x+AWL+varNames.length*100, y);
 		
 		//добавить кусок провода длиной в 50
 		for(int i = 0; i<varNames.length; i++) {
@@ -282,7 +323,6 @@ public class CircuitSynthesizer {
 			newce.setPoints();
 			newce.getConnectionPoints(false);
 			elmList.add(newce);
-			
 			
 			CircuitElm newwire = createCe("Wire",newce.OperativePoints.get(0).x,newce.OperativePoints.get(0).y,freeSpace.x+100-minus,newce.OperativePoints.get(0).y, 0, 2);
 			newwire.setPoints();
@@ -456,11 +496,8 @@ public class CircuitSynthesizer {
   			
 
   			
-  			if(in.OperativePoints.size()>2) {
-  				
+  			if(in.OperativePoints.size()>2) {	
   				in.OperativePoints.remove(closestInputIndex);
-  				//GWT.log("op points size" + Integer.toString(in.OperativePoints.size()) + " line 223");
-  				//GWT.log("Confirmed");
   			}
 
   		   
@@ -477,8 +514,6 @@ public class CircuitSynthesizer {
 			
 			if(in.OperativePoints.size()>1) {
   				in.OperativePoints.remove(closestInputIndex);
-  				//GWT.log("op points size" + Integer.toString(in.OperativePoints.size()) + " line 236");
-  				//GWT.log("Confirmed");
   			}
   		}
 		

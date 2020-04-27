@@ -297,7 +297,7 @@ public class ShuntingYard {
 
                     }
                     operands.add(operand2);
-                    if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+'){term += operand2+token;}
+                    if(term.length()>2)if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+'){term += operand2+token;}
                     else {term += token+operand2;}
 
                     String NewOperand = operand1.concat(token+operand2);
@@ -309,21 +309,59 @@ public class ShuntingYard {
                 }
                 else{
 
-                	if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+')term = removeByIndex(term, term.length()-1);
-                    operands.add(prevOperation);
-                    operands.add(term);
+                    System.out.println("Not Like prev");
+                    //System.out.println(term);
+
+                    if(term.length()>2){if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+')term = removeByIndex(term, term.length()-1);}
+                    if(!operands.contains(prevOperation) && operands.size()>=2)operands.add(prevOperation);
+                    if(!operands.contains(term) && operands.size()>=2)operands.add(term);
+
                     term = "";
- 
+                    System.out.println(operands);
+
+                    //if(operands.size()>0)list.add(operands);
                     operands = new ArrayList<>();
                     list.add(operands);
-                    if(!operand1.equals(""))operands.add(operand1);
-                    operands.add(operand2);
 
-                    String NewOperand = operand1.concat(token+operand2);
-                    term = NewOperand;
-                    stack.push(NewOperand);
-                    newTerm=0;
-                    prevOperation = token;
+                    System.out.println("new slot");
+                    //fromSlot = true;
+                    String NewOperand = "";
+
+                    if(stack.size()<=2){
+
+                        if(!operand1.equals(""))operands.add(operand1);
+                        operands.add(operand2);
+
+                       // System.out.println("!!!");
+                        NewOperand=operand1.concat(token + operand2);
+
+                        term = NewOperand;
+                        //operands.add(token);
+                        //operands.add(term);
+                        //term = "";
+
+                        stack.push(NewOperand);
+                        newTerm=0;
+                        prevOperation = token;
+                        System.out.println(operands);
+                    }
+                    else {
+
+                        if(!operand1.equals(""))operands.add(operand1);
+                        operands.add(operand2);
+
+                        if (!operand1.equals("")) {
+                            NewOperand = operand1.concat(token + operand2);
+                        } else {
+                            NewOperand = token + operand2;
+                        }
+                        term = NewOperand;
+                        stack.push(NewOperand);
+                        newTerm=0;
+                        prevOperation = token;
+                        System.out.println(term);
+                    }
+                    
 
                 }
 
@@ -334,12 +372,13 @@ public class ShuntingYard {
         operands.add(prevOperation);
         operands.add(term);
 
+        /*
         if(list.size() == 1 && list.get(0).get(list.get(0).size()-2) != "*"){
             list.get(0).add("*");
             term = removeByIndex(term, term.length()-1);
             list.get(0).add(term);
         }
-
+*/
     }
     
     

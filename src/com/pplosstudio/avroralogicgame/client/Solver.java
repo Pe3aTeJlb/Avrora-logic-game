@@ -451,6 +451,7 @@ public class Solver implements Runnable {
 
                 }
             }
+            solution.append("\n");
         }
 
     }
