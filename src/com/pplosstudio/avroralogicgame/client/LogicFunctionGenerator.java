@@ -1,5 +1,9 @@
 package com.pplosstudio.avroralogicgame.client;
 
+import java.util.ArrayList;
+
+import com.google.gwt.core.client.GWT;
+
 //import com.google.gwt.core.client.GWT;
 
 /*
@@ -26,14 +30,21 @@ public class LogicFunctionGenerator {
     private long seed = 1;
     private float maxTruePercent = 0.5f;
     private float minTruePercent = 0.4f;
+    private int lastVarIndex = 1;
     char[][] buffVector;
 
-    public LogicFunctionGenerator(int varCount, int funcCount){
-        GenerateVectorFunction( varCount, funcCount);
-    }
+
+    public LogicFunctionGenerator() {}
+    
+    
+    //public LogicFunctionGenerator(int varCount, int funcCount, String[] sharedVars){
+    	
+        //GenerateVectorFunction( varCount, funcCount, sharedVars);
+    //}
 
     //генератор логической функции в виде таблицы истинности
-    private void GenerateVectorFunction(int varCount, int funcCount) {
+    public void GenerateVectorFunction(int varCount, int funcCount, String[] sharedVars) {
+    	
 
         int totalVarCount = (int) Math.pow(2,varCount);
 
@@ -42,11 +53,25 @@ public class LogicFunctionGenerator {
         //массивы имён входных переменных и выходных функций. нужны для Квайн-Мак-Класки
         VarNames = new String[varCount];
         OutNames = new String[funcCount];
+        
+        GWT.log(Integer.toString(sharedVars.length));
+        GWT.log(sharedVars[0]);
+        GWT.log(sharedVars[1]);
+    	if(sharedVars.length>0) {
+    		for(int i = 0; i < sharedVars.length; i++) {
+    			VarNames[i] = sharedVars[i];
+        		GWT.log(sharedVars[i]);
+    		}
+    	}
 
         for(int i = 0; i < varCount; i++){
-            String varName = "x"+(i);
-            VarNames[i] = varName;
-           // GWT.log(varName);
+        	
+        	if(i>sharedVars.length-1 || sharedVars.length==0) {
+	            String varName = "x"+(lastVarIndex);
+	            VarNames[i] = varName;
+	            lastVarIndex++;
+        	}
+            GWT.log(VarNames[i]);
         }
 
         for(int i = 0; i < funcCount; i++)

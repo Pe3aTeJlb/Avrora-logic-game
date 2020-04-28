@@ -29,7 +29,9 @@ public class CircuitSynthesizer {
 	private String basis = "";
 	private int funcCount = 0;
 	private int varCount = 0;
-	
+	private String[] sharedVars;
+
+
 	private Point input_freeSpace = new Point(50,80); //Точка начала отрисовки входов схемы
 	
 	private Point StartPoint = new Point(1,1); // фиксация начальной точки текущей функции
@@ -49,13 +51,43 @@ public class CircuitSynthesizer {
 	
 	int width, height;
 	
+	BasisConverter converter = new BasisConverter();
+    Factorisator_V_2 factorizator = new Factorisator_V_2();
+    ShuntingYard shuntingYard = new ShuntingYard();
+	LogicFunctionGenerator generator = new LogicFunctionGenerator();  
+	
 	public void Synthesis(int w, int h) {
 		
 		width = w;
 		height = h;
 		
-			GetConfigurationFile();
+			//GetConfigurationFile();
+			sharedVars = new String[0];	
+		
+			 MDNF = false;
+			 factorize = false;
+			 basis = "Default";
+			 //basis = "Nor";
+			// basis = "Nand";
+			// basis = "Zhegalkin";
+			 funcCount = 3;
+			 varCount = 3;
+			
 			InitializeParametrs();
+			
+			/*
+			sharedVars = new String[]{"x1","x2"};
+			
+			 MDNF = false;
+			 factorize = false;
+			 basis = "Default";
+			 //basis = "Nor";
+			// basis = "Zhegalkin";
+			 funcCount = 2;
+			 varCount = 3;
+			
+			InitializeParametrs();
+			*/
 			
 	}
 	
@@ -66,20 +98,17 @@ public class CircuitSynthesizer {
 		 basis = "Default";
 		 //basis = "Nor";
 		// basis = "Zhegalkin";
-		 funcCount = 2;
+		 funcCount = 3;
 		 varCount = 3;
 		
 	}
 	
 	//Инициализация всех объектов и применение файла конфигурации
 	void InitializeParametrs() {
-				
-        BasisConverter converter = new BasisConverter();
-        Factorisator_V_2 factorizator = new Factorisator_V_2();
-        ShuntingYard shuntingYard = new ShuntingYard();
-		
-		LogicFunctionGenerator generator = new LogicFunctionGenerator(varCount,funcCount);        
+				  
+		//LogicFunctionGenerator generator = new LogicFunctionGenerator(varCount,funcCount,sharedVars);   
         
+        generator.GenerateVectorFunction(varCount, funcCount, sharedVars);
 		
         Solver sol = new Solver(
               generator.VectorFunctions,
@@ -100,8 +129,8 @@ public class CircuitSynthesizer {
 	    	  GWT.log(functions[i]);
 	      }
 		
-      	GWT.log(Integer.toString(NextStartPoint.x));
-      	GWT.log(Integer.toString(NextStartPoint.y));
+      	//GWT.log(Integer.toString(NextStartPoint.x));
+      	//GWT.log(Integer.toString(NextStartPoint.y));
 	      
         for(int i = 0; i<functions.length; i++) {
         	
@@ -111,8 +140,8 @@ public class CircuitSynthesizer {
         	freeSpace.y = NextStartPoint.y;
         	freeSpace.x = NextStartPoint.x;
         	
-        	GWT.log("Start "+Integer.toString(NextStartPoint.x));
-        	GWT.log("Start "+Integer.toString(NextStartPoint.y));
+        	//GWT.log("Start "+Integer.toString(NextStartPoint.x));
+        	//GWT.log("Start "+Integer.toString(NextStartPoint.y));
         	
 	        if(basis.equals("Default")) {
 		        if(MDNF) {
@@ -157,7 +186,7 @@ public class CircuitSynthesizer {
 		
 		String blockName = "";
 		
-		/*
+		
 		String ll2 = "";
 		for(int i = 0; i<list.size(); i++) {
 			for(int j = 0; j<list.get(i).size(); j++) {
@@ -166,7 +195,7 @@ public class CircuitSynthesizer {
 			ll2 += "\n";
 		}
 		GWT.log(ll2);
-		*/
+		
 		
 		for(int i = 0; i<list.size(); i++) {
 			
@@ -202,6 +231,7 @@ public class CircuitSynthesizer {
 						
 						if(i>=1 && list.get(i-1).get(list.get(i-1).size()-2) == operation ) {
 							
+						if(!dictionary.containsKey(blockName))
 							freeSpace.y += 150;
 							
 						}else {
@@ -214,10 +244,11 @@ public class CircuitSynthesizer {
 					}else if (i==list.size()-1) {
 						
 						NextStartPoint.y = freeSpace.y;
-						
+					//	GWT.log("FRS "+freeSpace.toString());
+					//	GWT.log("STR "+StartPoint.toString());
 						freeSpace.x += 250;
-						freeSpace.y = (int)(( freeSpace.y - StartPoint.y)/2);
-						
+						freeSpace.y = (int)(( freeSpace.y - StartPoint.y)/2)+StartPoint.y;
+				    	//GWT.log(freeSpace.toString());
 					}
 				}
 				
@@ -232,7 +263,7 @@ public class CircuitSynthesizer {
 				if(!dictionary.containsKey(blockName)) {
 				
 					CircuitElm newce = createCe(operation,freeSpace.x,freeSpace.y,freeSpace.x+60,freeSpace.y, 0, inputCount);
-					GWT.log("Freespace " + Integer.toString(freeSpace.x));
+					
 					newce.setPoints();
 					newce.getConnectionPoints(false);
 					elmList.add(newce);
@@ -285,11 +316,13 @@ public class CircuitSynthesizer {
 				//GWT.log("END OF BLOCJ !!!!!!!!!!!!!!!!!!!!!!!!!");
 		}
 		
-		GWT.log("X " + Integer.toString(NextStartPoint.x));
-    	GWT.log("Y "+Integer.toString(NextStartPoint.y));
+	//	GWT.log("X " + Integer.toString(NextStartPoint.x));
+    	//GWT.log("Y "+Integer.toString(NextStartPoint.y));
 		
 		NextStartPoint.y += 100;
 		NextStartPoint.x = StartPoint.x-200;
+		
+		input_freeSpace.y = NextStartPoint.y;
 		
 		CreateCircuitOutput(blockName);
 		
@@ -316,6 +349,8 @@ public class CircuitSynthesizer {
 		
 		//добавить кусок провода длиной в 50
 		for(int i = 0; i<varNames.length; i++) {
+			
+			if(!dictionary.containsKey(varNames[i])) {
 			
 			minus += 40;
 			
@@ -352,6 +387,8 @@ public class CircuitSynthesizer {
 			String InverseInput = "~"+varNames[i];
 			
 			dictionary.put(InverseInput, wire2);
+			
+		  }
 			
 		}
 		
@@ -463,6 +500,8 @@ public class CircuitSynthesizer {
   					
   				}else { 
   					
+  				//	GWT.log("!!!");
+  					
   					diap = ((prevOutput.x+20) + (int) (Math.random() * (currentInput.x-prevOutput.x-40)));
 	  		  		int temp = diap%10;
 	  		  		
@@ -505,12 +544,20 @@ public class CircuitSynthesizer {
   		}
   		else { //Если выход и вход на одной линии
   			
-	  		CircuitElm newce99 = createCe("Wire",prevOutput.x, prevOutput.y, currentInput.x, currentInput.y, 0, 0);
-			newce99.setPoints();
-			newce99.getConnectionPoints(true);
-			elmList.add(newce99);
+  			//Разделим данное соединение на 2, для случая, когда выходной элемент на одной линии с входным + он же коннектится с третьим
+  			//обавить рандомную x координату для сегментации
+  			
+	  		CircuitElm newce1 = createCe("Wire",prevOutput.x, prevOutput.y, prevOutput.x+20, prevOutput.y, 0, 0);
+			newce1.setPoints();
+			newce1.getConnectionPoints(true);
+			elmList.add(newce1);
 			
-			dictionary.replace(outName, newce99);
+			CircuitElm newce2 = createCe("Wire",prevOutput.x+20, prevOutput.y, currentInput.x, currentInput.y, 0, 0);
+			newce2.setPoints();
+			newce2.getConnectionPoints(true);
+			elmList.add(newce2);
+			
+			dictionary.replace(outName, newce2);
 			
 			if(in.OperativePoints.size()>1) {
   				in.OperativePoints.remove(closestInputIndex);
