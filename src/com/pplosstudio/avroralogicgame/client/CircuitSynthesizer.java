@@ -23,6 +23,15 @@ import com.google.gwt.core.client.GWT;
  * drawPost отвечает за отрисовку точек
  */
 
+
+/*
+ * To Do
+ * факторизация
+ * удаление инверторов, если они не используются
+ * разбиение линии соединения на сегменты, если out.y = in.y
+ * расположение для жегалкина и факторизации
+ */
+
 public class CircuitSynthesizer {
 	
 	private boolean MDNF, factorize;
@@ -58,19 +67,19 @@ public class CircuitSynthesizer {
 	
 	public void Synthesis(int w, int h) {
 		
-		width = w;
-		height = h;
+			width = w;
+			height = h;
 		
 			//GetConfigurationFile();
 			sharedVars = new String[0];	
 		
-			 MDNF = false;
-			 factorize = false;
-			 basis = "Default";
-			 //basis = "Nor";
-			// basis = "Nand";
-			// basis = "Zhegalkin";
-			 funcCount = 3;
+			 MDNF = true;
+			 factorize = true;
+		//	 basis = "Default";
+			// basis = "Nor";
+			 //basis = "Nand";
+			 basis = "Zhegalkin";
+			 funcCount = 2;
 			 varCount = 3;
 			
 			InitializeParametrs();
@@ -134,6 +143,8 @@ public class CircuitSynthesizer {
 	      
         for(int i = 0; i<functions.length; i++) {
         	
+        	list.clear();
+        	
         	StartPoint.y = NextStartPoint.y;
         	StartPoint.x = NextStartPoint.x;
         	
@@ -192,64 +203,93 @@ public class CircuitSynthesizer {
 			for(int j = 0; j<list.get(i).size(); j++) {
 				ll2+=list.get(i).get(j) + "  ";
 			}
-			ll2 += "\n";
+			ll2 += " endl "+"\n";
 		}
 		GWT.log(ll2);
 		
 		
 		for(int i = 0; i<list.size(); i++) {
-			
-				//GWT.log(Integer.toString(list.get(i).size())+ "!!!!!!!");
 		
 				int inputCount = list.get(i).size()-2;
 				String operation= list.get(i).get(list.get(i).size()-2);
 				blockName = list.get(i).get(list.get(i).size()-1);
 				//GWT.log("new Block Name " + blockName);
 				
-				
+				//Правила расположения элементов для общего базиса и Жегалкина
+				if(basis.equals("Default") || basis.equals("Zhegalkin")) {
 				//Сдвигаем 
-				if(factorize) {
-					
-					if(i>=1 && list.get(i).get(list.get(i).size()-1).length()/list.get(i-1).get(list.get(i-1).size()-1).length()>=1) {
+					if(factorize) {
 						
-						//freeSpace.x += 200;
-						//freeSpace.y += 50;
+						if(i>=1 && list.get(i).get(list.get(i).size()-1).length()/list.get(i-1).get(list.get(i-1).size()-1).length()>=1) {
+							
+							//freeSpace.x += 200;
+							//freeSpace.y += 50;
+						}
+						//else if(i>=1 && list.get(i).get(list.get(i).size()-1).length()/list.get(i-1).get(list.get(i-1).size()-1).length()<1 ) {
+						//	freeSpace.x -= 150;
+						//	freeSpace.y += 50;
+					//	}
+						else {freeSpace.y += 150;}
+						
+						freeSpace.x += 200;
+						freeSpace.y += 50;
+						
 					}
-					//else if(i>=1 && list.get(i).get(list.get(i).size()-1).length()/list.get(i-1).get(list.get(i-1).size()-1).length()<1 ) {
-					//	freeSpace.x -= 150;
-					//	freeSpace.y += 50;
-				//	}
-					else {freeSpace.y += 150;}
-					
-					freeSpace.x += 200;
-					freeSpace.y += 50;
-					
+					else {
+						
+						if(i<list.size()-1) {
+							
+							if(i>=1 && list.get(i-1).get(list.get(i-1).size()-2) == operation ) {
+								
+							if(!dictionary.containsKey(blockName))
+								freeSpace.y += 150;
+								
+							}else {
+								
+								freeSpace.x += 100;
+								freeSpace.y = StartPoint.y;
+							}
+							
+						}else if (i==list.size()-1) {
+							
+							NextStartPoint.y = freeSpace.y;
+							freeSpace.x += 250;
+							freeSpace.y = (int)(( freeSpace.y - StartPoint.y)/2)+StartPoint.y;
+						}
+					}
 				}
+				
+				//Правила расположения элементов для Nor Nand
 				else {
 					
 					if(i<list.size()-1) {
 						
-						if(i>=1 && list.get(i-1).get(list.get(i-1).size()-2) == operation ) {
+						if(i>=1 && list.get(i-1).get(list.get(i-1).size()-2) == operation &&
+								
+								(float)list.get(i-1).get(list.get(i-1).size()-3).length()/list.get(i).get(list.get(i).size()-3).length() > 0.5f
+						) {
 							
 						if(!dictionary.containsKey(blockName))
 							freeSpace.y += 150;
-							
+							NextStartPoint.y = freeSpace.y;
 						}else {
-							
-							freeSpace.x += 100;
-							freeSpace.y = StartPoint.y;
-							//NextStartPoint.x -= 100;
+							freeSpace.x += 250;
+							freeSpace.y = (int)(( freeSpace.y - StartPoint.y)/2)+StartPoint.y;
 						}
 						
 					}else if (i==list.size()-1) {
 						
-						NextStartPoint.y = freeSpace.y;
-					//	GWT.log("FRS "+freeSpace.toString());
-					//	GWT.log("STR "+StartPoint.toString());
-						freeSpace.x += 250;
-						freeSpace.y = (int)(( freeSpace.y - StartPoint.y)/2)+StartPoint.y;
-				    	//GWT.log(freeSpace.toString());
+						//Если идёт инвертирование через и-не, или-не, то этот элемент лежит на одной линии с предыдущей
+						if( list.get(i).get(list.get(i).size()-4).equals(list.get(i).get(list.get(i).size()-3)) ) {
+							freeSpace.x += 150;
+						}
+						else {
+							freeSpace.y = (int)(( freeSpace.y - StartPoint.y)/2)+StartPoint.y;
+							freeSpace.x += 150;
+						}
+
 					}
+						
 				}
 				
 				/*
@@ -320,7 +360,7 @@ public class CircuitSynthesizer {
     	//GWT.log("Y "+Integer.toString(NextStartPoint.y));
 		
 		NextStartPoint.y += 100;
-		NextStartPoint.x = StartPoint.x-200;
+		//&&&&&&NextStartPoint.x = StartPoint.x-200;
 		
 		input_freeSpace.y = NextStartPoint.y;
 		

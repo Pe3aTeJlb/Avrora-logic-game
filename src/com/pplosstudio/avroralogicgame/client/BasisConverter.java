@@ -2,6 +2,8 @@ package com.pplosstudio.avroralogicgame.client;
 
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
+
 public class BasisConverter {
 
     private String outFunction = "";
@@ -14,6 +16,9 @@ public class BasisConverter {
     //Приведение к базису и-не
     public void ToNand(String func, boolean sum_of_prod) {
 
+    	list.clear();
+    	terms.clear();
+    	
         if(sum_of_prod){
 
             String buffFuncName = "";
@@ -36,7 +41,7 @@ public class BasisConverter {
                     for(int j = 0; j < t.length; j++){
                         operands.add(t[j]);
                     }
-                    operands.add("Nor");
+                    operands.add("Nand");
                     operands.add(funcName);
                 }
                 terms.add(funcName);
@@ -118,6 +123,9 @@ public class BasisConverter {
     //Приведение к базису Или-не
     public void ToNor(String func, boolean sum_of_prod) {
 
+    	list.clear();
+    	terms.clear();
+    	
         if(sum_of_prod){
 
             String buffFuncName = "";
@@ -189,7 +197,7 @@ public class BasisConverter {
             String[] tmp = func.split("\\*");
 
             for(int i = 0; i < tmp.length; i++){
-                System.out.println(tmp[i]);
+               
                 operands = new ArrayList<>();
                 String funcName = "";
                 String[] t = tmp[i].split("\\+");
@@ -207,16 +215,20 @@ public class BasisConverter {
                     operands.add("Nor");
                     operands.add(funcName);
                 }
+                
                 terms.add(funcName);
                 buffFuncName += funcName + "+";
+                //GWT.log("FuncName " + buffFuncName);
                 if(operands.size()!=0)list.add(operands);
             }
+            
             buffFuncName = removeByIndex(buffFuncName, buffFuncName.length()-1);
             buffFuncName = "~("+buffFuncName+")";
             terms.add("Nor");
             terms.add(buffFuncName);
+            
             list.add(terms);
-            System.out.println(list);
+          //  GWT.log(list.toString());
         }
 
     }
@@ -224,6 +236,9 @@ public class BasisConverter {
     //Приведение к полиному Жегалкина методом треугольника
     public void ToZhegalkinPolynomial(char[][] functionVector, int row, String[] varNames) {
 
+    	list.clear();
+    	terms.clear();
+    	
         ArrayList<Integer> vectorFunc = new ArrayList<>();
         ArrayList<Integer> ZhegalikinIndexes = new ArrayList<>();
 
