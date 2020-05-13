@@ -26,7 +26,6 @@ import com.google.gwt.core.client.GWT;
 
 /*
  * To Do
- * факторизация
  * удаление инверторов, если они не используются
  * разбиение линии соединения на сегменты, если out.y = in.y
  * расположение для жегалкина и факторизации
@@ -39,7 +38,6 @@ public class CircuitSynthesizer {
 	private int funcCount = 0;
 	private int varCount = 0;
 	private String[] sharedVars;
-
 
 	private Point input_freeSpace = new Point(50,80); //Точка начала отрисовки входов схемы
 	
@@ -55,6 +53,9 @@ public class CircuitSynthesizer {
 	
 	ArrayList<String> splittedWires = new ArrayList<String>(); 
 	
+	ArrayList<ArrayList<CircuitElm>> UnusedInputs = new ArrayList<>();
+	ArrayList<String> UnusedVarNames = new ArrayList<>();
+
 	//AWL = Additional Wire Length
 	private int AWL;
 	
@@ -75,12 +76,12 @@ public class CircuitSynthesizer {
 		
 			 MDNF = true;
 			 factorize = true;
-		//	 basis = "Default";
+			 basis = "Default";
 			// basis = "Nor";
 			 //basis = "Nand";
-			 basis = "Zhegalkin";
-			 funcCount = 2;
-			 varCount = 3;
+			// basis = "Zhegalkin";
+			 funcCount = 1;
+			 varCount = 4;
 			
 			InitializeParametrs();
 			
@@ -107,7 +108,7 @@ public class CircuitSynthesizer {
 		 basis = "Default";
 		 //basis = "Nor";
 		// basis = "Zhegalkin";
-		 funcCount = 3;
+		 funcCount = 1;
 		 varCount = 3;
 		
 	}
@@ -187,7 +188,7 @@ public class CircuitSynthesizer {
 	        
 	        CreateCircuit(list);
         }
-        	
+        	DeleteUnusedInputs();
 	}
 		
 	//Проход по всему списку, составление hashmap с созданными эдементами, установка параметров соединения объектов
@@ -207,6 +208,8 @@ public class CircuitSynthesizer {
 		}
 		GWT.log(ll2);
 		
+		int Yaccum = 1;
+		int MaxFreeSpaceY = 0;
 		
 		for(int i = 0; i<list.size(); i++) {
 		
@@ -215,29 +218,89 @@ public class CircuitSynthesizer {
 				blockName = list.get(i).get(list.get(i).size()-1);
 				//GWT.log("new Block Name " + blockName);
 				
+				/*
+				 * Общий смысл алгоритма расположения
+				 * для общих случаев Nor Nand Def элементы располагаеются в ряды по операциям.
+				 * В Nor Nand есть нюанс с расположением выходного элемента в случае инвертирования ответа через элемент базиса см далее
+				 */
+				
 				//Правила расположения элементов для общего базиса и Жегалкина
-				if(basis.equals("Default") || basis.equals("Zhegalkin")) {
-				//Сдвигаем 
-					if(factorize) {
+				if(basis.equals("Default") || basis.equals("Zhegalkin")) 
+				{
+					
+					/*
+					 * При факторизации выражения:
+					 * Если есть два блока вида [x1 x2 * x1*x2] и [x3 x1*x2 +* x3+*x1*x2] торой блок будет сдвинут вправо-вниз
+					 */
+					
+					if(factorize) 
+					{
 						
-						if(i>=1 && list.get(i).get(list.get(i).size()-1).length()/list.get(i-1).get(list.get(i-1).size()-1).length()>=1) {
+						if(i<list.size()-1) 
+						{
 							
-							//freeSpace.x += 200;
-							//freeSpace.y += 50;
+							if(i>=1 && list.get(i-1).get(list.get(i-1).size()-2) == operation ) 
+							{
+								
+								freeSpace.y += 150;
+								//freeSpace.x += 25;
+								
+							}
+							
+							else if(i>=1 && list.get(i).get(0).length()<=3) 
+							{
+								
+								if(!dictionary.containsKey(blockName)) {
+									freeSpace.x += 100;
+									freeSpace.y += 150;
+								}
+								
+							}
+							else if(i==0)
+							{
+								freeSpace.x += 75;
+								freeSpace.y = StartPoint.y;
+							}
+							else
+							{
+								freeSpace.x += 150;
+								freeSpace.y = StartPoint.y+50*Yaccum;
+								Yaccum += 1;
+							}
+							
 						}
-						//else if(i>=1 && list.get(i).get(list.get(i).size()-1).length()/list.get(i-1).get(list.get(i-1).size()-1).length()<1 ) {
-						//	freeSpace.x -= 150;
-						//	freeSpace.y += 50;
-					//	}
-						else {freeSpace.y += 150;}
+						else if(i==list.size()-1)
+						{
+							
+							if(i>=1 && list.get(i).get(0).length()<=3) {
+								
+								if(!dictionary.containsKey(blockName)) {
+									freeSpace.x += 100;
+									//freeSpace.y += dictionary.get(list.get(i).get(0)).OperativePoints.get(0).y;
+									freeSpace.y = (int)(( MaxFreeSpaceY - StartPoint.y)/2)+StartPoint.y+50;
+									NextStartPoint.y = freeSpace.y;
+								}
+							}	
+							else {
+							
+								NextStartPoint.y = freeSpace.y;
+								freeSpace.x += 250;
+								freeSpace.y = (int)(( MaxFreeSpaceY - StartPoint.y)/2)+StartPoint.y+50;
+							}
+							
+						}
 						
-						freeSpace.x += 200;
-						freeSpace.y += 50;
-						
+						if(freeSpace.y > MaxFreeSpaceY) {
+							MaxFreeSpaceY = freeSpace.y;
+						}
+						GWT.log(Integer.toString(MaxFreeSpaceY));
 					}
-					else {
+					
+					if(!factorize) 
+					{
 						
-						if(i<list.size()-1) {
+						if(i<list.size()-1) 
+						{
 							
 							if(i>=1 && list.get(i-1).get(list.get(i-1).size()-2) == operation ) {
 								
@@ -259,8 +322,9 @@ public class CircuitSynthesizer {
 					}
 				}
 				
+				
 				//Правила расположения элементов для Nor Nand
-				else {
+				if(basis.equals("Nor") || basis.equals("Nand")) {
 					
 					if(i<list.size()-1) {
 						
@@ -277,7 +341,8 @@ public class CircuitSynthesizer {
 							freeSpace.y = (int)(( freeSpace.y - StartPoint.y)/2)+StartPoint.y;
 						}
 						
-					}else if (i==list.size()-1) {
+					}
+					else if (i==list.size()-1) {
 						
 						//Если идёт инвертирование через и-не, или-не, то этот элемент лежит на одной линии с предыдущей
 						if( list.get(i).get(list.get(i).size()-4).equals(list.get(i).get(list.get(i).size()-3)) ) {
@@ -313,60 +378,58 @@ public class CircuitSynthesizer {
 					
 					for(int j = 0; j<list.get(i).size()-2; j++) {
 						
+						if(UnusedVarNames.contains(list.get(i).get(j))) {
+							UnusedVarNames.remove(list.get(i).get(j));
+						}else {}
+						
 						//GWT.log("connect " + list.get(i).get(j) + " with "+ blockName);
 						//GWT.log(Boolean.toString(dictionary.containsKey(list.get(i).get(j))));
 						//GWT.log(Boolean.toString(dictionary.containsKey(blockName)));
 						
 						//Выбор параметров соежинения: Перелом, ВходнойЭлементСхемы?
 						
-						if(dictionary.containsKey(list.get(i).get(j))) {
+						if(dictionary.containsKey(list.get(i).get(j))) 
+						{
 							
-							if(splittedWires.contains(list.get(i).get(j))) {
+							if(splittedWires.contains(list.get(i).get(j))) 
+							{
 								
 								if(list.get(i).get(j).length()<=3) {
 									ConnectElements(dictionary.get(list.get(i).get(j)), dictionary.get(blockName),list.get(i).get(j),true,true);
-								}else {
+								}else{
 									ConnectElements(dictionary.get(list.get(i).get(j)), dictionary.get(blockName),list.get(i).get(j),true,false);
 									}
 							
-							}else {
+							}else 
+							{
 								
 								splittedWires.add(list.get(i).get(j));
 								if(list.get(i).get(j).length()<=3) {
 									ConnectElements(dictionary.get(list.get(i).get(j)), dictionary.get(blockName),list.get(i).get(j),false,true);
-								}else {
+								}else{
 									ConnectElements(dictionary.get(list.get(i).get(j)), dictionary.get(blockName),list.get(i).get(j),false,false);
 									}
 							
 							}
 							
-						}else {
-							GWT.log("He he he, error somewhere/ line 142 " + list.get(i).get(j));
-							
-							ConnectElements(dictionary.get(list.get(i).get(j)), dictionary.get(blockName),list.get(i).get(j),false,false);
-							//break;
 						}
-						
-						
+						else 
+						{
+							GWT.log("He he he, error somewhere/ line 142 " + list.get(i).get(j));
+							ConnectElements(dictionary.get(list.get(i).get(j)), dictionary.get(blockName),list.get(i).get(j),false,false);
+						}	
 					}
 					
 					
 				}
 				
-				//GWT.log("END OF BLOCJ !!!!!!!!!!!!!!!!!!!!!!!!!");
 		}
 		
-	//	GWT.log("X " + Integer.toString(NextStartPoint.x));
-    	//GWT.log("Y "+Integer.toString(NextStartPoint.y));
 		
 		NextStartPoint.y += 100;
-		//&&&&&&NextStartPoint.x = StartPoint.x-200;
-		
 		input_freeSpace.y = NextStartPoint.y;
 		
 		CreateCircuitOutput(blockName);
-		
-		
 	}
 	
 	/*
@@ -389,8 +452,10 @@ public class CircuitSynthesizer {
 		
 		//добавить кусок провода длиной в 50
 		for(int i = 0; i<varNames.length; i++) {
-			
+					
 			if(!dictionary.containsKey(varNames[i])) {
+				
+			ArrayList<CircuitElm> UnusedVar = new ArrayList<CircuitElm>(); //для удаления неиспользуемых входов схемы.
 			
 			minus += 40;
 			
@@ -406,6 +471,9 @@ public class CircuitSynthesizer {
 			
 			dictionary.put(varNames[i], newwire);
 			input_freeSpace.y += 100;
+			
+			UnusedVar.add(newwire);
+			UnusedInputs.add(UnusedVar);
 			
 			minus += 40;
 			
@@ -428,33 +496,21 @@ public class CircuitSynthesizer {
 			
 			dictionary.put(InverseInput, wire2);
 			
+			UnusedVar = new ArrayList<CircuitElm>();
+			
+			UnusedVar.add(wire);
+			UnusedVar.add(inverted);
+			UnusedVar.add(wire2);
+			UnusedInputs.add(UnusedVar);
+			
+			UnusedVarNames.add(varNames[i]);
+			UnusedVarNames.add(InverseInput);
 		  }
 			
 		}
 		
 	}
-	
-	/*
-	//Create an invertor for input elem (down wire + 50l invertor)
-	void CreateInverse(String input) {
 		
-		//GWT.log("&&&&&&&&& " + input.substring(1));
-		CircuitElm origin = dictionary.get(input.substring(1));
-		//GWT.log("&&&&&&&&&");
-		
-		CircuitElm wire = createCe("Wire",origin.OperativePoints.get(0).x, origin.OperativePoints.get(0).y, origin.OperativePoints.get(0).x, origin.OperativePoints.get(0).y-10, 0, 0);
-		wire.setPoints();
-		elmList.add(wire);
-		
-		CircuitElm inverted = createCe("Invertor",origin.OperativePoints.get(0).x, origin.OperativePoints.get(0).y-10, origin.OperativePoints.get(0).x+50, origin.OperativePoints.get(0).y-10, 0, 0);
-		inverted.setPoints();
-		elmList.add(inverted);
-		
-		dictionary.put(input, inverted);
-		
-	}
-	*/
-	
 	//Создаёт выходной элемент схемы на последнем лог. элементе
 	void CreateCircuitOutput(String lastBlock) {
 		
@@ -471,18 +527,10 @@ public class CircuitSynthesizer {
 	
 	//Соединение двух элементов
   	void ConnectElements(CircuitElm out, CircuitElm in, String outName, boolean alreadySplitted, boolean isInputElm) {
-  		
-  		//GWT.log("in op points size " + Integer.toString(in.OperativePoints.size()));
-  		//GWT.log("out op points size " + Integer.toString(out.OperativePoints.size()));
-  		
-  		
+
   		Point prevOutput = out.OperativePoints.get(out.OperativePoints.size()-1); //выход предыдущего элемента
   		int closestInputIndex = GetClosestInput(prevOutput, in); //поиск индекса ближайшего входа к выходу
   		Point currentInput = in.OperativePoints.get(closestInputIndex);
-  		
-  		
-		//GWT.log(Integer.toString(prevOutput.y));
-		//GWT.log(Integer.toString(currentInput.y));
 
   		if(prevOutput.y != currentInput.y) {
   		
@@ -607,6 +655,33 @@ public class CircuitSynthesizer {
   		
   	}
 	
+  	void DeleteUnusedInputs() {
+  		
+  		GWT.log(UnusedVarNames.toString());
+  		
+  		if(UnusedVarNames.size()>0) {
+  		
+	  		for(int i = 0; i<UnusedVarNames.size(); i++) {
+	  		
+	  			GWT.log(Character.toString(UnusedVarNames.get(i).charAt(UnusedVarNames.get(i).length()-1)));
+		  		int IndexToDelete = (Integer.parseInt(Character.toString(UnusedVarNames.get(i).charAt(UnusedVarNames.get(i).length()-1)))-1)*2;
+		  		
+		  		if(UnusedVarNames.get(i).charAt(0) =='~') {
+		  			IndexToDelete +=1;
+		  		}  		
+		  		
+	  			for(int j = 0; j<UnusedInputs.get(IndexToDelete).size(); j++) {
+	  				
+	  				elmList.remove(UnusedInputs.get(IndexToDelete).get(j));
+	  				
+	  			}
+		  		
+	  		}
+  		
+  		}
+  		
+  	}
+  	
   	//Индекс входа ближайший к выходу
   	Integer GetClosestInput(Point out, CircuitElm in) {
   		

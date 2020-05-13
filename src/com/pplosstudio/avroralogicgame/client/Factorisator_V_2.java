@@ -29,6 +29,9 @@ public class Factorisator_V_2 {
     CustomData data = new CustomData();
 
     public void PrepareData(String expression) {
+    	
+    	operands.clear();
+    	binaryTerms.clear();
 
         expr = expression;
 
