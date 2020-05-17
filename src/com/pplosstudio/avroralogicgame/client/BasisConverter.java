@@ -10,8 +10,9 @@ public class BasisConverter {
     public ArrayList<ArrayList<String>> list = new ArrayList<>();
     ArrayList<String> operands = new ArrayList<>();
     ArrayList<String> terms = new ArrayList<>();
-
-    public BasisConverter(){ }
+    private boolean debug = false;
+    
+    public BasisConverter(boolean dbg){debug = dbg;}
 
     //Приведение к базису и-не
     public void ToNand(String func, boolean sum_of_prod) {
@@ -29,7 +30,6 @@ public class BasisConverter {
             String[] tmp = func.split("\\+");
 
             for(int i = 0; i < tmp.length; i++){
-                System.out.println(tmp[i]);
                 operands = new ArrayList<>();
                 String funcName = "";
                 String[] t = tmp[i].split("\\*");
@@ -53,7 +53,7 @@ public class BasisConverter {
             terms.add("Nand");
             terms.add(buffFuncName);
             list.add(terms);
-            System.out.println(list);
+            if(debug)GWT.log(list.toString());
 
 
         }else{
@@ -67,8 +67,6 @@ public class BasisConverter {
 
             for(int i = 0; i < tmp.length; i++){
 
-                System.out.println(tmp[i]);
-
                 operands = new ArrayList<>();
                 String funcName = "";
                 String[] t = tmp[i].split("\\+");
@@ -77,7 +75,6 @@ public class BasisConverter {
                     funcName = tmp[i];
                 }else{
                     for(int j = 0; j < t.length; j++){
-                        System.out.println(t[j]);
                         if(t[j].charAt(0) == '~'){
                             t[j] = removeByIndex(t[j],0);
                             funcName += t[j];
@@ -114,8 +111,6 @@ public class BasisConverter {
             terms.add("~("+buffFuncName+")");
             list.add(terms);
 
-            System.out.println(list);
-
         }
 
     }
@@ -137,8 +132,6 @@ public class BasisConverter {
 
             for(int i = 0; i < tmp.length; i++){
 
-                System.out.println(tmp[i]);
-
                 operands = new ArrayList<>();
                 String funcName = "";
                 String[] t = tmp[i].split("\\*");
@@ -147,7 +140,6 @@ public class BasisConverter {
                     funcName = tmp[i];
                 }else{
                     for(int j = 0; j < t.length; j++){
-                        //System.out.println(t[0].charAt(0));
                         if(t[j].charAt(0) == '~'){
                             t[j] = removeByIndex(t[j],0);
                             funcName += t[j];
@@ -183,8 +175,6 @@ public class BasisConverter {
             terms.add("Nor");
             terms.add("~("+buffFuncName+")");
             list.add(terms);
-
-            System.out.println(list);
 
         }else{
 
@@ -246,7 +236,7 @@ public class BasisConverter {
             vectorFunc.add(Integer.parseInt(Character.toString(functionVector[i][row])));
         }
 
-        System.out.println(vectorFunc);
+        if(debug)GWT.log(vectorFunc.toString());
 
         int m = vectorFunc.size();
         ZhegalikinIndexes.add(vectorFunc.get(0));
@@ -260,7 +250,7 @@ public class BasisConverter {
                     if(vectorFunc.get(0) == 1){
                         operands = new ArrayList<>();
                         String v = Integer.toBinaryString(k);
-                        System.out.println(v);
+                        if(debug)GWT.log(v);
                         String tmp = "";
                         int y = 0;
                         for(int l = varNames.length-v.length(); l<varNames.length; l++){
@@ -281,7 +271,7 @@ public class BasisConverter {
                             }else{terms.add(operands.get(0));}
 
                             outFunction += tmp+"@";
-                        System.out.println(outFunction);
+                            if(debug)GWT.log(outFunction);
                     }
 
                 }
@@ -290,7 +280,7 @@ public class BasisConverter {
             }
 
             vectorFunc.remove(vectorFunc.size()-1);
-            System.out.println(vectorFunc);
+            if(debug)GWT.log(vectorFunc.toString());
             ZhegalikinIndexes.add(vectorFunc.get(0));
         }
 
@@ -298,9 +288,9 @@ public class BasisConverter {
         terms.add("Xor");
         terms.add(outFunction);
         list.add(terms);
-        System.out.println(ZhegalikinIndexes);
-        System.out.println(outFunction);
-        System.out.println(list);
+        if(debug)GWT.log(ZhegalikinIndexes.toString());
+        if(debug)GWT.log(outFunction);
+        if(debug)GWT.log(list.toString());
 
     }
 

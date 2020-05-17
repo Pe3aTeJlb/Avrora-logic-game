@@ -248,18 +248,18 @@ public class Factorisator_V_2 {
                     //if (container.positions.get(i).size() == maxIndex && container.positions.get(i).containsAll(container.positions.get(i-1))) {
                   //  if ( container.positions.get(i).containsAll(container.positions.get(i-1))) {
                         if(!Collections.disjoint(container.positions.get(i),container.positions.get(i-1))){
-                        System.out.println("Added from index 0 " + container.alphabet.get(i)+ " on iter " + i);
+                    //    System.out.println("Added from index 0 " + container.alphabet.get(i)+ " on iter " + i);
                         //tmp += container.alphabet.get(i) + interstitialSeparator;
                         tmp += container.alphabet.get(i) + insideSeparator;
 
                     }else {
-                        System.out.println("&&&&&");
+                     //   System.out.println("&&&&&");
                         tmp = removeByIndex(tmp,tmp.length()-1);
                         tmp += interstitialSeparator+ container.alphabet.get(i) + insideSeparator;
                     }
 
                 }else {
-                    System.out.println("Added to unclaimed " + container.alphabet.get(i) + " on iter " + i);
+                   // System.out.println("Added to unclaimed " + container.alphabet.get(i) + " on iter " + i);
                     unclaimed += container.alphabet.get(i) + insideSeparator;
                 }
 

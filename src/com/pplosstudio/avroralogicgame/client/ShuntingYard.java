@@ -2,6 +2,8 @@ package com.pplosstudio.avroralogicgame.client;
 
 import java.util.Stack;
 
+import com.google.gwt.core.client.GWT;
+
 //import com.google.gwt.core.client.GWT;
 
 import java.util.*;
@@ -16,11 +18,14 @@ public class ShuntingYard {
 
     public ArrayList<ArrayList<String>> list = new ArrayList<>();
     public ArrayList<String> out = new ArrayList<>();
+    private boolean debug = false;
 
-    public ShuntingYard(){
+    public ShuntingYard(boolean dbg){
+    	debug = dbg;
     }
 
-    /**
+
+	/**
      * Основные математические операции и их приоритеты.
      *
      * @see #sortingStation(String, java.util.Map)
@@ -237,9 +242,6 @@ public class ShuntingYard {
         
     }   
 
-    
-    
-    
     /**
      * Вычисляет значение выражения, записанного в инфиксной нотации. Выражение может содержать скобки, числа с
      * плавающей точкой, четыре основных математических операндов.
@@ -249,138 +251,200 @@ public class ShuntingYard {
      */
     public void calculateExpression(String expression) {
 
-        String rpn = sortingStation(expression, MAIN_MATH_OPERATIONS);
-        StringTokenizer tokenizer = new StringTokenizer(rpn, " ");
-        Stack<String> stack = new Stack<String>();
+    	 String rpn = sortingStation(expression, MAIN_MATH_OPERATIONS);
+         StringTokenizer tokenizer = new StringTokenizer(rpn, " ");
+         if(debug)GWT.log(rpn);
+         Stack<String> stack = new Stack<String>();
 
-        ArrayList<String> operands = new ArrayList<>();
-        int newTerm = 0;
-        String prevOperation = "";
-        String term = "";
-        
-        while (tokenizer.hasMoreTokens()) {
+         ArrayList<String> operands = new ArrayList<>();
+         int newTerm = 0;
+         int prevStackSize = 0;
+         int startStackSize = 0;
+         String prevOperation = "";
+         String term = "";
 
-            String token = tokenizer.nextToken();
-            // Операнд.
-            if (!MAIN_MATH_OPERATIONS.keySet().contains(token)) {
+         /*
+         Выделим 2 случая: когда знак текущей операции совпадает и не совпадает.
+         на 0 итерации зафорсим совпадение операций
 
-                stack.push(new String(token));
-                newTerm++;
+         на каждой итерации из стека достаём 2 операнда
+             если на текущей операции, до вынимания в стек был добавлен новый операнд, см added to stack
+             если мы разбираем стек, то см shift stack left
 
-            } else {
+         когда в стек добавляется более 2 операндов, считается что начался новый терм. завершается предыдущий, если он былл, создаётся новый список
 
-                if(prevOperation.equals("")){
-                    prevOperation = token;
-                }
-                String operand2 = stack.pop();
-                String operand1 = stack.empty() ? "" : stack.pop();
+         когда операции не совпадают, мы завершаем текущий список, создаём новый и записываем туда 2 первых операнда из стека
 
-                if(token.equals(prevOperation)){
+          */
+         if(debug)GWT.log("");
+         if(debug)GWT.log("Shunting Yard");
+         if(debug)GWT.log("How to read");
+         if(debug)GWT.log("New iter - means new iteration");
+         if(debug)GWT.log("Current stack");
+         if(debug)GWT.log("prev stack size");
+         if(debug)GWT.log("current stack size");
+         if(debug)GWT.log("operand 1");
+         if(debug)GWT.log("operand 2");
+         if(debug)GWT.log("current operation");
+         if(debug)GWT.log("prev operation");
+         
+         while (tokenizer.hasMoreTokens()) {
+
+             String token = tokenizer.nextToken();
+             // Операнд.
+             if (!MAIN_MATH_OPERATIONS.keySet().contains(token)) {
+                 stack.push(new String(token));
+                 newTerm++;
+             } else {
+
+                 if(prevOperation.equals("")){
+                     prevOperation = token;
+                 }
+
+                 if(debug)GWT.log("New Iter");
+                 if(debug)GWT.log(""+stack);
+                 if(debug)GWT.log(""+prevStackSize);
+                 if(debug)GWT.log(""+stack.size());
+                 startStackSize = stack.size();
+                 String operand2 = stack.pop();
+                 String operand1 = stack.empty() ? "" : stack.pop();
+                 if(debug)GWT.log(operand1);
+                 if(debug)GWT.log(operand2);
+                 if(debug)GWT.log(""+token);
+                 if(debug)GWT.log("prev op " + prevOperation);
+
+                 if(token.equals(prevOperation)){
+                	 if(debug)GWT.log("Like prev");
+                     if(operands.size()>0 && !list.contains(operands)){list.add(operands);
+                         System.out.println("!!!!!!!!!!! "+operands);}
+
+                     if(newTerm>=2){
+                         System.out.println("new Term");
+                         if(term.length()>0 && (term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+'))term = removeByIndex(term, term.length()-1);
+
+                         if(!term.equals("")) {
+
+                             operands.add(token);
+                             operands.add(term);
+
+                         }
+
+                         operands=new ArrayList<>();
+                         list.add(operands);
+                         operands.add(operand1);
+                         operands.add(operand2);
+                         term = "";
+                         term = operand1 + token + operand2;
+
+                         if(debug)GWT.log("    " + operands);
+                         stack.push(term);
+                         newTerm=0;
+                         prevOperation = token;
+                         prevStackSize = stack.size();
+                     }else{
+
+                         if(startStackSize>prevStackSize){
+                        // if(prevStackSize <= stack.size()-2){
+                        	 if(debug)GWT.log("Operands were added to stack");
+                             operands.add(operand2);
+                             if(term.length()>2)if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+'){term += operand2;}
+                             else {term += token+operand1;}
+
+                             System.out.println("    " + operands);
+                             if(term.length()>2){if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+')term = removeByIndex(term, term.length()-1);}
+                             stack.push(term);
+                             newTerm=0;
+                             prevOperation = token;
+                             prevStackSize = stack.size();
+
+                         }
+                         else{
+                        	 if(debug)GWT.log("Stack was shifted left");
+                             operands.add(operand1);
+                             if(term.length()>2)if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+'){term += operand1;}
+                             else {term += token+operand1;}
+
+                             if(debug)GWT.log("    " + operands);
+                             // String NewOperand = operand1.concat(token+operand2);
+                             //stack.push(NewOperand);
+                             if(term.length()>2){if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+')term = removeByIndex(term, term.length()-1);}
+                             stack.push(term);
+                             newTerm=0;
+                             prevOperation = token;
+                             prevStackSize = stack.size();
+
+                         }
 
 
-                    if(operands.size()>0 && !list.contains(operands))list.add(operands);
-                    if(newTerm>=2){
 
-                    	if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+')term = removeByIndex(term, term.length()-1);
-                        if(!term.equals("")) {
-                            operands.add(token);
-                            operands.add(term);
-                          
-                        }
+                     }
 
-                        operands=new ArrayList<>();
-                        list.add(operands);
-                        operands.add(operand1);
+                 }else{
 
-                        term = "";
-                        term += operand1 + token;
+                	 if(debug)GWT.log("Not Like prev");
 
-                    }
-                    operands.add(operand2);
-                    if(term.length()>2)if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+'){term += operand2+token;}
-                    else {term += token+operand2;}
+                     if(term.length()>2){if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+')term = removeByIndex(term, term.length()-1);}
+                     if(!operands.contains(prevOperation) && operands.size()>=2)operands.add(prevOperation);
+                     if(!operands.contains(term) && operands.size()>=2)operands.add(term);
+                     if(debug)GWT.log("Result list " +operands);
 
-                    String NewOperand = operand1.concat(token+operand2);
-                    stack.push(NewOperand);
+                     term = "";
 
-                    newTerm=0;
-                    prevOperation = token;
+                     //if(operands.size()>0)list.add(operands);
+                     operands = new ArrayList<>();
+                     list.add(operands);
 
-                }
-                else{
+                     if(debug)GWT.log("new list");
+                     String NewOperand = "";
 
-                    System.out.println("Not Like prev");
-                    //System.out.println(term);
+                     if(stack.size()<=2){
 
-                    if(term.length()>2){if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+')term = removeByIndex(term, term.length()-1);}
-                    if(!operands.contains(prevOperation) && operands.size()>=2)operands.add(prevOperation);
-                    if(!operands.contains(term) && operands.size()>=2)operands.add(term);
+                         if(!operand1.equals(""))operands.add(operand1);
+                         operands.add(operand2);
 
-                    term = "";
-                    System.out.println(operands);
+                         NewOperand=operand1.concat(token + operand2);
 
-                    //if(operands.size()>0)list.add(operands);
-                    operands = new ArrayList<>();
-                    list.add(operands);
+                         term = NewOperand;
 
-                    System.out.println("new slot");
-                    //fromSlot = true;
-                    String NewOperand = "";
+                         stack.push(NewOperand);
+                         prevStackSize = stack.size();
+                         newTerm=0;
+                         prevOperation = token;
+                         if(debug)GWT.log(operands.toString());
+                     }
+                     else {
 
-                    if(stack.size()<=2){
+                         if(!operand1.equals(""))operands.add(operand1);
+                         operands.add(operand2);
 
-                        if(!operand1.equals(""))operands.add(operand1);
-                        operands.add(operand2);
-
-                       // System.out.println("!!!");
-                        NewOperand=operand1.concat(token + operand2);
-
-                        term = NewOperand;
-                        //operands.add(token);
-                        //operands.add(term);
-                        //term = "";
-
-                        stack.push(NewOperand);
-                        newTerm=0;
-                        prevOperation = token;
-                        System.out.println(operands);
-                    }
-                    else {
-
-                        if(!operand1.equals(""))operands.add(operand1);
-                        operands.add(operand2);
-
-                        if (!operand1.equals("")) {
-                            NewOperand = operand1.concat(token + operand2);
-                        } else {
-                            NewOperand = token + operand2;
-                        }
-                        term = NewOperand;
-                        stack.push(NewOperand);
-                        newTerm=0;
-                        prevOperation = token;
-                        System.out.println(term);
-                    }
-                    
-
-                }
+                         if (!operand1.equals("")) {
+                             NewOperand = operand1.concat(token + operand2);
+                         } else {
+                             NewOperand = token + operand2;
+                         }
+                         term = NewOperand;
+                         stack.push(NewOperand);
+                         prevStackSize = stack.size();
+                         newTerm=0;
+                         prevOperation = token;
+                         if(debug)GWT.log(term);
+                     }
 
 
-            }
-        }
 
-        operands.add(prevOperation);
-        operands.add(term);
+                 }
 
-        /*
-        if(list.size() == 1 && list.get(0).get(list.get(0).size()-2) != "*"){
-            list.get(0).add("*");
-            term = removeByIndex(term, term.length()-1);
-            list.get(0).add(term);
-        }
-*/
+
+             }
+         }
+
+
+         operands.add(prevOperation);
+         operands.add(term);
+         if(debug)GWT.log(operands.toString());
+         if(debug)GWT.log(list.toString());
+         if(debug)GWT.log("RPN "+rpn);
     }
-    
     
     private String removeByIndex(String str, int index) {
         return str.substring(0,index)+str.substring(index+1);

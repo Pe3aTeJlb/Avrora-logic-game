@@ -32,15 +32,14 @@ public class LogicFunctionGenerator {
     private float minTruePercent = 0.4f;
     private int lastVarIndex = 1;
     char[][] buffVector;
-
+    private boolean debug = false;
 
     public LogicFunctionGenerator() {}
     
     
-    //public LogicFunctionGenerator(int varCount, int funcCount, String[] sharedVars){
-    	
-        //GenerateVectorFunction( varCount, funcCount, sharedVars);
-    //}
+    public LogicFunctionGenerator(boolean dbg){
+    	debug = dbg;
+    }
 
     //генератор логической функции в виде таблицы истинности
     public void GenerateVectorFunction(int varCount, int funcCount, String[] sharedVars) {
@@ -54,13 +53,14 @@ public class LogicFunctionGenerator {
         VarNames = new String[varCount];
         OutNames = new String[funcCount];
         
-        GWT.log(Integer.toString(sharedVars.length));
+        if(debug) {GWT.log("Shared var length "+Integer.toString(sharedVars.length));
         GWT.log(sharedVars[0]);
         GWT.log(sharedVars[1]);
+        }
     	if(sharedVars.length>0) {
     		for(int i = 0; i < sharedVars.length; i++) {
     			VarNames[i] = sharedVars[i];
-        		GWT.log(sharedVars[i]);
+    			 if(debug)GWT.log(sharedVars[i]);
     		}
     	}
 
@@ -71,26 +71,32 @@ public class LogicFunctionGenerator {
 	            VarNames[i] = varName;
 	            lastVarIndex++;
         	}
-            GWT.log(VarNames[i]);
+            if(debug)GWT.log(VarNames[i]);
         }
 
         for(int i = 0; i < funcCount; i++)
         {
             String outName = "z"+i;
             OutNames[i] = outName;
-
+            
             //на нулевой комбинации значение функции всегда 0, иначе тренировка теряет смысол
             VectorFunctions[0][i] = '0';
             Generator(totalVarCount);
 
+            if(debug) {
+	            GWT.log("Function №"+Integer.toString(i));
+	            GWT.log("0");
+            }
+            
             //заполняем выходной масссив
             for(int j = 1; j < totalVarCount; j++)
             {
                 VectorFunctions[j][i] = buffVector[j][0];
-                //GWT.log("Generator " +Character.toString(VectorFunctions[j][i]));
+                if(debug)GWT.log(Character.toString(VectorFunctions[j][i]));
             }
-
+            if(debug)GWT.log("end of function");
         }
+        
 
     }
 

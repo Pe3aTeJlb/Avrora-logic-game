@@ -33,6 +33,10 @@ import com.google.gwt.core.client.GWT;
 
 public class CircuitSynthesizer {
 	
+	private static boolean debug = true;
+	private boolean dump = true;
+	public static String dmp = ""; 
+	
 	private boolean MDNF, factorize;
 	private String basis = "";
 	private int funcCount = 0;
@@ -61,10 +65,10 @@ public class CircuitSynthesizer {
 	
 	int width, height;
 	
-	BasisConverter converter = new BasisConverter();
+	BasisConverter converter = new BasisConverter(debug);
     Factorisator_V_2 factorizator = new Factorisator_V_2();
-    ShuntingYard shuntingYard = new ShuntingYard();
-	LogicFunctionGenerator generator = new LogicFunctionGenerator();  
+    ShuntingYard shuntingYard = new ShuntingYard(debug);
+	LogicFunctionGenerator generator = new LogicFunctionGenerator(debug);  
 	
 	public void Synthesis(int w, int h) {
 		
@@ -82,6 +86,14 @@ public class CircuitSynthesizer {
 			// basis = "Zhegalkin";
 			 funcCount = 1;
 			 varCount = 4;
+			 
+			 if(debug) {
+				 GWT.log("MDNF " + MDNF);
+				 GWT.log("Basis " + basis);
+				 GWT.log("Function count " + funcCount);
+				 GWT.log("Var count " + varCount);
+			 }
+			 
 			
 			InitializeParametrs();
 			
@@ -135,13 +147,12 @@ public class CircuitSynthesizer {
 		CreateInputElm(generator.VarNames);
         
 		String functions[] = sol.getSolution().split("\n");
+		if(debug) {
 	      for(int i = 0; i<functions.length; i++) {
-	    	  GWT.log(functions[i]);
+	    	  GWT.log(functions[i]+"\n");
 	      }
+		}
 		
-      	//GWT.log(Integer.toString(NextStartPoint.x));
-      	//GWT.log(Integer.toString(NextStartPoint.y));
-	      
         for(int i = 0; i<functions.length; i++) {
         	
         	list.clear();
@@ -151,18 +162,13 @@ public class CircuitSynthesizer {
         	
         	freeSpace.y = NextStartPoint.y;
         	freeSpace.x = NextStartPoint.x;
-        	
-        	//GWT.log("Start "+Integer.toString(NextStartPoint.x));
-        	//GWT.log("Start "+Integer.toString(NextStartPoint.y));
-        	
+        
 	        if(basis.equals("Default")) {
 		        if(MDNF) {
 		        	if(factorize) {
 			        	factorizator.PrepareData(functions[i]);
-			        	GWT.log(factorizator.output);
-		        		//GWT.log("((~x1)*(x0)*(x2+~x2)+(~x0)*(~x2+x2))+~x0*x1*~x2");
+			        	 if(debug)GWT.log(factorizator.output);
 			        	shuntingYard.calculateExpression(factorizator.output);
-			        	//shuntingYard.calculateExpression("((~x1)*(x0)*(x2+~x2)+(~x0)*(~x2+x2))+~x0*x1*~x2");
 		        	}else {
 		        		shuntingYard.calculateMDNF(functions[i]);
 		        	}
@@ -357,13 +363,13 @@ public class CircuitSynthesizer {
 						
 				}
 				
-				/*
+				if(debug) {
 				String ll = "";
-				for(int j = 0; j<list.get(i).size(); j++) {
-					ll+=list.get(i).get(j) + "  ";
+					for(int j = 0; j<list.get(i).size(); j++) {
+						ll+=list.get(i).get(j) + "  ";
+					}
+					GWT.log(ll);
 				}
-				GWT.log(ll);
-				*/
 				
 				if(!dictionary.containsKey(blockName)) {
 				
@@ -374,7 +380,6 @@ public class CircuitSynthesizer {
 					elmList.add(newce);
 					
 					dictionary.put(blockName, newce);
-					//GWT.log(Boolean.toString(dictionary.containsKey(blockName)));
 					
 					for(int j = 0; j<list.get(i).size()-2; j++) {
 						
@@ -587,9 +592,7 @@ public class CircuitSynthesizer {
   		  			dictionary.replace(outName, shit2);
   					
   				}else { 
-  					
-  				//	GWT.log("!!!");
-  					
+  				
   					diap = ((prevOutput.x+20) + (int) (Math.random() * (currentInput.x-prevOutput.x-40)));
 	  		  		int temp = diap%10;
 	  		  		
@@ -597,7 +600,6 @@ public class CircuitSynthesizer {
 	  		  			diap = diap + (10-diap%10);
 	  		  		}
 	  		  		
-	  		  	//	GWT.log("DIAP "+ Integer.toString(diap));
 		  			CircuitElm shit1 = createCe("Wire",prevOutput.x, prevOutput.y, diap, prevOutput.y, 0, 0);
 		  			shit1.setPoints();
 		  			elmList.add(shit1);
@@ -616,12 +618,8 @@ public class CircuitSynthesizer {
 		  			dictionary.replace(outName, shit2);
 		  			
   				}
-  				
 
-  			
   			}
-  			
-
   			
   			if(in.OperativePoints.size()>2) {	
   				in.OperativePoints.remove(closestInputIndex);
