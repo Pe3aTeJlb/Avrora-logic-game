@@ -193,8 +193,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
      	mainBar.addItem("Info", infoBar);
 		
      	
-     	
-		
 		layoutPanel.addNorth(mainBar, MENUBARHEIGHT);
 	 
 		cv = Canvas.createIfSupported();
@@ -220,9 +218,10 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		cv.addMouseMoveHandler(this);	
 		
 		centreCircuit();
-		
+	
 		CircuitSynthesizer v = new CircuitSynthesizer();
-		v.Synthesis(width, height);
+		v.Synthesis(width, height, 4);
+		//v.Synthesis(width, height);
 		elmList = v.elmList;
 				
 		timer.scheduleRepeating(REFRESH_RATE);

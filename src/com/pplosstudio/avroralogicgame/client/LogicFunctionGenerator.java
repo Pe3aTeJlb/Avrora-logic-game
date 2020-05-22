@@ -3,6 +3,7 @@ package com.pplosstudio.avroralogicgame.client;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Random;
 
 //import com.google.gwt.core.client.GWT;
 
@@ -109,6 +110,7 @@ public class LogicFunctionGenerator {
 
         for(int j = 1; j < totalVarCount; j++)
         {
+           // int random = randomBit(Random.nextInt());
             int random = randomBit(seed);
             if(random == 1){unitCounter++;}
             buffVector[j][0] = Integer.toString(random).charAt(0);

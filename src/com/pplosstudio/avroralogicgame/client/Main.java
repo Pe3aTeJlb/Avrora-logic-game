@@ -13,12 +13,25 @@ public class Main implements EntryPoint {
 	public static final boolean shortRelaySupported = true;
 
 	static CirSim mysim;
+	static Menu menu;
 	
   public void onModuleLoad() {  
 	  loadSimulator();
   }
   
   public void loadSimulator() {
+	  /*
+	  menu = new Menu();
+	  menu.init();
+	  
+	    Window.addResizeHandler(new ResizeHandler() {
+	    	 
+            public void onResize(ResizeEvent event)
+            {               
+            	menu.setCanvasSize();
+            }
+        });
+	  */
 	  
 	  mysim = new CirSim();
 	  mysim.init();
@@ -30,6 +43,7 @@ public class Main implements EntryPoint {
             	mysim.setCanvasSize();
             }
         });
+        
 		   
   }
 

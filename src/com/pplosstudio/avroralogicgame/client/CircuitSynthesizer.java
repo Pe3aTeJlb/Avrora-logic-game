@@ -33,7 +33,10 @@ import com.google.gwt.core.client.GWT;
 
 public class CircuitSynthesizer {
 	
-	private static boolean debug = true;
+	private boolean debug = true;
+	private boolean ShuntingYardDebug = true;
+	private boolean LogicVectorGenerator = false;
+	private boolean BasisConverterDebug = false;
 	private boolean dump = true;
 	public static String dmp = ""; 
 	
@@ -65,28 +68,109 @@ public class CircuitSynthesizer {
 	
 	int width, height;
 	
-	BasisConverter converter = new BasisConverter(debug);
+	BasisConverter converter = new BasisConverter(BasisConverterDebug);
     Factorisator_V_2 factorizator = new Factorisator_V_2();
-    ShuntingYard shuntingYard = new ShuntingYard(debug);
-	LogicFunctionGenerator generator = new LogicFunctionGenerator(debug);  
+    ShuntingYard shuntingYard = new ShuntingYard(ShuntingYardDebug);
+	LogicFunctionGenerator generator = new LogicFunctionGenerator(LogicVectorGenerator);  
 	
 	public void Synthesis(int w, int h) {
 		
-			width = w;
-			height = h;
 		
-			//GetConfigurationFile();
-			sharedVars = new String[0];	
+		width = w;
+		height = h;
+	
+		//GetConfigurationFile();
+		sharedVars = new String[0];	
+	
+		 MDNF = true;
+		 factorize = true;
+		 basis = "Default";
+		// basis = "Nor";
+		 //basis = "Nand";
+		// basis = "Zhegalkin";
+		 funcCount = 1;
+		 varCount = 4;
+		 
+		 if(debug) {
+			 GWT.log("MDNF " + MDNF);
+			 GWT.log("Basis " + basis);
+			 GWT.log("Function count " + funcCount);
+			 GWT.log("Var count " + varCount);
+		 }
+		 
 		
-			 MDNF = true;
-			 factorize = true;
-			 basis = "Default";
-			// basis = "Nor";
-			 //basis = "Nand";
-			// basis = "Zhegalkin";
-			 funcCount = 1;
-			 varCount = 4;
-			 
+		InitializeParametrs();
+				
+}
+	
+	public void Synthesis(int w, int h, String url) {
+		
+		 
+		width = w;
+		height = h;
+	
+		//GetConfigurationFile();
+		sharedVars = new String[0];	
+	
+		 MDNF = true;
+		 factorize = true;
+		 basis = "Default";
+		// basis = "Nor";
+		 //basis = "Nand";
+		// basis = "Zhegalkin";
+		 funcCount = 1;
+		 varCount = 4;
+		 
+		 if(debug) {
+			 GWT.log("MDNF " + MDNF);
+			 GWT.log("Basis " + basis);
+			 GWT.log("Function count " + funcCount);
+			 GWT.log("Var count " + varCount);
+		 }
+		 
+		
+		InitializeParametrs();
+	
+}
+	
+	public void Synthesis(int w, int h, int circDifficult) {
+		
+		sharedVars = new String[0];	
+		
+		width = w;
+		height = h;
+			
+		int circCount = random(1,circDifficult);
+		GWT.log("Circ count "+ Integer.toString(circCount));
+		
+		for(int i = 0; i < circCount; i++) {
+			
+			int Basis =  random(0,3);
+			funcCount =  random(1,3);
+			varCount =  random(2,5);
+			
+			
+			int mdnf =  (int) (Math.random() * 1);
+			if(mdnf == 0) {
+				MDNF = false;
+			}else {MDNF = true;}
+			
+			if(Basis == 0) {
+				basis = "Default";
+				if(MDNF == true) {
+					int factr =  (int) (Math.random() * 1);
+					if(factr == 1) {
+						factorize = true;
+					}else {factorize = false;}
+				}
+			}else if(Basis == 1) {
+				basis = "Nor";
+			}else if(Basis == 2) {
+				basis = "Nand";
+			}else if(Basis == 3) {
+				basis = "Zhegalkin";
+			}
+			
 			 if(debug) {
 				 GWT.log("MDNF " + MDNF);
 				 GWT.log("Basis " + basis);
@@ -97,20 +181,19 @@ public class CircuitSynthesizer {
 			
 			InitializeParametrs();
 			
-			/*
-			sharedVars = new String[]{"x1","x2"};
+			if(circCount>1) {
+				
+				int n = random(0,1);
+				
+				if(n==1) {
+					
+				}
+				
+			}
 			
-			 MDNF = false;
-			 factorize = false;
-			 basis = "Default";
-			 //basis = "Nor";
-			// basis = "Zhegalkin";
-			 funcCount = 2;
-			 varCount = 3;
-			
-			InitializeParametrs();
-			*/
-			
+		}
+		
+			 
 	}
 	
 	void GetConfigurationFile() {
@@ -166,7 +249,7 @@ public class CircuitSynthesizer {
 	        if(basis.equals("Default")) {
 		        if(MDNF) {
 		        	if(factorize) {
-			        	factorizator.PrepareData(functions[i]);
+			        	factorizator.PrepareData(functions[i], varCount);
 			        	 if(debug)GWT.log(factorizator.output);
 			        	shuntingYard.calculateExpression(factorizator.output);
 		        	}else {
@@ -224,6 +307,8 @@ public class CircuitSynthesizer {
 				blockName = list.get(i).get(list.get(i).size()-1);
 				//GWT.log("new Block Name " + blockName);
 				
+				
+				
 				/*
 				 * Общий смысл алгоритма расположения
 				 * для общих случаев Nor Nand Def элементы располагаеются в ряды по операциям.
@@ -244,33 +329,33 @@ public class CircuitSynthesizer {
 						
 						if(i<list.size()-1) 
 						{
-							
-							if(i>=1 && list.get(i-1).get(list.get(i-1).size()-2) == operation ) 
-							{
-								
-								freeSpace.y += 150;
-								//freeSpace.x += 25;
-								
+						
+							if(i==0)
+							{		
+								freeSpace.x += 75;
+								freeSpace.y = StartPoint.y;
 							}
-							
 							else if(i>=1 && list.get(i).get(0).length()<=3) 
 							{
 								
 								if(!dictionary.containsKey(blockName)) {
-									freeSpace.x += 100;
-									freeSpace.y += 150;
+									
+									freeSpace.x += 125;
+									freeSpace.y = MaxFreeSpaceY+75;
 								}
 								
 							}
-							else if(i==0)
+							else if(i>=1 && list.get(i-1).get(list.get(i-1).size()-2) == operation ) 
 							{
-								freeSpace.x += 75;
-								freeSpace.y = StartPoint.y;
+								
+								freeSpace.y += 150;
+								//freeSpace.x += 25;
+						
 							}
 							else
 							{
 								freeSpace.x += 150;
-								freeSpace.y = StartPoint.y+50*Yaccum;
+								freeSpace.y = StartPoint.y+100*Yaccum;
 								Yaccum += 1;
 							}
 							
@@ -281,7 +366,7 @@ public class CircuitSynthesizer {
 							if(i>=1 && list.get(i).get(0).length()<=3) {
 								
 								if(!dictionary.containsKey(blockName)) {
-									freeSpace.x += 100;
+									freeSpace.x += 125;
 									//freeSpace.y += dictionary.get(list.get(i).get(0)).OperativePoints.get(0).y;
 									freeSpace.y = (int)(( MaxFreeSpaceY - StartPoint.y)/2)+StartPoint.y+50;
 									NextStartPoint.y = freeSpace.y;
@@ -352,11 +437,11 @@ public class CircuitSynthesizer {
 						
 						//Если идёт инвертирование через и-не, или-не, то этот элемент лежит на одной линии с предыдущей
 						if( list.get(i).get(list.get(i).size()-4).equals(list.get(i).get(list.get(i).size()-3)) ) {
-							freeSpace.x += 150;
+							freeSpace.x += 250;
 						}
 						else {
 							freeSpace.y = (int)(( freeSpace.y - StartPoint.y)/2)+StartPoint.y;
-							freeSpace.x += 150;
+							freeSpace.x += 250;
 						}
 
 					}
@@ -737,4 +822,9 @@ public class CircuitSynthesizer {
     	
     }
 	
+  	int random(int min, int max)
+  	{
+  		max -= min;
+  		return (int) (Math.random() * ++max) + min;
+  	}
 }

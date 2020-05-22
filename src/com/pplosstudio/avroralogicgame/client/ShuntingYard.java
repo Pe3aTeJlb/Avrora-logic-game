@@ -347,7 +347,7 @@ public class ShuntingYard {
                         // if(prevStackSize <= stack.size()-2){
                         	 if(debug)GWT.log("Operands were added to stack");
                              operands.add(operand2);
-                             if(term.length()>2)if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+'){term += operand2;}
+                             if(term.length()>2){term += token+operand2;}
                              else {term += token+operand1;}
 
                              System.out.println("    " + operands);

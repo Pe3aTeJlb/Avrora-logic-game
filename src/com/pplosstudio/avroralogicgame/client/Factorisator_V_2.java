@@ -12,7 +12,8 @@ public class Factorisator_V_2 {
     private String splitSymbol2 = "\\*";
     private static String interstitialSeparator = "+";
     private static String insideSeparator = "*";
-
+    private int n = 0;
+    
     //массив термов
     public String[] v = new String[0];
 
@@ -28,7 +29,8 @@ public class Factorisator_V_2 {
 
     CustomData data = new CustomData();
 
-    public void PrepareData(String expression) {
+    public void PrepareData(String expression, int varcount) {
+    	n = varcount;
     	
     	operands.clear();
     	binaryTerms.clear();
@@ -272,10 +274,21 @@ public class Factorisator_V_2 {
 
                 if(!Collections.disjoint(prevTerms,container.positions.get(i))){
 
-                    if (container.positions.get(i).size() == maxIndex) {
+                    if (container.positions.get(i).size() == maxIndex && n<4) {
 
                         if (container.positions.get(i).containsAll(container.positions.get(lastIndex))) {
                         
+                            collisions.add(i);
+                            tmp += container.alphabet.get(i) + insideSeparator;
+                            lastIndex = i;
+                        }else {
+                            crossCollision.add(container.positions.get(i));
+                            crossCollision2.add(buff.positions.get(i));
+                        }
+                    }
+                    else {
+                        if (container.positions.get(i).containsAll(container.positions.get(lastIndex))) {
+                            
                             collisions.add(i);
                             tmp += container.alphabet.get(i) + insideSeparator;
                             lastIndex = i;
@@ -334,11 +347,14 @@ public class Factorisator_V_2 {
                 unc = buff.GetUnclaimedOperands(insideSeparator, interstitialSeparator);
 
             }
-            if(!buff.positions.get(0).containsAll(container.positions.get(0))){
-                if(buff.positions.size() > 0){
-                    tmp2 += interstitialSeparator + RecurcivePart(buff,(ArrayList<Integer>)buff.positions.get(0));
-                }
-            }
+           
+            if(buff.positions.size() > 0){
+	            if(!buff.positions.get(0).containsAll(container.positions.get(0))){
+
+	                    tmp2 += interstitialSeparator + RecurcivePart(buff,(ArrayList<Integer>)buff.positions.get(0));
+	                }
+	            }
+            
         }
 
         //разделить это говно на 2 списка. 1 уйдёт в совпадение по 1 циклу, второй уйдёт в buff
