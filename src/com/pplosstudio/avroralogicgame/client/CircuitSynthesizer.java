@@ -1,6 +1,7 @@
 package com.pplosstudio.avroralogicgame.client;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -26,9 +27,9 @@ import com.google.gwt.core.client.GWT;
 
 /*
  * To Do
- * удаление инверторов, если они не используются
  * разбиение линии соединения на сегменты, если out.y = in.y
  * расположение для жегалкина и факторизации
+ * 
  */
 
 public class CircuitSynthesizer {
@@ -44,7 +45,7 @@ public class CircuitSynthesizer {
 	private String basis = "";
 	private int funcCount = 0;
 	private int varCount = 0;
-	private String[] sharedVars;
+	private ArrayList<String> sharedVars = new ArrayList();
 
 	private Point input_freeSpace = new Point(50,80); //Точка начала отрисовки входов схемы
 	
@@ -62,6 +63,7 @@ public class CircuitSynthesizer {
 	
 	ArrayList<ArrayList<CircuitElm>> UnusedInputs = new ArrayList<>();
 	ArrayList<String> UnusedVarNames = new ArrayList<>();
+	ArrayList<ArrayList<String>> allInputs = new ArrayList(); 
 
 	//AWL = Additional Wire Length
 	private int AWL;
@@ -80,16 +82,16 @@ public class CircuitSynthesizer {
 		height = h;
 	
 		//GetConfigurationFile();
-		sharedVars = new String[0];	
+		sharedVars = new ArrayList();	
 	
 		 MDNF = true;
 		 factorize = true;
-		 basis = "Default";
+		// basis = "Default";
 		// basis = "Nor";
 		 //basis = "Nand";
-		// basis = "Zhegalkin";
-		 funcCount = 1;
-		 varCount = 4;
+		 basis = "Zhegalkin";
+		 funcCount = 2;
+		 varCount = 3;
 		 
 		 if(debug) {
 			 GWT.log("MDNF " + MDNF);
@@ -110,7 +112,7 @@ public class CircuitSynthesizer {
 		height = h;
 	
 		//GetConfigurationFile();
-		sharedVars = new String[0];	
+		sharedVars = new ArrayList();	
 	
 		 MDNF = true;
 		 factorize = true;
@@ -135,7 +137,7 @@ public class CircuitSynthesizer {
 	
 	public void Synthesis(int w, int h, int circDifficult) {
 		
-		sharedVars = new String[0];	
+		sharedVars = new ArrayList();	
 		
 		width = w;
 		height = h;
@@ -146,9 +148,6 @@ public class CircuitSynthesizer {
 		for(int i = 0; i < circCount; i++) {
 			
 			int Basis =  random(0,3);
-			funcCount =  random(1,3);
-			varCount =  random(2,5);
-			
 			
 			int mdnf =  (int) (Math.random() * 1);
 			if(mdnf == 0) {
@@ -158,18 +157,31 @@ public class CircuitSynthesizer {
 			if(Basis == 0) {
 				basis = "Default";
 				if(MDNF == true) {
-					int factr =  (int) (Math.random() * 1);
+					int factr =  random(0,1);
 					if(factr == 1) {
 						factorize = true;
-					}else {factorize = false;}
+						varCount =  random(2,5);
+					}else {
+						factorize = false;
+						varCount =  random(2,5);
+					}
 				}
+				else {varCount =  random(2,5);}
 			}else if(Basis == 1) {
 				basis = "Nor";
+				varCount =  random(2,4);
 			}else if(Basis == 2) {
 				basis = "Nand";
+				varCount =  random(2,4);
 			}else if(Basis == 3) {
 				basis = "Zhegalkin";
+				varCount =  random(2,3);
 			}
+			
+			
+			funcCount =  random((int)circDifficult/2,circDifficult+1);
+			
+		
 			
 			 if(debug) {
 				 GWT.log("MDNF " + MDNF);
@@ -178,22 +190,39 @@ public class CircuitSynthesizer {
 				 GWT.log("Var count " + varCount);
 			 }
 			 
+					//Add shared input
+					if(i>0 && i < circCount - 1 && circCount>1) {
+						GWT.log("Shared Vars++");
+						int n = random(0,1);
+						
+						if(n==1) {
+							
+							int sharedVarsCount = random(1,varCount-1);
+							
+							for(int j = 0; j<sharedVarsCount; j++) {
+								add();
+							}
+						
+						}
+						
+					}
+			 
 			
 			InitializeParametrs();
 			
-			if(circCount>1) {
-				
-				int n = random(0,1);
-				
-				if(n==1) {
-					
-				}
-				
-			}
-			
 		}
-		
+		DeleteUnusedInputs();
 			 
+	}
+	
+	void add() {
+		
+		int a = random(0,allInputs.size()-1);
+		int b = random(0,allInputs.get(a).size()-1);
+		if(!sharedVars.contains(allInputs.get(a).get(b))) {
+			sharedVars.add(allInputs.get(a).get(b));
+		}else {add();}
+		
 	}
 	
 	void GetConfigurationFile() {
@@ -227,6 +256,11 @@ public class CircuitSynthesizer {
         						);
         sol.run();
 		
+        ArrayList<String> lst = new ArrayList();
+        for(int i = 0; i < generator.VarNames.length; i++) {
+        	lst.add(generator.VarNames[i]);
+        }
+        allInputs.add(lst);
 		CreateInputElm(generator.VarNames);
         
 		String functions[] = sol.getSolution().split("\n");
@@ -277,7 +311,7 @@ public class CircuitSynthesizer {
 	        
 	        CreateCircuit(list);
         }
-        	DeleteUnusedInputs();
+        	//DeleteUnusedInputs();
 	}
 		
 	//Проход по всему списку, составление hashmap с созданными эдементами, установка параметров соединения объектов

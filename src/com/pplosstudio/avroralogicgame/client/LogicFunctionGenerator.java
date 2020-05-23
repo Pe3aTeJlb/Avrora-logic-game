@@ -43,7 +43,7 @@ public class LogicFunctionGenerator {
     }
 
     //генератор логической функции в виде таблицы истинности
-    public void GenerateVectorFunction(int varCount, int funcCount, String[] sharedVars) {
+    public void GenerateVectorFunction(int varCount, int funcCount, ArrayList<String> sharedVars) {
     	
 
         int totalVarCount = (int) Math.pow(2,varCount);
@@ -54,20 +54,20 @@ public class LogicFunctionGenerator {
         VarNames = new String[varCount];
         OutNames = new String[funcCount];
         
-        if(debug) {GWT.log("Shared var length "+Integer.toString(sharedVars.length));
-        GWT.log(sharedVars[0]);
-        GWT.log(sharedVars[1]);
+        if(debug) {GWT.log("Shared var length "+Integer.toString(sharedVars.size()));
+        GWT.log(sharedVars.get(0));
+        GWT.log(sharedVars.get(1));
         }
-    	if(sharedVars.length>0) {
-    		for(int i = 0; i < sharedVars.length; i++) {
-    			VarNames[i] = sharedVars[i];
-    			 if(debug)GWT.log(sharedVars[i]);
+    	if(sharedVars.size()>0) {
+    		for(int i = 0; i < sharedVars.size(); i++) {
+    			VarNames[i] = sharedVars.get(i);
+    			 if(debug)GWT.log(sharedVars.get(i));
     		}
     	}
 
         for(int i = 0; i < varCount; i++){
         	
-        	if(i>sharedVars.length-1 || sharedVars.length==0) {
+        	if(i>sharedVars.size()-1 || sharedVars.size()==0) {
 	            String varName = "x"+(lastVarIndex);
 	            VarNames[i] = varName;
 	            lastVarIndex++;
