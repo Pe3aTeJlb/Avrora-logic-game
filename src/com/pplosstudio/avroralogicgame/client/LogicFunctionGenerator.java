@@ -29,8 +29,8 @@ public class LogicFunctionGenerator {
     public char[][] VectorFunctions;
     public String[] VarNames,OutNames;
     private long seed = 1;
-    private float maxTruePercent = 0.5f;
-    private float minTruePercent = 0.4f;
+    private float maxTruePercent = 0.3f;
+    private float minTruePercent = 0.2f;
     private int lastVarIndex = 1;
     char[][] buffVector;
     private boolean debug = false;
