@@ -8,27 +8,27 @@ import java.util.Vector;
 
 import com.google.gwt.core.client.GWT;
 
-//x0, x1, ~x0 и тд - Входные элементы схемы
+//x0, x1, ~x0 Рё С‚Рґ - Р’С…РѕРґРЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ СЃС…РµРјС‹
 
-//Описание схемы выглядит следующим образом
-// [ [,входной элемент 1 прим. x0,вхлдной элемент 2,...,символ операции, имя нового элемента], [аналогично] ,...]
+//РћРїРёСЃР°РЅРёРµ СЃС…РµРјС‹ РІС‹РіР»СЏРґРёС‚ СЃР»РµРґСѓСЋС‰РёРј РѕР±СЂР°Р·РѕРј
+// [ [,РІС…РѕРґРЅРѕР№ СЌР»РµРјРµРЅС‚ 1 РїСЂРёРј. x0,РІС…Р»РґРЅРѕР№ СЌР»РµРјРµРЅС‚ 2,...,СЃРёРјРІРѕР» РѕРїРµСЂР°С†РёРё, РёРјСЏ РЅРѕРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р°], [Р°РЅР°Р»РѕРіРёС‡РЅРѕ] ,...]
 
-//Про систему индексов входов, выходов элемента. 
+//РџСЂРѕ СЃРёСЃС‚РµРјСѓ РёРЅРґРµРєСЃРѕРІ РІС…РѕРґРѕРІ, РІС‹С…РѕРґРѕРІ СЌР»РµРјРµРЅС‚Р°. 
 /*
- Сначала надо высчитать эти точки - массив getOperativePoint а любом объекте класса circuitElm
- Последняя точка в этом массиве - выход элемента, всё остальное входы.
- В случае провода - 0 индекс - точка начала провода (левый конец, если провод идёт слева на право), соответственно индекс 1 - точка окончания
+ РЎРЅР°С‡Р°Р»Р° РЅР°РґРѕ РІС‹СЃС‡РёС‚Р°С‚СЊ СЌС‚Рё С‚РѕС‡РєРё - РјР°СЃСЃРёРІ getOperativePoint Р° Р»СЋР±РѕРј РѕР±СЉРµРєС‚Рµ РєР»Р°СЃСЃР° circuitElm
+ РџРѕСЃР»РµРґРЅСЏСЏ С‚РѕС‡РєР° РІ СЌС‚РѕРј РјР°СЃСЃРёРІРµ - РІС‹С…РѕРґ СЌР»РµРјРµРЅС‚Р°, РІСЃС‘ РѕСЃС‚Р°Р»СЊРЅРѕРµ РІС…РѕРґС‹.
+ Р’ СЃР»СѓС‡Р°Рµ РїСЂРѕРІРѕРґР° - 0 РёРЅРґРµРєСЃ - С‚РѕС‡РєР° РЅР°С‡Р°Р»Р° РїСЂРѕРІРѕРґР° (Р»РµРІС‹Р№ РєРѕРЅРµС†, РµСЃР»Рё РїСЂРѕРІРѕРґ РёРґС‘С‚ СЃР»РµРІР° РЅР° РїСЂР°РІРѕ), СЃРѕРѕС‚РІРµС‚СЃС‚РІРµРЅРЅРѕ РёРЅРґРµРєСЃ 1 - С‚РѕС‡РєР° РѕРєРѕРЅС‡Р°РЅРёСЏ
  */
 
 /*
- * drawPost отвечает за отрисовку точек
+ * drawPost РѕС‚РІРµС‡Р°РµС‚ Р·Р° РѕС‚СЂРёСЃРѕРІРєСѓ С‚РѕС‡РµРє
  */
 
 
 /*
  * To Do
- * разбиение линии соединения на сегменты, если out.y = in.y
- * расположение для жегалкина и факторизации
+ * СЂР°Р·Р±РёРµРЅРёРµ Р»РёРЅРёРё СЃРѕРµРґРёРЅРµРЅРёСЏ РЅР° СЃРµРіРјРµРЅС‚С‹, РµСЃР»Рё out.y = in.y
+ * СЂР°СЃРїРѕР»РѕР¶РµРЅРёРµ РґР»СЏ Р¶РµРіР°Р»РєРёРЅР° Рё С„Р°РєС‚РѕСЂРёР·Р°С†РёРё
  * 
  */
 
@@ -47,11 +47,11 @@ public class CircuitSynthesizer {
 	private int varCount = 0;
 	private ArrayList<String> sharedVars = new ArrayList();
 
-	private Point input_freeSpace = new Point(50,80); //Точка начала отрисовки входов схемы
+	private Point input_freeSpace = new Point(50,80); //РўРѕС‡РєР° РЅР°С‡Р°Р»Р° РѕС‚СЂРёСЃРѕРІРєРё РІС…РѕРґРѕРІ СЃС…РµРјС‹
 	
-	private Point StartPoint = new Point(1,1); // фиксация начальной точки текущей функции
-	private Point NextStartPoint = new Point(2,2); //фиксация начальной точки следующей функции
-	private Point freeSpace = new Point(3,3); //текущая свободнеая точка
+	private Point StartPoint = new Point(1,1); // С„РёРєСЃР°С†РёСЏ РЅР°С‡Р°Р»СЊРЅРѕР№ С‚РѕС‡РєРё С‚РµРєСѓС‰РµР№ С„СѓРЅРєС†РёРё
+	private Point NextStartPoint = new Point(2,2); //С„РёРєСЃР°С†РёСЏ РЅР°С‡Р°Р»СЊРЅРѕР№ С‚РѕС‡РєРё СЃР»РµРґСѓСЋС‰РµР№ С„СѓРЅРєС†РёРё
+	private Point freeSpace = new Point(3,3); //С‚РµРєСѓС‰Р°СЏ СЃРІРѕР±РѕРґРЅРµР°СЏ С‚РѕС‡РєР°
 	
 	ArrayList<ArrayList<String>> list = new ArrayList<>();
 	
@@ -139,10 +139,13 @@ public class CircuitSynthesizer {
 		
 		sharedVars = new ArrayList();	
 		
+		int circCount = (int)Math.floor(((0.4f*circDifficult)*(0.4f*circDifficult)+2.5f));
+		
 		width = w;
 		height = h;
 			
-		int circCount = random(1,circDifficult);
+		//int circCount = random(1,circDifficult);
+		//int circCount = random(1,maxCircuits);
 		GWT.log("Circ count "+ Integer.toString(circCount));
 		
 		for(int i = 0; i < circCount; i++) {
@@ -161,6 +164,7 @@ public class CircuitSynthesizer {
 					if(factr == 1) {
 						factorize = true;
 						varCount =  random(2,5);
+						
 					}else {
 						factorize = false;
 						varCount =  random(2,5);
@@ -179,9 +183,8 @@ public class CircuitSynthesizer {
 			}
 			
 			
-			funcCount =  random((int)circDifficult/2,circDifficult+1);
-			
-		
+			//funcCount =  random((int)circDifficult/2,circDifficult+1);
+			funcCount = (int)(0.5f*Math.log(circDifficult-0.5f)+2);
 			
 			 if(debug) {
 				 GWT.log("MDNF " + MDNF);
@@ -237,7 +240,7 @@ public class CircuitSynthesizer {
 		
 	}
 	
-	//Инициализация всех объектов и применение файла конфигурации
+	//Р�РЅРёС†РёР°Р»РёР·Р°С†РёСЏ РІСЃРµС… РѕР±СЉРµРєС‚РѕРІ Рё РїСЂРёРјРµРЅРµРЅРёРµ С„Р°Р№Р»Р° РєРѕРЅС„РёРіСѓСЂР°С†РёРё
 	void InitializeParametrs() {
 				  
 		//LogicFunctionGenerator generator = new LogicFunctionGenerator(varCount,funcCount,sharedVars);   
@@ -314,7 +317,7 @@ public class CircuitSynthesizer {
         	//DeleteUnusedInputs();
 	}
 		
-	//Проход по всему списку, составление hashmap с созданными эдементами, установка параметров соединения объектов
+	//РџСЂРѕС…РѕРґ РїРѕ РІСЃРµРјСѓ СЃРїРёСЃРєСѓ, СЃРѕСЃС‚Р°РІР»РµРЅРёРµ hashmap СЃ СЃРѕР·РґР°РЅРЅС‹РјРё СЌРґРµРјРµРЅС‚Р°РјРё, СѓСЃС‚Р°РЅРѕРІРєР° РїР°СЂР°РјРµС‚СЂРѕРІ СЃРѕРµРґРёРЅРµРЅРёСЏ РѕР±СЉРµРєС‚РѕРІ
 	void CreateCircuit(ArrayList<ArrayList<String>> list) {
 		
 		//GWT.log("list size is " + Integer.toString(list.size()));
@@ -344,18 +347,18 @@ public class CircuitSynthesizer {
 				
 				
 				/*
-				 * Общий смысл алгоритма расположения
-				 * для общих случаев Nor Nand Def элементы располагаеются в ряды по операциям.
-				 * В Nor Nand есть нюанс с расположением выходного элемента в случае инвертирования ответа через элемент базиса см далее
+				 * РћР±С‰РёР№ СЃРјС‹СЃР» Р°Р»РіРѕСЂРёС‚РјР° СЂР°СЃРїРѕР»РѕР¶РµРЅРёСЏ
+				 * РґР»СЏ РѕР±С‰РёС… СЃР»СѓС‡Р°РµРІ Nor Nand Def СЌР»РµРјРµРЅС‚С‹ СЂР°СЃРїРѕР»Р°РіР°РµСЋС‚СЃСЏ РІ СЂСЏРґС‹ РїРѕ РѕРїРµСЂР°С†РёСЏРј.
+				 * Р’ Nor Nand РµСЃС‚СЊ РЅСЋР°РЅСЃ СЃ СЂР°СЃРїРѕР»РѕР¶РµРЅРёРµРј РІС‹С…РѕРґРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РІ СЃР»СѓС‡Р°Рµ РёРЅРІРµСЂС‚РёСЂРѕРІР°РЅРёСЏ РѕС‚РІРµС‚Р° С‡РµСЂРµР· СЌР»РµРјРµРЅС‚ Р±Р°Р·РёСЃР° СЃРј РґР°Р»РµРµ
 				 */
 				
-				//Правила расположения элементов для общего базиса и Жегалкина
+				//РџСЂР°РІРёР»Р° СЂР°СЃРїРѕР»РѕР¶РµРЅРёСЏ СЌР»РµРјРµРЅС‚РѕРІ РґР»СЏ РѕР±С‰РµРіРѕ Р±Р°Р·РёСЃР° Рё Р–РµРіР°Р»РєРёРЅР°
 				if(basis.equals("Default") || basis.equals("Zhegalkin")) 
 				{
 					
 					/*
-					 * При факторизации выражения:
-					 * Если есть два блока вида [x1 x2 * x1*x2] и [x3 x1*x2 +* x3+*x1*x2] торой блок будет сдвинут вправо-вниз
+					 * РџСЂРё С„Р°РєС‚РѕСЂРёР·Р°С†РёРё РІС‹СЂР°Р¶РµРЅРёСЏ:
+					 * Р•СЃР»Рё РµСЃС‚СЊ РґРІР° Р±Р»РѕРєР° РІРёРґР° [x1 x2 * x1*x2] Рё [x3 x1*x2 +* x3+*x1*x2] С‚РѕСЂРѕР№ Р±Р»РѕРє Р±СѓРґРµС‚ СЃРґРІРёРЅСѓС‚ РІРїСЂР°РІРѕ-РІРЅРёР·
 					 */
 					
 					if(factorize) 
@@ -448,7 +451,7 @@ public class CircuitSynthesizer {
 				}
 				
 				
-				//Правила расположения элементов для Nor Nand
+				//РџСЂР°РІРёР»Р° СЂР°СЃРїРѕР»РѕР¶РµРЅРёСЏ СЌР»РµРјРµРЅС‚РѕРІ РґР»СЏ Nor Nand
 				if(basis.equals("Nor") || basis.equals("Nand")) {
 					
 					if(i<list.size()-1) {
@@ -469,7 +472,7 @@ public class CircuitSynthesizer {
 					}
 					else if (i==list.size()-1) {
 						
-						//Если идёт инвертирование через и-не, или-не, то этот элемент лежит на одной линии с предыдущей
+						//Р•СЃР»Рё РёРґС‘С‚ РёРЅРІРµСЂС‚РёСЂРѕРІР°РЅРёРµ С‡РµСЂРµР· Рё-РЅРµ, РёР»Рё-РЅРµ, С‚Рѕ СЌС‚РѕС‚ СЌР»РµРјРµРЅС‚ Р»РµР¶РёС‚ РЅР° РѕРґРЅРѕР№ Р»РёРЅРёРё СЃ РїСЂРµРґС‹РґСѓС‰РµР№
 						if( list.get(i).get(list.get(i).size()-4).equals(list.get(i).get(list.get(i).size()-3)) ) {
 							freeSpace.x += 250;
 						}
@@ -510,7 +513,7 @@ public class CircuitSynthesizer {
 						//GWT.log(Boolean.toString(dictionary.containsKey(list.get(i).get(j))));
 						//GWT.log(Boolean.toString(dictionary.containsKey(blockName)));
 						
-						//Выбор параметров соежинения: Перелом, ВходнойЭлементСхемы?
+						//Р’С‹Р±РѕСЂ РїР°СЂР°РјРµС‚СЂРѕРІ СЃРѕРµР¶РёРЅРµРЅРёСЏ: РџРµСЂРµР»РѕРј, Р’С…РѕРґРЅРѕР№Р­Р»РµРјРµРЅС‚РЎС…РµРјС‹?
 						
 						if(dictionary.containsKey(list.get(i).get(j))) 
 						{
@@ -557,9 +560,9 @@ public class CircuitSynthesizer {
 	}
 	
 	/*
-	 Создаёт входные элементы схемы, их инвертированный вариант и записывает в hashMap
+	 РЎРѕР·РґР°С‘С‚ РІС…РѕРґРЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ СЃС…РµРјС‹, РёС… РёРЅРІРµСЂС‚РёСЂРѕРІР°РЅРЅС‹Р№ РІР°СЂРёР°РЅС‚ Рё Р·Р°РїРёСЃС‹РІР°РµС‚ РІ hashMap
 	 
-	 Первый вход схемы не доходит 40 единиц до ряда элементов, каждый последующий на 40 больше, (сюда включаются и инвертированные )
+	 РџРµСЂРІС‹Р№ РІС…РѕРґ СЃС…РµРјС‹ РЅРµ РґРѕС…РѕРґРёС‚ 40 РµРґРёРЅРёС† РґРѕ СЂСЏРґР° СЌР»РµРјРµРЅС‚РѕРІ, РєР°Р¶РґС‹Р№ РїРѕСЃР»РµРґСѓСЋС‰РёР№ РЅР° 40 Р±РѕР»СЊС€Рµ, (СЃСЋРґР° РІРєР»СЋС‡Р°СЋС‚СЃСЏ Рё РёРЅРІРµСЂС‚РёСЂРѕРІР°РЅРЅС‹Рµ )
 	 */
 	void CreateInputElm(String[] varNames) {
 		
@@ -574,12 +577,12 @@ public class CircuitSynthesizer {
 		StartPoint = new Point(x+AWL+varNames.length*100, y);
 		NextStartPoint = new Point(x+AWL+varNames.length*100, y);
 		
-		//добавить кусок провода длиной в 50
+		//РґРѕР±Р°РІРёС‚СЊ РєСѓСЃРѕРє РїСЂРѕРІРѕРґР° РґР»РёРЅРѕР№ РІ 50
 		for(int i = 0; i<varNames.length; i++) {
 					
 			if(!dictionary.containsKey(varNames[i])) {
 				
-			ArrayList<CircuitElm> UnusedVar = new ArrayList<CircuitElm>(); //для удаления неиспользуемых входов схемы.
+			ArrayList<CircuitElm> UnusedVar = new ArrayList<CircuitElm>(); //РґР»СЏ СѓРґР°Р»РµРЅРёСЏ РЅРµРёСЃРїРѕР»СЊР·СѓРµРјС‹С… РІС…РѕРґРѕРІ СЃС…РµРјС‹.
 			
 			minus += 40;
 			
@@ -635,7 +638,7 @@ public class CircuitSynthesizer {
 		
 	}
 		
-	//Создаёт выходной элемент схемы на последнем лог. элементе
+	//РЎРѕР·РґР°С‘С‚ РІС‹С…РѕРґРЅРѕР№ СЌР»РµРјРµРЅС‚ СЃС…РµРјС‹ РЅР° РїРѕСЃР»РµРґРЅРµРј Р»РѕРі. СЌР»РµРјРµРЅС‚Рµ
 	void CreateCircuitOutput(String lastBlock) {
 		
 		Point lastBlockOut = dictionary.get(lastBlock).OperativePoints.get(dictionary.get(lastBlock).OperativePoints.size()-1);
@@ -649,25 +652,25 @@ public class CircuitSynthesizer {
 		
 	}
 	
-	//Соединение двух элементов
+	//РЎРѕРµРґРёРЅРµРЅРёРµ РґРІСѓС… СЌР»РµРјРµРЅС‚РѕРІ
   	void ConnectElements(CircuitElm out, CircuitElm in, String outName, boolean alreadySplitted, boolean isInputElm) {
 
-  		Point prevOutput = out.OperativePoints.get(out.OperativePoints.size()-1); //выход предыдущего элемента
-  		int closestInputIndex = GetClosestInput(prevOutput, in); //поиск индекса ближайшего входа к выходу
+  		Point prevOutput = out.OperativePoints.get(out.OperativePoints.size()-1); //РІС‹С…РѕРґ РїСЂРµРґС‹РґСѓС‰РµРіРѕ СЌР»РµРјРµРЅС‚Р°
+  		int closestInputIndex = GetClosestInput(prevOutput, in); //РїРѕРёСЃРє РёРЅРґРµРєСЃР° Р±Р»РёР¶Р°Р№С€РµРіРѕ РІС…РѕРґР° Рє РІС‹С…РѕРґСѓ
   		Point currentInput = in.OperativePoints.get(closestInputIndex);
 
   		if(prevOutput.y != currentInput.y) {
   		
-  			//Если в соединении есть узел
+  			//Р•СЃР»Рё РІ СЃРѕРµРґРёРЅРµРЅРёРё РµСЃС‚СЊ СѓР·РµР»
   			if(alreadySplitted) {
   				
   				//GWT.log("###########");
   				int diff1 = Math.abs(out.OperativePoints.get(out.OperativePoints.size()-1).y-currentInput.y);
   				int diff2 =		Math.abs(out.OperativePoints.get(0).y-currentInput.y);
   				
-  				//Находим разность в высоте между входами элемента и позицией узла
-  				//В зависимости от этого выбираем конец провода, от которого идём
-  				//в случае их равенства предпочтение отдаётся точке начала провода (Индекс 0)
+  				//РќР°С…РѕРґРёРј СЂР°Р·РЅРѕСЃС‚СЊ РІ РІС‹СЃРѕС‚Рµ РјРµР¶РґСѓ РІС…РѕРґР°РјРё СЌР»РµРјРµРЅС‚Р° Рё РїРѕР·РёС†РёРµР№ СѓР·Р»Р°
+  				//Р’ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ СЌС‚РѕРіРѕ РІС‹Р±РёСЂР°РµРј РєРѕРЅРµС† РїСЂРѕРІРѕРґР°, РѕС‚ РєРѕС‚РѕСЂРѕРіРѕ РёРґС‘Рј
+  				//РІ СЃР»СѓС‡Р°Рµ РёС… СЂР°РІРµРЅСЃС‚РІР° РїСЂРµРґРїРѕС‡С‚РµРЅРёРµ РѕС‚РґР°С‘С‚СЃСЏ С‚РѕС‡РєРµ РЅР°С‡Р°Р»Р° РїСЂРѕРІРѕРґР° (Р�РЅРґРµРєСЃ 0)
   				if(diff1<diff2) {
   					prevOutput = out.OperativePoints.get(out.OperativePoints.size()-1);
   				}else if(diff1==diff2){
@@ -691,11 +694,11 @@ public class CircuitSynthesizer {
   				
   			}else {
   				
-  				//Если нет узла
+  				//Р•СЃР»Рё РЅРµС‚ СѓР·Р»Р°
   				
   				int diap = 0;
   				
-  				//Если это входной элемент схемы
+  				//Р•СЃР»Рё СЌС‚Рѕ РІС…РѕРґРЅРѕР№ СЌР»РµРјРµРЅС‚ СЃС…РµРјС‹
   				if(isInputElm) { 
   					  					
   					CircuitElm shit2 = createCe("Wire",prevOutput.x, prevOutput.y, prevOutput.x, currentInput.y, 0, 0);
@@ -747,10 +750,10 @@ public class CircuitSynthesizer {
   		   
   			
   		}
-  		else { //Если выход и вход на одной линии
+  		else { //Р•СЃР»Рё РІС‹С…РѕРґ Рё РІС…РѕРґ РЅР° РѕРґРЅРѕР№ Р»РёРЅРёРё
   			
-  			//Разделим данное соединение на 2, для случая, когда выходной элемент на одной линии с входным + он же коннектится с третьим
-  			//обавить рандомную x координату для сегментации
+  			//Р Р°Р·РґРµР»РёРј РґР°РЅРЅРѕРµ СЃРѕРµРґРёРЅРµРЅРёРµ РЅР° 2, РґР»СЏ СЃР»СѓС‡Р°СЏ, РєРѕРіРґР° РІС‹С…РѕРґРЅРѕР№ СЌР»РµРјРµРЅС‚ РЅР° РѕРґРЅРѕР№ Р»РёРЅРёРё СЃ РІС…РѕРґРЅС‹Рј + РѕРЅ Р¶Рµ РєРѕРЅРЅРµРєС‚РёС‚СЃСЏ СЃ С‚СЂРµС‚СЊРёРј
+  			//РѕР±Р°РІРёС‚СЊ СЂР°РЅРґРѕРјРЅСѓСЋ x РєРѕРѕСЂРґРёРЅР°С‚Сѓ РґР»СЏ СЃРµРіРјРµРЅС‚Р°С†РёРё
   			
 	  		CircuitElm newce1 = createCe("Wire",prevOutput.x, prevOutput.y, prevOutput.x+20, prevOutput.y, 0, 0);
 			newce1.setPoints();
@@ -799,7 +802,7 @@ public class CircuitSynthesizer {
   		
   	}
   	
-  	//Индекс входа ближайший к выходу
+  	//Р�РЅРґРµРєСЃ РІС…РѕРґР° Р±Р»РёР¶Р°Р№С€РёР№ Рє РІС‹С…РѕРґСѓ
   	Integer GetClosestInput(Point out, CircuitElm in) {
   		
   		int index = 0;

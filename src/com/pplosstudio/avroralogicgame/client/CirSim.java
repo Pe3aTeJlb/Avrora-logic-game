@@ -220,8 +220,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		centreCircuit();
 	
 		CircuitSynthesizer v = new CircuitSynthesizer();
-		//v.Synthesis(width, height, 3);
-		v.Synthesis(width, height);
+		v.Synthesis(width, height, 3);
+		//v.Synthesis(width, height);
 		elmList = v.elmList;
 				
 		timer.scheduleRepeating(REFRESH_RATE);
