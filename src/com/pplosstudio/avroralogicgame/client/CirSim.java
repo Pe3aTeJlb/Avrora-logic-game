@@ -220,7 +220,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		centreCircuit();
 	
 		CircuitSynthesizer v = new CircuitSynthesizer();
-		v.Synthesis(width, height, 1);
+		v.Synthesis(width, height, 9);
 		//v.Synthesis(width, height);
 		elmList = v.elmList;
 				

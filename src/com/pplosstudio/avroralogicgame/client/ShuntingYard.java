@@ -203,10 +203,11 @@ public class ShuntingYard {
             lastTerm.add(terms[i]);
             data = new ArrayList<>();
         }
-
-        lastTerm.add("+");
-        lastTerm.add(input);
-        list.add(lastTerm);
+        if(terms.length>1) {
+        	lastTerm.add("+");
+        	lastTerm.add(input);
+        	list.add(lastTerm);
+        }
         
     }
     
@@ -236,10 +237,11 @@ public class ShuntingYard {
             data = new ArrayList<>();
         }
 
-        lastTerm.add("*");
-        lastTerm.add(input);
-        list.add(lastTerm);
-        
+        if(terms.length>1) {
+        	lastTerm.add("*");
+        	lastTerm.add(input);
+        	list.add(lastTerm);
+        }
     }   
 
     /**

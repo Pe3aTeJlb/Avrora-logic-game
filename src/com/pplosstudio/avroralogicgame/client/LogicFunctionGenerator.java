@@ -29,22 +29,29 @@ public class LogicFunctionGenerator {
     public char[][] VectorFunctions;
     public String[] VarNames,OutNames;
     private long seed = 1;
-    private float maxTruePercent = 0.3f;
-    private float minTruePercent = 0.2f;
+    private float maxTruePercent;
+    private float minTruePercent;
     private int lastVarIndex = 1;
     char[][] buffVector;
     private boolean debug = false;
+    public String dmp = "";
 
     public LogicFunctionGenerator() {}
     
     
     public LogicFunctionGenerator(boolean dbg){
+    	maxTruePercent = 0.3f;
+    	minTruePercent = 0.2f;
     	debug = dbg;
     }
 
     //генератор логической функции в виде таблицы истинности
-    public void GenerateVectorFunction(int varCount, int funcCount, ArrayList<String> sharedVars) {
+    public void GenerateVectorFunction(int varCount, int funcCount, ArrayList<String> sharedVars, float min, float max) {
     	
+    	dmp = "";
+    	
+    	maxTruePercent = max;
+    	minTruePercent = min;
 
         int totalVarCount = (int) Math.pow(2,varCount);
 
@@ -54,14 +61,18 @@ public class LogicFunctionGenerator {
         VarNames = new String[varCount];
         OutNames = new String[funcCount];
         
-        if(debug) {GWT.log("Shared var length "+Integer.toString(sharedVars.size()));
-        GWT.log(sharedVars.get(0));
-        GWT.log(sharedVars.get(1));
-        }
+
     	if(sharedVars.size()>0) {
+            if(debug) {
+                GWT.log("Shared var length "+Integer.toString(sharedVars.size()));
+                GWT.log(sharedVars.get(0));
+                GWT.log(sharedVars.get(1));
+                }
+            dmp+= "Shared var length "+Integer.toString(sharedVars.size()) + "\n" + sharedVars.get(0) + "\n";
     		for(int i = 0; i < sharedVars.size(); i++) {
     			VarNames[i] = sharedVars.get(i);
     			 if(debug)GWT.log(sharedVars.get(i));
+    			 dmp+=sharedVars.get(i)+"\n";
     		}
     	}
 
@@ -73,6 +84,7 @@ public class LogicFunctionGenerator {
 	            lastVarIndex++;
         	}
             if(debug)GWT.log(VarNames[i]);
+            dmp += VarNames[i]+"\n";
         }
 
         for(int i = 0; i < funcCount; i++)
@@ -88,14 +100,17 @@ public class LogicFunctionGenerator {
 	            GWT.log("Function №"+Integer.toString(i));
 	            GWT.log("0");
             }
+            dmp += "Function №"+Integer.toString(i) + "\n"+ "0"+"\n";
             
             //заполняем выходной масссив
             for(int j = 1; j < totalVarCount; j++)
             {
                 VectorFunctions[j][i] = buffVector[j][0];
                 if(debug)GWT.log(Character.toString(VectorFunctions[j][i]));
+                dmp+= Character.toString(VectorFunctions[j][i]) + "\n";
             }
             if(debug)GWT.log("end of function");
+            dmp += "end of function" + "\n";
         }
         
 

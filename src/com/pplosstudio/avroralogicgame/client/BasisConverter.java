@@ -48,11 +48,13 @@ public class BasisConverter {
                 buffFuncName += funcName + "*";
                 if(operands.size()!=0)list.add(operands);
             }
+            if(tmp.length>1) {
             buffFuncName = removeByIndex(buffFuncName, buffFuncName.length()-1);
             buffFuncName = "~("+buffFuncName+")";
             terms.add("Nand");
             terms.add(buffFuncName);
             list.add(terms);
+            }
             if(debug)GWT.log(list.toString());
 
 
@@ -163,11 +165,12 @@ public class BasisConverter {
             }
 
             buffFuncName = removeByIndex(buffFuncName, buffFuncName.length()-1);
+            if(tmp.length>1) {
             buffFuncName = "~("+buffFuncName+")";
             terms.add("Nor");
             terms.add(buffFuncName);
             list.add(terms);
-
+            }
             //инверсия через элемент или-не
             terms = new ArrayList<>();
             terms.add(buffFuncName);
@@ -211,13 +214,14 @@ public class BasisConverter {
                 //GWT.log("FuncName " + buffFuncName);
                 if(operands.size()!=0)list.add(operands);
             }
-            
+            if(tmp.length>1) { 
             buffFuncName = removeByIndex(buffFuncName, buffFuncName.length()-1);
             buffFuncName = "~("+buffFuncName+")";
             terms.add("Nor");
             terms.add(buffFuncName);
             
             list.add(terms);
+            }
           //  GWT.log(list.toString());
         }
 
