@@ -34,7 +34,7 @@ import com.google.gwt.core.client.GWT;
 
 public class CircuitSynthesizer {
 	
-	private boolean debug = true;
+	private boolean debug = false;
 	private boolean ShuntingYardDebug = false;
 	private boolean LogicVectorGenerator = false;
 	private boolean BasisConverterDebug = false;
@@ -52,6 +52,7 @@ public class CircuitSynthesizer {
 	private Point StartPoint = new Point(1,1); // фиксация начальной точки текущей функции
 	private Point NextStartPoint = new Point(2,2); //фиксация начальной точки следующей функции
 	private Point freeSpace = new Point(3,3); //текущая свободнеая точка
+	private Point InputElmStartPoint = new Point(3,3); //текущая свободнеая точка
 	
 	ArrayList<ArrayList<String>> list = new ArrayList<>();
 	
@@ -77,6 +78,7 @@ public class CircuitSynthesizer {
 	
 	private float minTrue = 0.2f;//Устанавливает максимальное и минимальное количество 1 в вектор функции
 	private float maxTrue = 0.3f;
+	private boolean callOnce = false;
 	
 	public void Synthesis(int w, int h) {
 		
@@ -209,12 +211,12 @@ public class CircuitSynthesizer {
 	
 		 MDNF = true;
 		 factorize = true;
-		 basis = "Default";
+		 //basis = "Default";
 		// basis = "Nor";
-		 //basis = "Nand";
-		// basis = "Zhegalkin";
+		// basis = "Nand";
+		 basis = "Zhegalkin";
 		 funcCount = 1;
-		 varCount = 4;
+		 varCount = 3;
 		 
 		 if(debug) {
 			 GWT.log("MDNF " + MDNF);
@@ -237,8 +239,8 @@ public class CircuitSynthesizer {
 			
 		int circCount = (int)Math.floor(((0.35f*circDifficult-1.8f)*(0.24f*circDifficult-1.8f)+3));
 		
-		minTrue += (circDifficult-1)*0.06;
-		maxTrue += (circDifficult-1)*0.06;
+		minTrue += (circDifficult-1)*0.03;
+		maxTrue += (circDifficult-1)*0.03;
 		
 		
 		if(debug) {
@@ -251,7 +253,7 @@ public class CircuitSynthesizer {
 		for(int i = 0; i < circCount; i++) {
 			
 			int Basis =  random(0,2);
-			
+		
 			int mdnf =  random(0,1);
 			if(mdnf == 0) {
 				MDNF = false;
@@ -272,10 +274,10 @@ public class CircuitSynthesizer {
 				else {varCount =  random(2,5);}
 			}else if(Basis == 1) {
 				basis = "Nor";
-				varCount =  random(2,4);
+				varCount =  random(2,3);
 			}else if(Basis == 2) {
 				basis = "Nand";
-				varCount =  random(2,4);
+				varCount =  random(2,3);
 			}else if(Basis == 3) {
 				basis = "Zhegalkin";
 				varCount =  random(2,3);
@@ -283,8 +285,6 @@ public class CircuitSynthesizer {
 			
 			varCount = (int)(Math.floor(0.0025f*Math.pow((circDifficult-2), 3)+2.9f));
 			funcCount =  (int)Math.floor(0.5f*Math.log(circDifficult-0.5f)+2);
-			//funcCount = random(1,(int)Math.floor(0.5f*Math.log(circDifficult-0.5f)+2));
-
 			
 			 if(debug) {
 				 GWT.log("MDNF " + MDNF);
@@ -300,7 +300,7 @@ public class CircuitSynthesizer {
 					if(i>0 && i < circCount - 1 && circCount>1 && circDifficult > 4) {
 						if(debug)GWT.log("Shared Vars++");dump+= "Include Shared Vars"+"\n";
 
-							int sharedVarsCount = random(1,varCount-1);
+							int sharedVarsCount = random(1,varCount-2);
 							
 							for(int j = 0; j<sharedVarsCount; j++) {
 								add();
@@ -409,14 +409,17 @@ public class CircuitSynthesizer {
 	        }
 	        else if(basis.equals("Nor")) {
 	        	converter.ToNor(functions[i], MDNF);
+	        	dump+=converter.dmp+"\n";
 	        	list = converter.list;
 	        }
 	        else if(basis.equals("Nand")) {
 	        	converter.ToNand(functions[i], MDNF);
+	        	dump+=converter.dmp+"\n";
 	        	list = converter.list;
 	        }
 	        else if(basis.equals("Zhegalkin")) {
 	        	converter.ToZhegalkinPolynomial(generator.VectorFunctions,0,generator.VarNames);
+	        	dump+=converter.dmp+"\n";
 	        	list = converter.list;
 	        }
 	        
@@ -660,7 +663,7 @@ public class CircuitSynthesizer {
 							ConnectElements(dictionary.get(list.get(i).get(j)), dictionary.get(blockName),list.get(i).get(j),false,false);
 						}	
 					}
-					GWT.log("End of block");
+					if(debug)GWT.log("End of block");
 					dump+="End of block"+"\n";
 				}
 				
@@ -672,8 +675,8 @@ public class CircuitSynthesizer {
 		
 		CreateCircuitOutput(blockName);
 		
-		GWT.log("End of subCirc");
-		GWT.log("");
+		if(debug)GWT.log("End of subCirc");
+		if(debug)GWT.log("");
 		dump+="End of subCirc"+"\n\n";
 	}
 	
@@ -952,6 +955,9 @@ public class CircuitSynthesizer {
   		}
   		
   		return index;
+  		//index = (in.OperativePoints.size()-2);
+  		//if(index<0) {index=0;}
+  		//return index;
   	}
   	
   	static CircuitElm createCe(String marker, int x1, int y1, int x2, int y2, int f, int inputcount) {

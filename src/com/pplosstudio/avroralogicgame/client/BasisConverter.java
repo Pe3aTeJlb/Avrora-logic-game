@@ -11,12 +11,14 @@ public class BasisConverter {
     ArrayList<String> operands = new ArrayList<>();
     ArrayList<String> terms = new ArrayList<>();
     private boolean debug = false;
+    public String dmp;
     
     public BasisConverter(boolean dbg){debug = dbg;}
 
     //Приведение к базису и-не
     public void ToNand(String func, boolean sum_of_prod) {
-
+    
+    	dmp = "";
     	list.clear();
     	terms.clear();
     	
@@ -55,7 +57,6 @@ public class BasisConverter {
             terms.add(buffFuncName);
             list.add(terms);
             }
-            if(debug)GWT.log(list.toString());
 
 
         }else{
@@ -112,14 +113,14 @@ public class BasisConverter {
             terms.add("Nand");
             terms.add("~("+buffFuncName+")");
             list.add(terms);
-
         }
 
     }
 
     //Приведение к базису Или-не
     public void ToNor(String func, boolean sum_of_prod) {
-
+    	
+    	dmp = "";
     	list.clear();
     	terms.clear();
     	
@@ -178,7 +179,6 @@ public class BasisConverter {
             terms.add("Nor");
             terms.add("~("+buffFuncName+")");
             list.add(terms);
-
         }else{
 
             //[[x0, x1, Nor, ~(x0+x1)], [~x1, ~x2, Nor, ~(~x1+~x2)], [~(x0+x1), ~(~x1+~x2), Nor, ~(~(x0+x1)+~(~x1+~x2))]]
@@ -222,14 +222,15 @@ public class BasisConverter {
             
             list.add(terms);
             }
-          //  GWT.log(list.toString());
+            
         }
 
     }
 
     //Приведение к полиному Жегалкина методом треугольника
     public void ToZhegalkinPolynomial(char[][] functionVector, int row, String[] varNames) {
-
+    	
+    	dmp = "";
     	list.clear();
     	terms.clear();
     	
@@ -241,6 +242,7 @@ public class BasisConverter {
         }
 
         if(debug)GWT.log(vectorFunc.toString());
+        dmp+=vectorFunc.toString()+"\n";
 
         int m = vectorFunc.size();
         ZhegalikinIndexes.add(vectorFunc.get(0));
@@ -255,6 +257,7 @@ public class BasisConverter {
                         operands = new ArrayList<>();
                         String v = Integer.toBinaryString(k);
                         if(debug)GWT.log(v);
+                        dmp+=v+"\n";
                         String tmp = "";
                         int y = 0;
                         for(int l = varNames.length-v.length(); l<varNames.length; l++){
@@ -295,6 +298,7 @@ public class BasisConverter {
         if(debug)GWT.log(ZhegalikinIndexes.toString());
         if(debug)GWT.log(outFunction);
         if(debug)GWT.log(list.toString());
+        dmp+=ZhegalikinIndexes.toString()+"\n"+outFunction+"\n"+list.toString()+"\n";
 
     }
 

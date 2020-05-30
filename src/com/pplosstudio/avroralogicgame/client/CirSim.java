@@ -63,7 +63,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     MenuBar mainBar;
     MenuBar extrasBar;
     MenuBar editBar;
-    MenuBar infoBar;
+    //MenuBar infoBar;
      
     CheckboxMenuItem alternativeColorCheckItem;
     CheckboxMenuItem printableCheckItem;
@@ -152,7 +152,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	 mainBar     = new MenuBar(false);
 	 extrasBar   = new MenuBar(true);
 	 editBar     = new MenuBar(true);
-     infoBar     = new MenuBar(true);
+     //infoBar     = new MenuBar(true);
      
      
 		editBar.addItem(new MenuItem("Center Circuit", new Command() { public void execute(){
@@ -190,7 +190,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		mainBar.addItem("Options",extrasBar);
 		///
 		///
-     	mainBar.addItem("Info", infoBar);
+     	//mainBar.addItem("Info", infoBar);
 		
      	
 		layoutPanel.addNorth(mainBar, MENUBARHEIGHT);
@@ -220,8 +220,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		centreCircuit();
 	
 		CircuitSynthesizer v = new CircuitSynthesizer();
-		v.Synthesis(width, height, 9);
-		//v.Synthesis(width, height);
+		v.Synthesis(width, height, 10);
+		//v.Synthesis(width, height, "s");
 		elmList = v.elmList;
 				
 		timer.scheduleRepeating(REFRESH_RATE);
