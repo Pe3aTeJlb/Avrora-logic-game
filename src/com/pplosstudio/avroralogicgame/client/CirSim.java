@@ -1,6 +1,7 @@
 package com.pplosstudio.avroralogicgame.client;
 
 import java.util.Vector;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -108,6 +109,9 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     
     int gridSize, gridMask, gridRound;
     
+    private ArrayList<String> currOutput, prevOutput; //Хранят текущее и предыдущее состояние выходов функций
+    private ArrayList<CircuitElm> FunctionsOutput;//Список выходных элементов функций
+    private int currOutputIndex = 0; // текущая позиция кристалла
  ////////////////////////
 //Circuit Construction
 
@@ -170,7 +174,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		
 		mainBar.addItem("Edit", editBar);
 	 
-		
 	 	extrasBar.addItem(printableCheckItem = new CheckboxMenuItem("White back",
 				new Command() { public void execute(){
 				}}));
@@ -184,8 +187,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		
 		//initialize wire color
 		CircuitElm.setColorScale();
-		
-		
 		
 		mainBar.addItem("Options",extrasBar);
 		///
@@ -220,14 +221,37 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		centreCircuit();
 	
 		CircuitSynthesizer v = new CircuitSynthesizer();
-		v.Synthesis(width, height, 10);
+		v.Synthesis(width, height, 7);
 		//v.Synthesis(width, height, "s");
 		elmList = v.elmList;
-				
+		FunctionsOutput = v.outElems;
+		
+		prevOutput = new ArrayList();
+		currOutput = new ArrayList();
+			
 		timer.scheduleRepeating(REFRESH_RATE);
 					   	
   	}
-    	
+
+  	//Game Logic
+  	public void GameOverTrigger() {
+  		
+  		for(int i = 0; i<FunctionsOutput.size(); i++) {
+  			currOutput.add(FunctionsOutput.get(i).volts[0] < 2.5f ? "0" : "1");
+  		}
+  		
+  		//for(int i = 0; i<FunctionsOutput.size()-1; i++) {
+  			if(currOutput.get(currOutputIndex).equals("0") && currOutput.get(currOutputIndex+1).equals("0")) {
+  				GWT.log("Game Over");
+  			}
+  		//}
+  		if(currOutputIndex == currOutput.size()) {
+  		GWT.log("You Won!");	
+  		}
+  		
+  	}
+  	
+  	
  // *****************************************************************
 //  Void Update	
   

@@ -34,7 +34,7 @@ import com.google.gwt.core.client.GWT;
 
 public class CircuitSynthesizer {
 	
-	private boolean debug = false;
+	private boolean debug = true;
 	private boolean ShuntingYardDebug = false;
 	private boolean LogicVectorGenerator = false;
 	private boolean BasisConverterDebug = false;
@@ -65,6 +65,8 @@ public class CircuitSynthesizer {
 	ArrayList<ArrayList<CircuitElm>> UnusedInputs = new ArrayList<>();
 	ArrayList<String> UnusedVarNames = new ArrayList<>();
 	ArrayList<ArrayList<String>> allInputs = new ArrayList(); 
+	
+	ArrayList<CircuitElm> outElems = new ArrayList();
 
 	//AWL = Additional Wire Length
 	private int AWL;
@@ -78,37 +80,9 @@ public class CircuitSynthesizer {
 	
 	private float minTrue = 0.2f;//Устанавливает максимальное и минимальное количество 1 в вектор функции
 	private float maxTrue = 0.3f;
-	private boolean callOnce = false;
+	int currCirc = 0;
 	
 	public void Synthesis(int w, int h) {
-		
-	/*
-		width = w;
-		height = h;
-	
-		//GetConfigurationFile();
-		sharedVars = new ArrayList();	
-	
-		 MDNF = true;
-		 factorize = true;
-		// basis = "Default";
-		// basis = "Nor";
-		 //basis = "Nand";
-		 basis = "Zhegalkin";
-		 funcCount = 2;
-		 varCount = 3;
-		 
-		 if(debug) {
-			 GWT.log("MDNF " + MDNF);
-			 GWT.log("Basis " + basis);
-			 GWT.log("Function count " + funcCount);
-			 GWT.log("Var count " + varCount);
-		 }
-		 
-		
-		InitializeParametrs();
-		DeleteUnusedInputs();
-		*/
 		
 		sharedVars = new ArrayList();	
 		
@@ -123,10 +97,14 @@ public class CircuitSynthesizer {
 			GWT.log("");
 		}
 		
-		minTrue = random(2,6)/10;
-		maxTrue = minTrue+0.2f;
+		//minTrue = random(2,6)/10;
+		//maxTrue = minTrue+0.2f;
 		
-		GWT.log("maxT "+ maxTrue);
+		if(debug) {
+			GWT.log("Circ count "+ Integer.toString(circCount));
+			GWT.log("");
+			GWT.log("maxT "+ maxTrue);
+		}dump += "Circ count "+ Integer.toString(circCount) + "\n"+"\n" + "maxT" + maxTrue+ "\n";
 		
 		for(int i = 0; i < circCount; i++) {
 			
@@ -152,10 +130,10 @@ public class CircuitSynthesizer {
 				else {varCount =  random(2,5);}
 			}else if(Basis == 1) {
 				basis = "Nor";
-				varCount =  random(2,4);
+				varCount =  random(2,3);
 			}else if(Basis == 2) {
 				basis = "Nand";
-				varCount =  random(2,4);
+				varCount =  random(2,3);
 			}else if(Basis == 3) {
 				basis = "Zhegalkin";
 				varCount =  random(2,3);
@@ -172,10 +150,13 @@ public class CircuitSynthesizer {
 				 GWT.log("Function count " + funcCount);
 				 GWT.log("Var count " + varCount);
 			 }
+			 dump += "MDNF " + MDNF + "\n" + "Factr "+factorize + "\n" + "Basis " + basis + "\n" + 
+					 "Function count " + funcCount + "\n" + "Var count " + varCount + "\n";
 			 
 					//Add shared input
 					if(i>0 && i < circCount - 1 && circCount>1) {
 						GWT.log("Shared Vars++");
+						dump+= "Include Shared Vars"+"\n";
 						int n = random(0,1);
 						
 						if(n==1) {
@@ -232,15 +213,17 @@ public class CircuitSynthesizer {
 	
 	public void Synthesis(int w, int h, int circDifficult) {
 		
+		generator.callOnce = true;
+		
 		sharedVars = new ArrayList();	
 		
 		width = w;
 		height = h;
 			
-		int circCount = (int)Math.floor(((0.35f*circDifficult-1.8f)*(0.24f*circDifficult-1.8f)+3));
+		int circCount = (int)Math.floor(((0.35f*circDifficult-1.8f)*(0.35f*circDifficult-1.8f)+3));
 		
-		minTrue += (circDifficult-1)*0.03;
-		maxTrue += (circDifficult-1)*0.03;
+		//minTrue += (circDifficult-1)*0.03;
+		//maxTrue += (circDifficult-1)*0.03;
 		
 		
 		if(debug) {
@@ -249,10 +232,10 @@ public class CircuitSynthesizer {
 			GWT.log("maxT "+ maxTrue);
 		}dump += "Circ count "+ Integer.toString(circCount) + "\n"+"\n" + "maxT" + maxTrue+ "\n";
 		
-		
 		for(int i = 0; i < circCount; i++) {
+			currCirc = 0;
 			
-			int Basis =  random(0,2);
+			int Basis =  random(0,3);
 		
 			int mdnf =  random(0,1);
 			if(mdnf == 0) {
@@ -265,13 +248,10 @@ public class CircuitSynthesizer {
 					int factr =  random(0,1);
 					if(factr == 1) {
 						factorize = true;
-						varCount =  random(2,5);
 					}else {
 						factorize = false;
-						varCount =  random(2,5);
 					}
 				}
-				else {varCount =  random(2,5);}
 			}else if(Basis == 1) {
 				basis = "Nor";
 				varCount =  random(2,3);
@@ -298,6 +278,7 @@ public class CircuitSynthesizer {
 			 
 					//Add shared input
 					if(i>0 && i < circCount - 1 && circCount>1 && circDifficult > 4) {
+						sharedVars.clear();
 						if(debug)GWT.log("Shared Vars++");dump+= "Include Shared Vars"+"\n";
 
 							int sharedVarsCount = random(1,varCount-2);
@@ -418,7 +399,7 @@ public class CircuitSynthesizer {
 	        	list = converter.list;
 	        }
 	        else if(basis.equals("Zhegalkin")) {
-	        	converter.ToZhegalkinPolynomial(generator.VectorFunctions,0,generator.VarNames);
+	        	converter.ToZhegalkinPolynomial(generator.VectorFunctions,i,generator.VarNames);
 	        	dump+=converter.dmp+"\n";
 	        	list = converter.list;
 	        }
@@ -435,7 +416,6 @@ public class CircuitSynthesizer {
 		//GWT.log("list size is " + Integer.toString(list.size()));
 		
 		String blockName = "";
-		
 		
 		String ll2 = "";
 		for(int i = 0; i<list.size(); i++) {
@@ -613,6 +593,10 @@ public class CircuitSynthesizer {
 				
 					CircuitElm newce = createCe(operation,freeSpace.x,freeSpace.y,freeSpace.x+60,freeSpace.y, 0, inputCount);
 					
+					if(i==list.size()-1) {
+						outElems.add(newce);
+					}
+					
 					newce.setPoints();
 					newce.getConnectionPoints(false);
 					elmList.add(newce);
@@ -687,9 +671,8 @@ public class CircuitSynthesizer {
 	 */
 	void CreateInputElm(String[] varNames) {
 		
-		
-		AWL = 100;
 		int minus = 0;
+		AWL = 100;
 		int x = input_freeSpace.x;
 		int y = input_freeSpace.y;
 		//AWL = 2*varNames.length * 50;
@@ -712,7 +695,7 @@ public class CircuitSynthesizer {
 			newce.getConnectionPoints(false);
 			elmList.add(newce);
 			
-			CircuitElm newwire = createCe("Wire",newce.OperativePoints.get(0).x,newce.OperativePoints.get(0).y,freeSpace.x+100-minus,newce.OperativePoints.get(0).y, 0, 2);
+			CircuitElm newwire = createCe("Wire",newce.OperativePoints.get(0).x,newce.OperativePoints.get(0).y,freeSpace.x+100-minus+(10*currCirc),newce.OperativePoints.get(0).y, 0, 2);
 			newwire.setPoints();
 			newwire.getConnectionPoints(true);
 			elmList.add(newwire);
@@ -735,7 +718,7 @@ public class CircuitSynthesizer {
 			inverted.getConnectionPoints(true);
 			elmList.add(inverted);
 			
-			CircuitElm wire2 = createCe("Wire",inverted.OperativePoints.get(1).x,inverted.OperativePoints.get(1).y,freeSpace.x+100-minus,inverted.OperativePoints.get(1).y, 0, 2);
+			CircuitElm wire2 = createCe("Wire",inverted.OperativePoints.get(1).x,inverted.OperativePoints.get(1).y,freeSpace.x+100-minus+(10*currCirc),inverted.OperativePoints.get(1).y, 0, 2);
 			wire2.setPoints();
 			wire2.getConnectionPoints(true);
 			elmList.add(wire2);

@@ -35,6 +35,7 @@ public class LogicFunctionGenerator {
     char[][] buffVector;
     private boolean debug = false;
     public String dmp = "";
+	public boolean callOnce = false;
 
     public LogicFunctionGenerator() {}
     
@@ -68,12 +69,13 @@ public class LogicFunctionGenerator {
                 GWT.log(sharedVars.get(0));
                 GWT.log(sharedVars.get(1));
                 }
-            dmp+= "Shared var length "+Integer.toString(sharedVars.size()) + "\n" + sharedVars.get(0) + "\n";
+            dmp+= "Shared var length "+Integer.toString(sharedVars.size()) + "\n";
     		for(int i = 0; i < sharedVars.size(); i++) {
     			VarNames[i] = sharedVars.get(i);
     			 if(debug)GWT.log(sharedVars.get(i));
     			 dmp+=sharedVars.get(i)+"\n";
     		}
+    		dmp+="End of shared vars"+"\n";
     	}
 
         for(int i = 0; i < varCount; i++){
@@ -93,7 +95,10 @@ public class LogicFunctionGenerator {
             OutNames[i] = outName;
             
             //на нулевой комбинации значение функции всегда 0, иначе тренировка теряет смысол
-            VectorFunctions[0][i] = '0';
+            if(callOnce) {
+            	VectorFunctions[0][i] = '1';
+            	callOnce = false;
+            }else {VectorFunctions[0][i] = '0';}
             Generator(totalVarCount);
 
             if(debug) {

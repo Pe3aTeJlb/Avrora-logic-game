@@ -21,6 +21,7 @@ public class BasisConverter {
     	dmp = "";
     	list.clear();
     	terms.clear();
+    	outFunction = "";
     	
         if(sum_of_prod){
 
@@ -123,6 +124,7 @@ public class BasisConverter {
     	dmp = "";
     	list.clear();
     	terms.clear();
+    	outFunction = "";
     	
         if(sum_of_prod){
 
@@ -233,6 +235,7 @@ public class BasisConverter {
     	dmp = "";
     	list.clear();
     	terms.clear();
+    	outFunction = "";
     	
         ArrayList<Integer> vectorFunc = new ArrayList<>();
         ArrayList<Integer> ZhegalikinIndexes = new ArrayList<>();
@@ -257,7 +260,7 @@ public class BasisConverter {
                         operands = new ArrayList<>();
                         String v = Integer.toBinaryString(k);
                         if(debug)GWT.log(v);
-                        dmp+=v+"\n";
+                        //dmp+=v+"\n";
                         String tmp = "";
                         int y = 0;
                         for(int l = varNames.length-v.length(); l<varNames.length; l++){
@@ -285,10 +288,40 @@ public class BasisConverter {
                 int j = vectorFunc.get(i - 1) ^ vectorFunc.get(i);
                 vectorFunc.set(i-1,j);
             }
-
+           
             vectorFunc.remove(vectorFunc.size()-1);
+            
+            dmp += vectorFunc.toString() + "\n";
             if(debug)GWT.log(vectorFunc.toString());
             ZhegalikinIndexes.add(vectorFunc.get(0));
+        }
+        
+        if(vectorFunc.get(0) == 1){
+            operands = new ArrayList<>();
+            String v = Integer.toBinaryString(m-1);
+            if(debug)GWT.log(v);
+            //dmp+=v+"\n";
+            String tmp = "";
+            int y = 0;
+            for(int l = varNames.length-v.length(); l<varNames.length; l++){
+                if(v.charAt(y) == '1'){
+                    tmp += varNames[l]+"*";
+                    operands.add(varNames[l]);
+                }
+                y++;
+            }
+
+                tmp = removeByIndex(tmp,tmp.length()-1);
+
+                if(operands.size()>1){
+                    operands.add("*");
+                    operands.add(tmp);
+                    terms.add(tmp);
+                    list.add(operands);
+                }else{terms.add(operands.get(0));}
+
+                outFunction += tmp+"@";
+                if(debug)GWT.log(outFunction);
         }
 
         outFunction = removeByIndex(outFunction, outFunction.length()-1);

@@ -1,7 +1,9 @@
 
 package com.pplosstudio.avroralogicgame.client;
 
-    class LogicInputElm extends SwitchElm {
+import com.google.gwt.core.client.GWT;
+
+class LogicInputElm extends SwitchElm {
     	
 	final int FLAG_TERNARY = 1;
 	final int FLAG_NUMERIC = 2;

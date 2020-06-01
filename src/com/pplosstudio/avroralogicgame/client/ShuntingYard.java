@@ -19,6 +19,7 @@ public class ShuntingYard {
     public ArrayList<ArrayList<String>> list = new ArrayList<>();
     public ArrayList<String> out = new ArrayList<>();
     private boolean debug = false;
+    public String dmp = "";
 
     public ShuntingYard(boolean dbg){
     	debug = dbg;
@@ -252,10 +253,12 @@ public class ShuntingYard {
      * @return результат вычисления.
      */
     public void calculateExpression(String expression) {
-
+    	
+    	 dmp = "";
+    	
     	 String rpn = sortingStation(expression, MAIN_MATH_OPERATIONS);
          StringTokenizer tokenizer = new StringTokenizer(rpn, " ");
-         if(debug)GWT.log(rpn);
+         if(debug)GWT.log(rpn); dmp += rpn+"\n";
          Stack<String> stack = new Stack<String>();
 
          ArrayList<String> operands = new ArrayList<>();
@@ -307,21 +310,26 @@ public class ShuntingYard {
                  if(debug)GWT.log(""+stack);
                  if(debug)GWT.log(""+prevStackSize);
                  if(debug)GWT.log(""+stack.size());
+                 dmp+= "New Iter" + "\n" + ""+stack + "\n" + ""+prevStackSize + "\n" + ""+stack.size()+ "\n"; 
+                 
                  startStackSize = stack.size();
                  String operand2 = stack.pop();
                  String operand1 = stack.empty() ? "" : stack.pop();
+                 
                  if(debug)GWT.log(operand1);
                  if(debug)GWT.log(operand2);
                  if(debug)GWT.log(""+token);
                  if(debug)GWT.log("prev op " + prevOperation);
+                 dmp+= operand1 + "\n" + operand2 + "\n" + ""+token + "\n" + "prev op " + prevOperation + "\n";
 
                  if(token.equals(prevOperation)){
-                	 if(debug)GWT.log("Like prev");
-                     if(operands.size()>0 && !list.contains(operands)){list.add(operands);
-                         System.out.println("!!!!!!!!!!! "+operands);}
+                	 if(debug)GWT.log("Like prev");dmp+="Like prev" + "\n";
+                     if(operands.size()>0 && !list.contains(operands)){list.add(operands);}
+                      
 
                      if(newTerm>=2){
-                         System.out.println("new Term");
+                    	 if(debug)GWT.log("new Term");
+                    	 dmp+="new Term"+"\n";
                          if(term.length()>0 && (term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+'))term = removeByIndex(term, term.length()-1);
 
                          if(!term.equals("")) {
@@ -339,6 +347,7 @@ public class ShuntingYard {
                          term = operand1 + token + operand2;
 
                          if(debug)GWT.log("    " + operands);
+                         dmp += "    " + operands+"\n";
                          stack.push(term);
                          newTerm=0;
                          prevOperation = token;
@@ -348,11 +357,13 @@ public class ShuntingYard {
                          if(startStackSize>prevStackSize){
                         // if(prevStackSize <= stack.size()-2){
                         	 if(debug)GWT.log("Operands were added to stack");
+                        	 dmp += "Operands were added to stack" + "\n";
                              operands.add(operand2);
                              if(term.length()>2){term += token+operand2;}
                              else {term += token+operand1;}
 
-                             System.out.println("    " + operands);
+                             if(debug)GWT.log("    " + operands);
+                             dmp += "    " + operands.toString()+"\n";
                              if(term.length()>2){if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+')term = removeByIndex(term, term.length()-1);}
                              stack.push(term);
                              newTerm=0;
@@ -362,11 +373,13 @@ public class ShuntingYard {
                          }
                          else{
                         	 if(debug)GWT.log("Stack was shifted left");
+                        	 dmp += "Stack was shifted left" + "\n";
                              operands.add(operand1);
                              if(term.length()>2)if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+'){term += operand1;}
                              else {term += token+operand1;}
 
                              if(debug)GWT.log("    " + operands);
+                             dmp += "    " + operands + "\n";
                              // String NewOperand = operand1.concat(token+operand2);
                              //stack.push(NewOperand);
                              if(term.length()>2){if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+')term = removeByIndex(term, term.length()-1);}
@@ -384,11 +397,13 @@ public class ShuntingYard {
                  }else{
 
                 	 if(debug)GWT.log("Not Like prev");
+                	 dmp += "Not Like prev" + "\n";
 
                      if(term.length()>2){if(term.charAt(term.length()-1) == '*' || term.charAt(term.length()-1) == '+')term = removeByIndex(term, term.length()-1);}
                      if(!operands.contains(prevOperation) && operands.size()>=2)operands.add(prevOperation);
                      if(!operands.contains(term) && operands.size()>=2)operands.add(term);
                      if(debug)GWT.log("Result list " +operands);
+                     dmp += "Result list " +operands + "\n";
 
                      term = "";
 
@@ -397,6 +412,7 @@ public class ShuntingYard {
                      list.add(operands);
 
                      if(debug)GWT.log("new list");
+                     dmp+= "new list" + "\n";
                      String NewOperand = "";
 
                      if(stack.size()<=2){
@@ -413,6 +429,7 @@ public class ShuntingYard {
                          newTerm=0;
                          prevOperation = token;
                          if(debug)GWT.log(operands.toString());
+                         dmp += operands.toString()+"\n";
                      }
                      else {
 
@@ -430,22 +447,18 @@ public class ShuntingYard {
                          newTerm=0;
                          prevOperation = token;
                          if(debug)GWT.log(term);
+                         dmp += term + "\n";
                      }
-
-
-
                  }
-
-
              }
          }
-
 
          operands.add(prevOperation);
          operands.add(term);
          if(debug)GWT.log(operands.toString());
          if(debug)GWT.log(list.toString());
          if(debug)GWT.log("RPN "+rpn);
+         dmp += operands.toString() + "\n" + list.toString()+"\n"+"RPN "+rpn+"\n";
     }
     
     private String removeByIndex(String str, int index) {

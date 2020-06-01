@@ -90,9 +90,12 @@ class SwitchElm extends CircuitElm {
     }
     
     void toggle() {
+    	GWT.log("1111111");
 		position++;
 		if (position >= posCount)
 		    position = 0;
+		
+		sim.GameOverTrigger();
 		//sim.updateCircuit();
 		//sim.analyzeCircuit();
     }

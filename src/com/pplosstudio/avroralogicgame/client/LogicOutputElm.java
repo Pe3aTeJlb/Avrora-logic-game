@@ -7,7 +7,7 @@ package com.pplosstudio.avroralogicgame.client;
 	final int FLAG_NUMERIC = 2;
 	final int FLAG_PULLDOWN = 4;
 	double threshold = 2.5;
-	String value;
+	public String value;
 	public Point InputPoint = new Point();
 	
 	public LogicOutputElm(int xx, int yy) {
