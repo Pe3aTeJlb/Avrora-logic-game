@@ -34,9 +34,9 @@ import com.google.gwt.core.client.GWT;
 
 public class CircuitSynthesizer {
 	
-	private boolean debug = true;
+	private boolean debug = false;
 	private boolean ShuntingYardDebug = false;
-	private boolean LogicVectorGenerator = false;
+	private boolean LogicVectorGeneratorDebug = false;
 	private boolean BasisConverterDebug = false;
 	private boolean dumpCirc = true;
 	public  String dump = ""; 
@@ -48,11 +48,10 @@ public class CircuitSynthesizer {
 	private ArrayList<String> sharedVars = new ArrayList();
 
 	private Point input_freeSpace = new Point(50,80); //Точка начала отрисовки входов схемы
-	
 	private Point StartPoint = new Point(1,1); // фиксация начальной точки текущей функции
 	private Point NextStartPoint = new Point(2,2); //фиксация начальной точки следующей функции
 	private Point freeSpace = new Point(3,3); //текущая свободнеая точка
-	private Point InputElmStartPoint = new Point(3,3); //текущая свободнеая точка
+	
 	
 	ArrayList<ArrayList<String>> list = new ArrayList<>();
 	
@@ -66,21 +65,22 @@ public class CircuitSynthesizer {
 	ArrayList<String> UnusedVarNames = new ArrayList<>();
 	ArrayList<ArrayList<String>> allInputs = new ArrayList(); 
 	
-	ArrayList<CircuitElm> outElems = new ArrayList();
+	ArrayList<CircuitElm> inElems = new ArrayList(); //список входных элементов
+	ArrayList<CircuitElm> outElems = new ArrayList(); //список выходных элементов
 
 	//AWL = Additional Wire Length
 	private int AWL;
 	
 	int width, height;
+
+	private float minTrue = 0.2f;//Устанавливает максимальное и минимальное количество единиц в вектор функции
+	private float maxTrue = 0.3f;
+	int currCirc = 0; //Индекс текущей схемы
 	
 	BasisConverter converter = new BasisConverter(BasisConverterDebug);
     Factorisator_V_2 factorizator = new Factorisator_V_2();
     ShuntingYard shuntingYard = new ShuntingYard(ShuntingYardDebug);
-	LogicFunctionGenerator generator = new LogicFunctionGenerator(LogicVectorGenerator);  
-	
-	private float minTrue = 0.2f;//Устанавливает максимальное и минимальное количество 1 в вектор функции
-	private float maxTrue = 0.3f;
-	int currCirc = 0;
+	LogicFunctionGenerator generator = new LogicFunctionGenerator(LogicVectorGeneratorDebug);  
 	
 	public void Synthesis(int w, int h) {
 		
@@ -195,7 +195,7 @@ public class CircuitSynthesizer {
 		 //basis = "Default";
 		// basis = "Nor";
 		// basis = "Nand";
-		 basis = "Zhegalkin";
+		// basis = "Zhegalkin";
 		 funcCount = 1;
 		 varCount = 3;
 		 
@@ -235,7 +235,7 @@ public class CircuitSynthesizer {
 		for(int i = 0; i < circCount; i++) {
 			currCirc = 0;
 			
-			int Basis =  random(0,3);
+			int Basis =  random(0,0);
 		
 			int mdnf =  random(0,1);
 			if(mdnf == 0) {
@@ -593,10 +593,6 @@ public class CircuitSynthesizer {
 				
 					CircuitElm newce = createCe(operation,freeSpace.x,freeSpace.y,freeSpace.x+60,freeSpace.y, 0, inputCount);
 					
-					if(i==list.size()-1) {
-						outElems.add(newce);
-					}
-					
 					newce.setPoints();
 					newce.getConnectionPoints(false);
 					elmList.add(newce);
@@ -679,7 +675,7 @@ public class CircuitSynthesizer {
 		
 		freeSpace = new Point(x+AWL+varNames.length*100, y);
 		StartPoint = new Point(x+AWL+varNames.length*100, y);
-		NextStartPoint = new Point(x+AWL+varNames.length*100, y);
+		NextStartPoint = new Point(x+AWL+varNames.length*100, y-30);
 		
 		//добавить кусок провода длиной в 50
 		for(int i = 0; i<varNames.length; i++) {
@@ -695,7 +691,7 @@ public class CircuitSynthesizer {
 			newce.getConnectionPoints(false);
 			elmList.add(newce);
 			
-			CircuitElm newwire = createCe("Wire",newce.OperativePoints.get(0).x,newce.OperativePoints.get(0).y,freeSpace.x+100-minus+(10*currCirc),newce.OperativePoints.get(0).y, 0, 2);
+			CircuitElm newwire = createCe("Wire",newce.OperativePoints.get(0).x,newce.OperativePoints.get(0).y,freeSpace.x+100-minus+(20*currCirc),newce.OperativePoints.get(0).y, 0, 2);
 			newwire.setPoints();
 			newwire.getConnectionPoints(true);
 			elmList.add(newwire);
@@ -705,6 +701,7 @@ public class CircuitSynthesizer {
 			
 			UnusedVar.add(newwire);
 			UnusedInputs.add(UnusedVar);
+			inElems.add(newce);
 			
 			minus += 40;
 			
@@ -718,7 +715,7 @@ public class CircuitSynthesizer {
 			inverted.getConnectionPoints(true);
 			elmList.add(inverted);
 			
-			CircuitElm wire2 = createCe("Wire",inverted.OperativePoints.get(1).x,inverted.OperativePoints.get(1).y,freeSpace.x+100-minus+(10*currCirc),inverted.OperativePoints.get(1).y, 0, 2);
+			CircuitElm wire2 = createCe("Wire",inverted.OperativePoints.get(1).x,inverted.OperativePoints.get(1).y,freeSpace.x+100-minus+(20*currCirc),inverted.OperativePoints.get(1).y, 0, 2);
 			wire2.setPoints();
 			wire2.getConnectionPoints(true);
 			elmList.add(wire2);
@@ -736,6 +733,7 @@ public class CircuitSynthesizer {
 			
 			UnusedVarNames.add(varNames[i]);
 			UnusedVarNames.add(InverseInput);
+
 		  }
 			
 		}
@@ -751,6 +749,8 @@ public class CircuitSynthesizer {
 		newce4.setPoints();
 		newce4.getConnectionPoints(true);
 		elmList.add(newce4);
+		
+		outElems.add(newce4);
 		
 		ConnectElements(dictionary.get(lastBlock),newce4,lastBlock,false,false);
 		

@@ -1,7 +1,4 @@
-
 package com.pplosstudio.avroralogicgame.client;
-
-import com.google.gwt.core.client.GWT;
 
 // SPST switch
 class SwitchElm extends CircuitElm {
@@ -90,7 +87,6 @@ class SwitchElm extends CircuitElm {
     }
     
     void toggle() {
-    	GWT.log("1111111");
 		position++;
 		if (position >= posCount)
 		    position = 0;

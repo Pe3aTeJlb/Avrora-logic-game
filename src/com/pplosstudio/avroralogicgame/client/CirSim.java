@@ -106,16 +106,16 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     HashMap<Point,Integer> postCountMap;
     Vector<WireInfo> wireInfoList;
     
-    
     int gridSize, gridMask, gridRound;
     
-    private ArrayList<String> currOutput, prevOutput; //Хранят текущее и предыдущее состояние выходов функций
-    private ArrayList<CircuitElm> FunctionsOutput;//Список выходных элементов функций
+    private ArrayList<String> currOutput; //Хранят текущее состояние выходов функций
+    private ArrayList<CircuitElm> FunctionsOutput, FunctionsInput;//Список выходных и входных элементов функций
     private int currOutputIndex = 0; // текущая позиция кристалла
+    private int tickCounter = 0;
+    private boolean refreshGameState = true;
+    private int level = 1;
  ////////////////////////
 //Circuit Construction
-
-    
     
     CirSim() {
     	theSim = this;
@@ -221,34 +221,22 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		centreCircuit();
 	
 		CircuitSynthesizer v = new CircuitSynthesizer();
-		v.Synthesis(width, height, 7);
+		v.Synthesis(width, height, 1);
 		//v.Synthesis(width, height, "s");
 		elmList = v.elmList;
 		FunctionsOutput = v.outElems;
+		FunctionsInput = v.inElems;
 		
-		prevOutput = new ArrayList();
 		currOutput = new ArrayList();
-			
+		
 		timer.scheduleRepeating(REFRESH_RATE);
-					   	
+		
   	}
 
   	//Game Logic
   	public void GameOverTrigger() {
-  		
-  		for(int i = 0; i<FunctionsOutput.size(); i++) {
-  			currOutput.add(FunctionsOutput.get(i).volts[0] < 2.5f ? "0" : "1");
-  		}
-  		
-  		//for(int i = 0; i<FunctionsOutput.size()-1; i++) {
-  			if(currOutput.get(currOutputIndex).equals("0") && currOutput.get(currOutputIndex+1).equals("0")) {
-  				GWT.log("Game Over");
-  			}
-  		//}
-  		if(currOutputIndex == currOutput.size()) {
-  		GWT.log("You Won!");	
-  		}
-  		
+  		refreshGameState = true;
+  		tickCounter = 0;
   	}
   	
   	
@@ -261,11 +249,64 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	      }
 	 };
 	
-    public void updateCircuit() {
+   
+	 public void updateCircuit() {
     	
     	setCanvasSize();
     	analyzeCircuit();
     	runCircuit();
+   
+    	if(refreshGameState)tickCounter++;
+    	
+    	if(tickCounter > 6 && refreshGameState && currOutputIndex < FunctionsOutput.size()) {
+    		
+    		currOutput = new ArrayList();
+    		
+    		for(int i = 0; i<FunctionsOutput.size(); i++) {
+      			String s = FunctionsOutput.get(i).volts[0] < 2.5 ? "0" : "1";
+      			currOutput.add(s);
+      		}
+      		GWT.log("curr out index " + currOutputIndex);
+      		
+      		if(currOutputIndex < FunctionsOutput.size()) {
+      			
+          		GWT.log(currOutput.toString());
+	      		if(currOutputIndex != FunctionsOutput.size()-1 && currOutput.get(currOutputIndex).equals("0") && currOutput.get(currOutputIndex+1).equals("0")) {
+	      			GWT.log("Game Over");		
+	      			for(int i = 0; i<FunctionsInput.size(); i++) {
+	      				FunctionsInput.get(i).volts[0] = 0;
+	      			}
+	      		}
+	      		
+	      		if(currOutputIndex != FunctionsOutput.size()-1 && currOutput.get(currOutputIndex).equals("0") && currOutput.get(currOutputIndex+1).equals("1")) {
+	      			currOutputIndex++;		
+	      			GWT.log("new curr out index " + currOutputIndex);
+	      		}
+	      		
+	      		if(currOutputIndex == FunctionsOutput.size()-1 && currOutput.get(currOutputIndex).equals("0")) {
+	      			currOutputIndex++;		
+	      			GWT.log("new curr out index " + currOutputIndex);
+	      		}
+	      		
+	          	if(currOutputIndex == FunctionsOutput.size()) {
+	          		currOutputIndex = 0;
+	          		GWT.log("You Won!");
+	          		elmList.clear();
+	          		level++;
+	          		CircuitSynthesizer v = new CircuitSynthesizer();
+	        		v.Synthesis(width, height, level);
+	        		elmList = v.elmList;
+	        		FunctionsOutput = v.outElems;
+	        		
+	        		currOutput = new ArrayList();
+	          	}
+	          	
+      		}
+      			    		
+          		
+     		refreshGameState = false;
+    		
+    	}
     	
     	Graphics g = new Graphics(backcontext);
     	
