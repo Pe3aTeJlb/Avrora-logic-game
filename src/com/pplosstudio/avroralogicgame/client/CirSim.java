@@ -109,7 +109,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     int gridSize, gridMask, gridRound;
     
     private ArrayList<String> currOutput; //Хранят текущее состояние выходов функций
-    private ArrayList<CircuitElm> FunctionsOutput, FunctionsInput;//Список выходных и входных элементов функций
+    private ArrayList<CircuitElm> FunctionsOutput;//Список выходных и входных элементов функций
+    private ArrayList<SwitchElm> FunctionsInput;
     private int currOutputIndex = 0; // текущая позиция кристалла
     private int tickCounter = 0;
     private boolean refreshGameState = true;
@@ -221,7 +222,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		centreCircuit();
 	
 		CircuitSynthesizer v = new CircuitSynthesizer();
-		v.Synthesis(width, height, 1);
+		v.Synthesis(width, height, 4);
 		//v.Synthesis(width, height, "s");
 		elmList = v.elmList;
 		FunctionsOutput = v.outElems;
@@ -274,7 +275,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	      		if(currOutputIndex != FunctionsOutput.size()-1 && currOutput.get(currOutputIndex).equals("0") && currOutput.get(currOutputIndex+1).equals("0")) {
 	      			GWT.log("Game Over");		
 	      			for(int i = 0; i<FunctionsInput.size(); i++) {
-	      				FunctionsInput.get(i).volts[0] = 0;
+	      				FunctionsInput.get(i).position = 0;
+	      				//GWT.log("Volt "+FunctionsInput.get(i).volts[0]);
 	      			}
 	      		}
 	      		
@@ -297,6 +299,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	        		v.Synthesis(width, height, level);
 	        		elmList = v.elmList;
 	        		FunctionsOutput = v.outElems;
+	        		FunctionsInput = v.inElems;
 	        		
 	        		currOutput = new ArrayList();
 	          	}

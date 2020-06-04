@@ -98,14 +98,22 @@ public class LogicFunctionGenerator {
             if(callOnce) {
             	VectorFunctions[0][i] = '1';
             	callOnce = false;
-            }else {VectorFunctions[0][i] = '0';}
-            Generator(totalVarCount);
-
+            	 if(debug) {
+     	            GWT.log("Function №"+Integer.toString(i));
+     	            GWT.log("1");
+                 }
+            	 dmp += "Function №"+Integer.toString(i) + "\n"+ "1"+"\n";
+            }else {
+            	VectorFunctions[0][i] = '0';
             if(debug) {
 	            GWT.log("Function №"+Integer.toString(i));
 	            GWT.log("0");
             }
             dmp += "Function №"+Integer.toString(i) + "\n"+ "0"+"\n";
+            }
+            Generator(totalVarCount);
+
+           
             
             //заполняем выходной масссив
             for(int j = 1; j < totalVarCount; j++)

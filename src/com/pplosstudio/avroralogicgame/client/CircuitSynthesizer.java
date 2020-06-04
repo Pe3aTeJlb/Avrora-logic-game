@@ -24,20 +24,12 @@ import com.google.gwt.core.client.GWT;
  * drawPost отвечает за отрисовку точек
  */
 
-
-/*
- * To Do
- * разбиение линии соединения на сегменты, если out.y = in.y
- * расположение для жегалкина и факторизации
- * 
- */
-
 public class CircuitSynthesizer {
 	
-	private boolean debug = false;
-	private boolean ShuntingYardDebug = false;
-	private boolean LogicVectorGeneratorDebug = false;
-	private boolean BasisConverterDebug = false;
+	private boolean debug = true;
+	private boolean ShuntingYardDebug = true;
+	private boolean LogicVectorGeneratorDebug = true;
+	private boolean BasisConverterDebug = true;
 	private boolean dumpCirc = true;
 	public  String dump = ""; 
 	
@@ -65,7 +57,7 @@ public class CircuitSynthesizer {
 	ArrayList<String> UnusedVarNames = new ArrayList<>();
 	ArrayList<ArrayList<String>> allInputs = new ArrayList(); 
 	
-	ArrayList<CircuitElm> inElems = new ArrayList(); //список входных элементов
+	ArrayList<SwitchElm> inElems = new ArrayList(); //список входных элементов
 	ArrayList<CircuitElm> outElems = new ArrayList(); //список выходных элементов
 
 	//AWL = Additional Wire Length
@@ -108,7 +100,7 @@ public class CircuitSynthesizer {
 		
 		for(int i = 0; i < circCount; i++) {
 			
-			int Basis =  random(0,3);
+			int Basis =  random(0,4);
 			
 			int mdnf =  random(0,1);
 			if(mdnf == 0) {
@@ -235,14 +227,16 @@ public class CircuitSynthesizer {
 		for(int i = 0; i < circCount; i++) {
 			currCirc = 0;
 			
-			int Basis =  random(0,0);
+			int maxDif = circDifficult;
+			if(maxDif>4)maxDif=4;
+			int Basis =  random(1,maxDif);
 		
 			int mdnf =  random(0,1);
 			if(mdnf == 0) {
 				MDNF = false;
 			}else {MDNF = true;}
 			
-			if(Basis == 0) {
+			if(Basis == 1) {
 				basis = "Default";
 				if(MDNF == true) {
 					int factr =  random(0,1);
@@ -252,13 +246,13 @@ public class CircuitSynthesizer {
 						factorize = false;
 					}
 				}
-			}else if(Basis == 1) {
+			}else if(Basis == 2) {
 				basis = "Nor";
 				varCount =  random(2,3);
-			}else if(Basis == 2) {
+			}else if(Basis == 3) {
 				basis = "Nand";
 				varCount =  random(2,3);
-			}else if(Basis == 3) {
+			}else if(Basis == 4) {
 				basis = "Zhegalkin";
 				varCount =  random(2,3);
 			}
@@ -701,7 +695,7 @@ public class CircuitSynthesizer {
 			
 			UnusedVar.add(newwire);
 			UnusedInputs.add(UnusedVar);
-			inElems.add(newce);
+			inElems.add((SwitchElm)newce);
 			
 			minus += 40;
 			

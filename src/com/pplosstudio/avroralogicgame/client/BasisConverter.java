@@ -244,13 +244,14 @@ public class BasisConverter {
             vectorFunc.add(Integer.parseInt(Character.toString(functionVector[i][row])));
         }
 
-        if(debug)GWT.log(vectorFunc.toString());
+        if(debug)GWT.log("Init vf "+ vectorFunc.toString());
         dmp+=vectorFunc.toString()+"\n";
 
         int m = vectorFunc.size();
         ZhegalikinIndexes.add(vectorFunc.get(0));
 
         for(int k = 0; k<m-1; k++) {
+        	
 
             for (int i = 1; i < vectorFunc.size(); i++) {
 
@@ -259,17 +260,20 @@ public class BasisConverter {
                     if(vectorFunc.get(0) == 1){
                         operands = new ArrayList<>();
                         String v = Integer.toBinaryString(k);
-                        if(debug)GWT.log(v);
+                        //if(debug)GWT.log("term "+v);
                         //dmp+=v+"\n";
                         String tmp = "";
                         int y = 0;
-                        for(int l = varNames.length-v.length(); l<varNames.length; l++){
-                            if(v.charAt(y) == '1'){
-                                tmp += varNames[l]+"*";
-                                operands.add(varNames[l]);
-                            }
-                            y++;
-                        }
+                        //Если мы берём нулевую комбинацию, то всё разваливается. с другой стороны, в Жегалкине 0 комбинация станет константной единицей в схеме, что не реализовано, а это делать мне лень
+                        if(!v.equals("0")) {
+	                        for(int l = varNames.length-v.length(); l<varNames.length; l++){
+	                            if(v.charAt(y) == '1'){
+	                                tmp += varNames[l]+"*";
+	                                operands.add(varNames[l]);
+	                            }
+	                            y++;
+	                        }
+                        
 
                             tmp = removeByIndex(tmp,tmp.length()-1);
 
@@ -282,6 +286,7 @@ public class BasisConverter {
 
                             outFunction += tmp+"@";
                             if(debug)GWT.log(outFunction);
+                        }
                     }
 
                 }
