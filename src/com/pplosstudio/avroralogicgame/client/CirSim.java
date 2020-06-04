@@ -222,7 +222,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		centreCircuit();
 	
 		CircuitSynthesizer v = new CircuitSynthesizer();
-		v.Synthesis(width, height, 4);
+		v.Synthesis(width, height, 2);
 		//v.Synthesis(width, height, "s");
 		elmList = v.elmList;
 		FunctionsOutput = v.outElems;
@@ -278,6 +278,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	      				FunctionsInput.get(i).position = 0;
 	      				//GWT.log("Volt "+FunctionsInput.get(i).volts[0]);
 	      			}
+      				currOutputIndex = 0;
 	      		}
 	      		
 	      		if(currOutputIndex != FunctionsOutput.size()-1 && currOutput.get(currOutputIndex).equals("0") && currOutput.get(currOutputIndex+1).equals("1")) {

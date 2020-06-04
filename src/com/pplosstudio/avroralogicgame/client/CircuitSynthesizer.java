@@ -227,10 +227,15 @@ public class CircuitSynthesizer {
 		for(int i = 0; i < circCount; i++) {
 			currCirc = 0;
 			
-			int maxDif = circDifficult;
-			if(maxDif>4)maxDif=4;
-			int Basis =  random(1,maxDif);
-		
+			int Basis = 0;
+			if(circDifficult < 5) {
+				int maxDif = (int)Math.floor(circDifficult*0.6f);
+				if(maxDif>2)maxDif=2;
+				Basis =  random(1,maxDif);
+			}else {
+				Basis =  random(1,3);
+				
+			}
 			int mdnf =  random(0,1);
 			if(mdnf == 0) {
 				MDNF = false;

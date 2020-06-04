@@ -1,7 +1,7 @@
 package com.pplosstudio.avroralogicgame.client;
 
 import java.util.ArrayList;
-
+import java.util.Collections;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Random;
 
@@ -36,6 +36,8 @@ public class LogicFunctionGenerator {
     private boolean debug = false;
     public String dmp = "";
 	public boolean callOnce = false;
+	private ArrayList<String> prevFunc = new ArrayList();
+	private ArrayList<String> currFunc= new ArrayList();
 
     public LogicFunctionGenerator() {}
     
@@ -62,7 +64,7 @@ public class LogicFunctionGenerator {
         VarNames = new String[varCount];
         OutNames = new String[funcCount];
         
-
+        
     	if(sharedVars.size()>0) {
             if(debug) {
                 GWT.log("Shared var length "+Integer.toString(sharedVars.size()));
@@ -78,6 +80,7 @@ public class LogicFunctionGenerator {
     		dmp+="End of shared vars"+"\n";
     	}
 
+    	//Создаём имена переменных
         for(int i = 0; i < varCount; i++){
         	
         	if(i>sharedVars.size()-1 || sharedVars.size()==0) {
@@ -89,12 +92,13 @@ public class LogicFunctionGenerator {
             dmp += VarNames[i]+"\n";
         }
 
+        
         for(int i = 0; i < funcCount; i++)
         {
             String outName = "z"+i;
             OutNames[i] = outName;
             
-            //на нулевой комбинации значение функции всегда 0, иначе тренировка теряет смысол
+            //на нулевой комбинации значение функции всегда 0, иначе тренировка теряет смысол (кроме первой функции в схеме)
             if(callOnce) {
             	VectorFunctions[0][i] = '1';
             	callOnce = false;
@@ -103,18 +107,21 @@ public class LogicFunctionGenerator {
      	            GWT.log("1");
                  }
             	 dmp += "Function №"+Integer.toString(i) + "\n"+ "1"+"\n";
+            	 
+            	 for(int k = 0; k< totalVarCount-1; k++) {
+            		 prevFunc.add("0");
+            	 }
+            	 
             }else {
             	VectorFunctions[0][i] = '0';
-            if(debug) {
-	            GWT.log("Function №"+Integer.toString(i));
-	            GWT.log("0");
-            }
+	            if(debug) {
+		            GWT.log("Function №"+Integer.toString(i));
+		            GWT.log("0");
+	            }
             dmp += "Function №"+Integer.toString(i) + "\n"+ "0"+"\n";
             }
             Generator(totalVarCount);
-
-           
-            
+ 
             //заполняем выходной масссив
             for(int j = 1; j < totalVarCount; j++)
             {
@@ -132,6 +139,7 @@ public class LogicFunctionGenerator {
     //Реализация Генератора
     public void Generator (int totalVarCount){
 
+    	currFunc.clear();
         buffVector = new char[totalVarCount][1];
 
         int unitCounter = 0;
@@ -142,15 +150,35 @@ public class LogicFunctionGenerator {
             int random = randomBit(seed);
             if(random == 1){unitCounter++;}
             buffVector[j][0] = Integer.toString(random).charAt(0);
+            currFunc.add(Character.toString(buffVector[j][0]));
         }
 
-        //Если функция тривиальна (1 или 0 на всех значениях) или слишком мало комбинация на которых функция принимает значение истина, то генерируем заново
+        //Если функция тривиальна (1 или 0 на всех значениях) или слишком мало комбинаци на которых функция принимает значение истина, то генерируем заново
         if(     unitCounter == 0 || unitCounter == totalVarCount
                 || unitCounter > Math.floor(maxTruePercent*totalVarCount)
                 || unitCounter < Math.floor(minTruePercent*totalVarCount)
         ){
             Generator(totalVarCount);
+            GWT.log("ReGen");
         }
+        
+        //текущий вектор не должен совпадать с вектором предыдущей функции
+        if(currFunc==prevFunc) {
+        	GWT.log(currFunc.toString());
+        	GWT.log(prevFunc.toString());
+        	GWT.log("ahtung");
+        	Generator(totalVarCount);
+        }else {
+        	//Глубокое копирование Текущая функция становится предыдущей
+        	prevFunc.clear();
+            for(String obj : currFunc)
+            {
+                String b = obj;
+                prevFunc.add(b);
+            }
+        	
+        }
+       
 
     }
 
