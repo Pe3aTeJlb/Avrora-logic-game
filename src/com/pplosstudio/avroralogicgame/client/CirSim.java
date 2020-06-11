@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.event.dom.client.KeyEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -220,24 +221,30 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		cv.addMouseMoveHandler(this);	
 		
 		centreCircuit();
-	
-		CircuitSynthesizer v = new CircuitSynthesizer();
-		v.Synthesis(width, height, 2);
-		//v.Synthesis(width, height, "s");
-		elmList = v.elmList;
-		FunctionsOutput = v.outElems;
-		FunctionsInput = v.inElems;
 		
-		currOutput = new ArrayList();
+		GenerateCircuit();
 		
 		timer.scheduleRepeating(REFRESH_RATE);
 		
   	}
 
   	//Game Logic
+  	//also check update method
   	public void GameOverTrigger() {
   		refreshGameState = true;
   		tickCounter = 0;
+  	}
+  	
+  	public void GenerateCircuit() {
+  		
+  		CircuitSynthesizer v = new CircuitSynthesizer();
+		//v.Synthesis(width, height, level);
+		v.Synthesis(width, height);
+		//v.Synthesis(width, height,"s");
+		elmList = v.elmList;
+		FunctionsOutput = v.outElems;
+		FunctionsInput = v.inElems;
+		currOutput = new ArrayList();
   	}
   	
   	
@@ -258,7 +265,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	runCircuit();
    
     	if(refreshGameState)tickCounter++;
-    	
+    		
+    	//
     	if(tickCounter > 6 && refreshGameState && currOutputIndex < FunctionsOutput.size()) {
     		
     		currOutput = new ArrayList();
@@ -276,7 +284,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	      			GWT.log("Game Over");		
 	      			for(int i = 0; i<FunctionsInput.size(); i++) {
 	      				FunctionsInput.get(i).position = 0;
-	      				//GWT.log("Volt "+FunctionsInput.get(i).volts[0]);
 	      			}
       				currOutputIndex = 0;
 	      		}
@@ -292,24 +299,19 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	      		}
 	      		
 	          	if(currOutputIndex == FunctionsOutput.size()) {
+	          		
 	          		currOutputIndex = 0;
 	          		GWT.log("You Won!");
 	          		elmList.clear();
 	          		level++;
-	          		CircuitSynthesizer v = new CircuitSynthesizer();
-	        		v.Synthesis(width, height, level);
-	        		elmList = v.elmList;
-	        		FunctionsOutput = v.outElems;
-	        		FunctionsInput = v.inElems;
-	        		
-	        		currOutput = new ArrayList();
+	          		
+	          		GenerateCircuit();
 	          	}
 	          	
       		}
       			    		
-          		
      		refreshGameState = false;
-    		
+   
     	}
     	
     	Graphics g = new Graphics(backcontext);

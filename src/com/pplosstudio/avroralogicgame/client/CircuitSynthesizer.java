@@ -15,7 +15,7 @@ import com.google.gwt.core.client.GWT;
 
 //Про систему индексов входов, выходов элемента. 
 /*
- Сначала надо высчитать эти точки - массив getOperativePoint а любом объекте класса circuitElm
+ Сначала надо высчитать эти точки - массив getOperativePoint() а любом объекте класса circuitElm
  Последняя точка в этом массиве - выход элемента, всё остальное входы.
  В случае провода - 0 индекс - точка начала провода (левый конец, если провод идёт слева на право), соответственно индекс 1 - точка окончания
  */
@@ -24,12 +24,19 @@ import com.google.gwt.core.client.GWT;
  * drawPost отвечает за отрисовку точек
  */
 
+/*	  	   _____________
+ * 		0--|комб.логика|--0
+ * 			-----------
+ * входная переменная     выходная переменная
+ */		 
+
 public class CircuitSynthesizer {
 	
+	//Debug log
 	private boolean debug = true;
-	private boolean ShuntingYardDebug = true;
-	private boolean LogicVectorGeneratorDebug = true;
-	private boolean BasisConverterDebug = true;
+	private boolean ShuntingYardDebug = false;
+	private boolean LogicVectorGeneratorDebug = false;
+	private boolean BasisConverterDebug = false;
 	private boolean dumpCirc = true;
 	public  String dump = ""; 
 	
@@ -49,14 +56,16 @@ public class CircuitSynthesizer {
 	
 	Map<String,CircuitElm> dictionary = new HashMap<String,CircuitElm>();
 	
-	public Vector<CircuitElm> elmList = new Vector<CircuitElm>();
+	public Vector<CircuitElm> elmList = new Vector<CircuitElm>();//все элементы схемы. Нужны для отрисовки
 	
-	ArrayList<String> splittedWires = new ArrayList<String>(); 
+	ArrayList<String> splittedWires = new ArrayList<String>();//см логику соединения
 	
+	//Для удаления неиспользуемых входных переменных
 	ArrayList<ArrayList<CircuitElm>> UnusedInputs = new ArrayList<>();
 	ArrayList<String> UnusedVarNames = new ArrayList<>();
 	ArrayList<ArrayList<String>> allInputs = new ArrayList(); 
 	
+	//Для игровой логики
 	ArrayList<SwitchElm> inElems = new ArrayList(); //список входных элементов
 	ArrayList<CircuitElm> outElems = new ArrayList(); //список выходных элементов
 
@@ -65,9 +74,11 @@ public class CircuitSynthesizer {
 	
 	int width, height;
 
-	private float minTrue = 0.2f;//Устанавливает максимальное и минимальное количество единиц в вектор функции
-	private float maxTrue = 0.3f;
+	private float minTrue = 0.5f;//Устанавливает максимальное и минимальное количество единиц в вектор функции
+	private float maxTrue = 0.6f;
 	int currCirc = 0; //Индекс текущей схемы
+	
+	int wireSplitPoint = 0; //x координата перелома провода
 	
 	BasisConverter converter = new BasisConverter(BasisConverterDebug);
     Factorisator_V_2 factorizator = new Factorisator_V_2();
@@ -100,7 +111,7 @@ public class CircuitSynthesizer {
 		
 		for(int i = 0; i < circCount; i++) {
 			
-			int Basis =  random(0,4);
+			int Basis =  random(0,2);
 			
 			int mdnf =  random(0,1);
 			if(mdnf == 0) {
@@ -113,13 +124,13 @@ public class CircuitSynthesizer {
 					int factr =  random(0,1);
 					if(factr == 1) {
 						factorize = true;
-						varCount =  random(2,5);
+						varCount =  random(2,4);
 					}else {
 						factorize = false;
-						varCount =  random(2,5);
+						varCount =  random(2,4);
 					}
 				}
-				else {varCount =  random(2,5);}
+				else {varCount =  random(2,4);}
 			}else if(Basis == 1) {
 				basis = "Nor";
 				varCount =  random(2,3);
@@ -184,11 +195,11 @@ public class CircuitSynthesizer {
 	
 		 MDNF = true;
 		 factorize = true;
-		 //basis = "Default";
+		 basis = "Default";
 		// basis = "Nor";
 		// basis = "Nand";
 		// basis = "Zhegalkin";
-		 funcCount = 1;
+		 funcCount = 4;
 		 varCount = 3;
 		 
 		 if(debug) {
@@ -214,9 +225,13 @@ public class CircuitSynthesizer {
 			
 		int circCount = (int)Math.floor(((0.35f*circDifficult-1.8f)*(0.35f*circDifficult-1.8f)+3));
 		
-		//minTrue += (circDifficult-1)*0.03;
-		//maxTrue += (circDifficult-1)*0.03;
-		
+		if(circDifficult <6) {
+			minTrue = 0.5f;
+			maxTrue = 0.6f;
+		}else {
+			minTrue = 0.3f;
+			maxTrue = 0.4f;
+		}
 		
 		if(debug) {
 			GWT.log("Circ count "+ Integer.toString(circCount));
@@ -303,6 +318,7 @@ public class CircuitSynthesizer {
 		GWT.log(dump);
 	}
 	
+	//Создание списка наследуемых входных переменных
 	void add() {
 		
 		int a = random(0,allInputs.size()-1);
@@ -580,7 +596,7 @@ public class CircuitSynthesizer {
 				}
 				
 				
-				String ll = "";
+					String ll = "";
 					for(int j = 0; j<list.get(i).size(); j++) {
 						ll+=list.get(i).get(j) + "  ";
 					}
@@ -598,11 +614,24 @@ public class CircuitSynthesizer {
 					
 					dictionary.put(blockName, newce);
 					
+					//сортируем элементы по y
+			        for (int m = list.get(i).size() - 3; m >= 1; m--){  
+			            for (int n = 0; n < m; n++){       
+			                if(dictionary.get(list.get(i).get(n)).y > dictionary.get(list.get(i).get(n+1)).y) {               
+			                	String buff =  list.get(i).get(n);     
+			                	list.get(i).set(n, list.get(i).get(n+1));  
+			                	list.get(i).set(n+1, buff);   
+			                }
+			            }
+			        }
+					
+					wireSplitPoint = newce.OperativePoints.get(0).x;
+					
 					for(int j = 0; j<list.get(i).size()-2; j++) {
 						
 						if(UnusedVarNames.contains(list.get(i).get(j))) {
 							UnusedVarNames.remove(list.get(i).get(j));
-						}else {}
+						}
 						
 						//GWT.log("connect " + list.get(i).get(j) + " with "+ blockName);
 						//GWT.log(Boolean.toString(dictionary.containsKey(list.get(i).get(j))));
@@ -616,11 +645,15 @@ public class CircuitSynthesizer {
 							if(splittedWires.contains(list.get(i).get(j))) 
 							{
 								
+								
 								if(list.get(i).get(j).length()<=3) {
 									ConnectElements(dictionary.get(list.get(i).get(j)), dictionary.get(blockName),list.get(i).get(j),true,true);
 								}else{
+									wireSplitPoint = dictionary.get(list.get(i).get(j)).x;
+									wireSplitPoint -= 20;
 									ConnectElements(dictionary.get(list.get(i).get(j)), dictionary.get(blockName),list.get(i).get(j),true,false);
 									}
+								
 							
 							}else 
 							{
@@ -629,7 +662,9 @@ public class CircuitSynthesizer {
 								if(list.get(i).get(j).length()<=3) {
 									ConnectElements(dictionary.get(list.get(i).get(j)), dictionary.get(blockName),list.get(i).get(j),false,true);
 								}else{
+									wireSplitPoint -= 20;
 									ConnectElements(dictionary.get(list.get(i).get(j)), dictionary.get(blockName),list.get(i).get(j),false,false);
+									
 									}
 							
 							}
@@ -645,6 +680,7 @@ public class CircuitSynthesizer {
 					if(debug)GWT.log("End of block");
 					dump+="End of block"+"\n";
 				}
+				//wireSplitPoint -= 40;
 				
 		}
 		
@@ -740,6 +776,7 @@ public class CircuitSynthesizer {
 	}
 		
 	//Создаёт выходной элемент схемы на последнем лог. элементе
+	
 	void CreateCircuitOutput(String lastBlock) {
 		
 		Point lastBlockOut = dictionary.get(lastBlock).OperativePoints.get(dictionary.get(lastBlock).OperativePoints.size()-1);
@@ -818,12 +855,17 @@ public class CircuitSynthesizer {
   					
   				}else { 
   				
-  					diap = ((prevOutput.x+20) + (int) (Math.random() * (currentInput.x-prevOutput.x-40)));
-	  		  		int temp = diap%10;
+  					//diap = ((prevOutput.x+20) + (int) (Math.random() * (currentInput.x-prevOutput.x-40)));
+	  		  		//int temp = diap%10;
 	  		  		
-	  		  		if(temp!=0) {
-	  		  			diap = diap + (10-diap%10);
-	  		  		}
+	  		  		//if(temp!=0) {
+	  		  		//	diap = diap + (10-diap%10);
+	  		  		//}
+  					
+  					//if(!sharedVars.isEmpty())
+  					//wireSplitPoint -= 20;
+  					
+  					diap = wireSplitPoint;
 	  		  		
 		  			CircuitElm shit1 = createCe("Wire",prevOutput.x, prevOutput.y, diap, prevOutput.y, 0, 0);
 		  			shit1.setPoints();
@@ -917,8 +959,9 @@ public class CircuitSynthesizer {
   	
   	//Индекс входа ближайший к выходу
   	Integer GetClosestInput(Point out, CircuitElm in) {
-  		
   		int index = 0;
+  		/*
+  		
   		Point point = in.OperativePoints.get(0);
   		
   		int delta = Math.abs(out.y-point.y);
@@ -937,9 +980,10 @@ public class CircuitSynthesizer {
   		}
   		
   		return index;
-  		//index = (in.OperativePoints.size()-2);
-  		//if(index<0) {index=0;}
-  		//return index;
+  		*/
+  		index = (in.OperativePoints.size()-2);
+  		if(index<0) {index=0;}
+  		return index;
   	}
   	
   	static CircuitElm createCe(String marker, int x1, int y1, int x2, int y2, int f, int inputcount) {

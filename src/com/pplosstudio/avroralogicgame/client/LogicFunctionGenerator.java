@@ -68,8 +68,8 @@ public class LogicFunctionGenerator {
     	if(sharedVars.size()>0) {
             if(debug) {
                 GWT.log("Shared var length "+Integer.toString(sharedVars.size()));
-                GWT.log(sharedVars.get(0));
-                GWT.log(sharedVars.get(1));
+                //GWT.log(sharedVars.get(0));
+                //GWT.log(sharedVars.get(1));
                 }
             dmp+= "Shared var length "+Integer.toString(sharedVars.size()) + "\n";
     		for(int i = 0; i < sharedVars.size(); i++) {
@@ -157,18 +157,15 @@ public class LogicFunctionGenerator {
         if(     unitCounter == 0 || unitCounter == totalVarCount
                 || unitCounter > Math.floor(maxTruePercent*totalVarCount)
                 || unitCounter < Math.floor(minTruePercent*totalVarCount)
+                || currFunc.equals(prevFunc)
         ){
             Generator(totalVarCount);
-            GWT.log("ReGen");
-        }
+          //  GWT.log("ReGen");
+        }else{
         
-        //текущий вектор не должен совпадать с вектором предыдущей функции
-        if(currFunc==prevFunc) {
-        	GWT.log(currFunc.toString());
-        	GWT.log(prevFunc.toString());
-        	GWT.log("ahtung");
-        	Generator(totalVarCount);
-        }else {
+        	//текущий вектор не должен совпадать с вектором предыдущей функции
+       
+        	//GWT.log("Copy");
         	//Глубокое копирование Текущая функция становится предыдущей
         	prevFunc.clear();
             for(String obj : currFunc)
