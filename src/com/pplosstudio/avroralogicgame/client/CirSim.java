@@ -65,7 +65,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     MenuBar mainBar;
     MenuBar extrasBar;
     MenuBar editBar;
-    //MenuBar infoBar;
+    MenuBar infoBar;
      
     CheckboxMenuItem alternativeColorCheckItem;
     CheckboxMenuItem printableCheckItem;
@@ -158,7 +158,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	 mainBar     = new MenuBar(false);
 	 extrasBar   = new MenuBar(true);
 	 editBar     = new MenuBar(true);
-     //infoBar     = new MenuBar(true);
+     infoBar     = new MenuBar(true);
      
      
 		editBar.addItem(new MenuItem("Center Circuit", new Command() { public void execute(){
@@ -187,13 +187,22 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 				}}));
 		alternativeColorCheckItem.setState(false);
 		
+		infoBar.addItem(new MenuItem("Level Up",  new Command() { public void execute(){
+			level+=1;
+      		GenerateCircuit();
+		}}));
+		
+		infoBar.addItem(new MenuItem("Regen Level",  new Command() { public void execute(){
+      		GenerateCircuit();
+		}}));
+		
 		//initialize wire color
 		CircuitElm.setColorScale();
 		
 		mainBar.addItem("Options",extrasBar);
 		///
 		///
-     	//mainBar.addItem("Info", infoBar);
+     	mainBar.addItem("Tools", infoBar);
 		
      	
 		layoutPanel.addNorth(mainBar, MENUBARHEIGHT);
@@ -236,10 +245,11 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
   	}
   	
   	public void GenerateCircuit() {
-  		
+  		GWT.log("Level"+level);
   		CircuitSynthesizer v = new CircuitSynthesizer();
-		//v.Synthesis(width, height, level);
-		v.Synthesis(width, height);
+		v.Synthesis(width, height, level);
+  		//v.Synthesis(width, height, 5);
+		//v.Synthesis(width, height);
 		//v.Synthesis(width, height,"s");
 		elmList = v.elmList;
 		FunctionsOutput = v.outElems;

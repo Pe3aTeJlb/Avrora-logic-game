@@ -33,7 +33,7 @@ import com.google.gwt.core.client.GWT;
 public class CircuitSynthesizer {
 	
 	//Debug log
-	private boolean debug = true;
+	private boolean debug = false;
 	private boolean ShuntingYardDebug = false;
 	private boolean LogicVectorGeneratorDebug = false;
 	private boolean BasisConverterDebug = false;
@@ -79,6 +79,7 @@ public class CircuitSynthesizer {
 	int currCirc = 0; //Индекс текущей схемы
 	
 	int wireSplitPoint = 0; //x координата перелома провода
+	boolean lastElm = false;
 	
 	BasisConverter converter = new BasisConverter(BasisConverterDebug);
     Factorisator_V_2 factorizator = new Factorisator_V_2();
@@ -177,11 +178,11 @@ public class CircuitSynthesizer {
 			InitializeParametrs();
 			input_freeSpace.y += 100;
 			freeSpace.y = input_freeSpace.y;
-			
+			currCirc++;
 			
 		}
 		DeleteUnusedInputs();
-		GWT.log("Demp"+dump);	
+		//GWT.log("Demp"+dump);	
 }
 	
 	public void Synthesis(int w, int h, String url) {
@@ -200,7 +201,7 @@ public class CircuitSynthesizer {
 		// basis = "Nand";
 		// basis = "Zhegalkin";
 		 funcCount = 4;
-		 varCount = 3;
+		 varCount = 4;
 		 
 		 if(debug) {
 			 GWT.log("MDNF " + MDNF);
@@ -240,7 +241,7 @@ public class CircuitSynthesizer {
 		}dump += "Circ count "+ Integer.toString(circCount) + "\n"+"\n" + "maxT" + maxTrue+ "\n";
 		
 		for(int i = 0; i < circCount; i++) {
-			currCirc = 0;
+			//currCirc = 0;
 			
 			int Basis = 0;
 			if(circDifficult < 5) {
@@ -306,12 +307,13 @@ public class CircuitSynthesizer {
 				InitializeParametrs();
 				input_freeSpace.y += 100;
 				freeSpace.y = input_freeSpace.y;
+				if(!sharedVars.isEmpty())currCirc++;
 			//}catch(Exception e){
 				
 			//	dump  = e.toString() +"\n\n"+ dump;
 				
 		//	}
-			GWT.log("End of Circuit");
+			if(debug)GWT.log("End of Circuit");
 			dump+="End of Circuit"+"\n\n";
 		}
 		DeleteUnusedInputs();
@@ -664,7 +666,6 @@ public class CircuitSynthesizer {
 								}else{
 									wireSplitPoint -= 20;
 									ConnectElements(dictionary.get(list.get(i).get(j)), dictionary.get(blockName),list.get(i).get(j),false,false);
-									
 									}
 							
 							}
@@ -726,7 +727,7 @@ public class CircuitSynthesizer {
 			newce.getConnectionPoints(false);
 			elmList.add(newce);
 			
-			CircuitElm newwire = createCe("Wire",newce.OperativePoints.get(0).x,newce.OperativePoints.get(0).y,freeSpace.x+100-minus+(20*currCirc),newce.OperativePoints.get(0).y, 0, 2);
+			CircuitElm newwire = createCe("Wire",newce.OperativePoints.get(0).x,newce.OperativePoints.get(0).y,freeSpace.x+100-minus-(53*currCirc),newce.OperativePoints.get(0).y, 0, 2);
 			newwire.setPoints();
 			newwire.getConnectionPoints(true);
 			elmList.add(newwire);
@@ -750,7 +751,7 @@ public class CircuitSynthesizer {
 			inverted.getConnectionPoints(true);
 			elmList.add(inverted);
 			
-			CircuitElm wire2 = createCe("Wire",inverted.OperativePoints.get(1).x,inverted.OperativePoints.get(1).y,freeSpace.x+100-minus+(20*currCirc),inverted.OperativePoints.get(1).y, 0, 2);
+			CircuitElm wire2 = createCe("Wire",inverted.OperativePoints.get(1).x,inverted.OperativePoints.get(1).y,freeSpace.x+100-minus-(53*currCirc),inverted.OperativePoints.get(1).y, 0, 2);
 			wire2.setPoints();
 			wire2.getConnectionPoints(true);
 			elmList.add(wire2);
@@ -781,13 +782,13 @@ public class CircuitSynthesizer {
 		
 		Point lastBlockOut = dictionary.get(lastBlock).OperativePoints.get(dictionary.get(lastBlock).OperativePoints.size()-1);
 		
-		CircuitElm newce4 = createCe("Loutput",lastBlockOut.x, lastBlockOut.y, lastBlockOut.x+50, lastBlockOut.y, 0, 2);
+		CircuitElm newce4 = createCe("Loutput",lastBlockOut.x+50, lastBlockOut.y, lastBlockOut.x+100, lastBlockOut.y, 0, 2);
 		newce4.setPoints();
 		newce4.getConnectionPoints(true);
 		elmList.add(newce4);
 		
 		outElems.add(newce4);
-		
+		wireSplitPoint = newce4.OperativePoints.get(0).x-20;
 		ConnectElements(dictionary.get(lastBlock),newce4,lastBlock,false,false);
 		
 	}
@@ -810,26 +811,55 @@ public class CircuitSynthesizer {
   				
   				//Находим разность в высоте между входами элемента и позицией узла
   				//В зависимости от этого выбираем конец провода, от которого идём
-  				//в случае их равенства предпочтение отдаётся точке начала провода (Индекс 0)
-  				if(diff1<diff2) {
-  					prevOutput = out.OperativePoints.get(out.OperativePoints.size()-1);
-  				}else if(diff1==diff2){
-  					prevOutput =   out.OperativePoints.get(0);	
-  				}
-  				else {
-  					prevOutput =   out.OperativePoints.get(0);					
-  				}
+  				//в случае их равенства предпочтение отдаётся точке начала провода (Индекс 0) это для else
   				
-  				CircuitElm shit2 = createCe("Wire",prevOutput.x, prevOutput.y, prevOutput.x, currentInput.y, 0, 0);
-	  			shit2.setPoints();
-	  			shit2.getConnectionPoints(true);
-	  			elmList.add(shit2);
+  			//В первом блоке обыгрывается ситуация, когда мы уже подключили вход к самому верхнему лог элементу первого каскада схемы, т.е. уже есть провод к минимальной точке по y схемы. 
+  			// Раньше происходило наложение двух проводов друг на дуга в связи с тем, что не реализовано соединение простым контактом проводов (токо по прямым координатам)
+  			// Теперь, текущий вертикальный провод мы дробим на 2, актуальный для дальнейшего соединения становится нижний кусок	
+  				if(currentInput.y < out.OperativePoints.get(0).y && currentInput.y > out.OperativePoints.get(1).y) {
+  					
+  					
+  					//GWT.log(outName);
+  					
+  					CircuitElm shit1 = createCe("Wire",prevOutput.x, out.OperativePoints.get(0).y, prevOutput.x, currentInput.y, 0, 0);
+  		  			shit1.setPoints();
+		  			shit1.getConnectionPoints(true);
+  		  			elmList.add(shit1);
+  					
+  					CircuitElm shit2 = createCe("Wire",prevOutput.x, currentInput.y, currentInput.x, currentInput.y, 0, 0);
+  		  			shit2.setPoints();
+  		  			elmList.add(shit2);
+  					
+  					CircuitElm shit3 = createCe("Wire",prevOutput.x, currentInput.y, prevOutput.x, out.OperativePoints.get(1).y, 0, 0);
+  		  			shit3.setPoints();
+  		  			elmList.add(shit3);
+  		  			
+  		  			elmList.remove(out);
+  		  			dictionary.replace(outName, shit1);
+  					
+  				}else {
+  					
+	  				if(diff1<diff2) {
+	  					prevOutput = out.OperativePoints.get(out.OperativePoints.size()-1);
+	  				}else if(diff1==diff2){
+	  					prevOutput =   out.OperativePoints.get(0);	
+	  				}
+	  				else {
+	  					prevOutput =   out.OperativePoints.get(0);					
+	  				}
+	  				
+	  				CircuitElm shit2 = createCe("Wire",prevOutput.x, prevOutput.y, prevOutput.x, currentInput.y, 0, 0);
+		  			shit2.setPoints();
+		  			shit2.getConnectionPoints(true);
+		  			elmList.add(shit2);
+		  			
+		  			CircuitElm shit3 = createCe("Wire",prevOutput.x, currentInput.y, currentInput.x, currentInput.y, 0, 0);
+		  			shit3.setPoints();
+		  			elmList.add(shit3);
+	  				
+		  			dictionary.replace(outName, shit2);
 	  			
-	  			CircuitElm shit3 = createCe("Wire",prevOutput.x, currentInput.y, currentInput.x, currentInput.y, 0, 0);
-	  			shit3.setPoints();
-	  			elmList.add(shit3);
-  				
-	  			dictionary.replace(outName, shit2);
+  				}
   				
   				
   			}else {
@@ -853,7 +883,8 @@ public class CircuitSynthesizer {
   		  			
   		  			dictionary.replace(outName, shit2);
   					
-  				}else { 
+  				}
+  				else { 
   				
   					//diap = ((prevOutput.x+20) + (int) (Math.random() * (currentInput.x-prevOutput.x-40)));
 	  		  		//int temp = diap%10;
@@ -864,7 +895,7 @@ public class CircuitSynthesizer {
   					
   					//if(!sharedVars.isEmpty())
   					//wireSplitPoint -= 20;
-  					
+  					  					
   					diap = wireSplitPoint;
 	  		  		
 		  			CircuitElm shit1 = createCe("Wire",prevOutput.x, prevOutput.y, diap, prevOutput.y, 0, 0);
@@ -891,30 +922,33 @@ public class CircuitSynthesizer {
   			if(in.OperativePoints.size()>2) {	
   				in.OperativePoints.remove(closestInputIndex);
   			}
-
-  		   
   			
   		}
-  		else { //Если выход и вход на одной линии
-  			
+  		else { 
+  			//Если выход и вход на одной линии
   			//Разделим данное соединение на 2, для случая, когда выходной элемент на одной линии с входным + он же коннектится с третьим
   			//обавить рандомную x координату для сегментации
   			
-	  		CircuitElm newce1 = createCe("Wire",prevOutput.x, prevOutput.y, prevOutput.x+20, prevOutput.y, 0, 0);
-			newce1.setPoints();
-			newce1.getConnectionPoints(true);
-			elmList.add(newce1);
+  			
+		  		CircuitElm newce1 = createCe("Wire",prevOutput.x, prevOutput.y, wireSplitPoint, prevOutput.y, 0, 0);
+				newce1.setPoints();
+				newce1.getConnectionPoints(true);
+				elmList.add(newce1);
+				
+				CircuitElm newce2 = createCe("Wire",wireSplitPoint, prevOutput.y, currentInput.x, currentInput.y, 0, 0);
+				newce2.setPoints();
+				newce2.getConnectionPoints(true);
+				elmList.add(newce2);
 			
-			CircuitElm newce2 = createCe("Wire",prevOutput.x+20, prevOutput.y, currentInput.x, currentInput.y, 0, 0);
-			newce2.setPoints();
-			newce2.getConnectionPoints(true);
-			elmList.add(newce2);
-			
-			dictionary.replace(outName, newce2);
-			
-			if(in.OperativePoints.size()>1) {
-  				in.OperativePoints.remove(closestInputIndex);
-  			}
+
+				dictionary.replace(outName, newce2);
+				
+				if(in.OperativePoints.size()>1) {
+	  				in.OperativePoints.remove(closestInputIndex);
+	  			}
+				
+				//wireSplitPoint = 0;
+  			
   		}
 		
   		
@@ -922,7 +956,7 @@ public class CircuitSynthesizer {
 	
   	void DeleteUnusedInputs() {
   		
-  		GWT.log("unused vars "+UnusedVarNames.toString());
+  		if(debug)GWT.log("unused vars "+UnusedVarNames.toString());
   		dump += "unused vars "+UnusedVarNames.toString() + "\n";
   		
   		if(UnusedVarNames.size()>0) {
@@ -936,7 +970,7 @@ public class CircuitSynthesizer {
 	  				p = p.substring(1,p.length());
 	  			}
 	  			
-	  			GWT.log(p);
+	  			if(debug)GWT.log(p);
 	  			dump+=p+"\n";
 	  			
 		  		int IndexToDelete = ((Integer.parseInt(p))-1)*2;
