@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.event.dom.client.KeyEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -116,9 +115,10 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     private int tickCounter = 0;
     private boolean refreshGameState = true;
     private int level = 1;
+    
  ////////////////////////
 //Circuit Construction
-    
+////////////////////////    
     CirSim() {
     	theSim = this;
     }
@@ -245,16 +245,18 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
   	}
   	
   	public void GenerateCircuit() {
+  		
   		GWT.log("Level"+level);
   		CircuitSynthesizer v = new CircuitSynthesizer();
 		v.Synthesis(width, height, level);
-  		//v.Synthesis(width, height, 5);
+  		//v.Synthesis(width, height, 6);
 		//v.Synthesis(width, height);
 		//v.Synthesis(width, height,"s");
 		elmList = v.elmList;
 		FunctionsOutput = v.outElems;
 		FunctionsInput = v.inElems;
 		currOutput = new ArrayList();
+		
   	}
   	
   	

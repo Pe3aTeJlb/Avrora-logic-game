@@ -3,8 +3,6 @@ package com.pplosstudio.avroralogicgame.client;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.google.gwt.core.client.GWT;
-
 public class Factorisator_V_2 {
 
     //Символы разделители
@@ -457,13 +455,13 @@ class CustomData{
 
     public void PrintAlphabet(){
         for (String a: alphabet) {
-           // System.out.println(a);
+            System.out.println(a);
         }
     }
 
     public void PrintCollisions(){
         for (ArrayList<Integer> a: positions) {
-           // System.out.println(a);
+            System.out.println(a);
         }
     }
 

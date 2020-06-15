@@ -1,9 +1,7 @@
 package com.pplosstudio.avroralogicgame.client;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Random;
 
 //import com.google.gwt.core.client.GWT;
 

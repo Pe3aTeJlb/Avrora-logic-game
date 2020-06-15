@@ -435,9 +435,7 @@ public abstract class CircuitElm  {
     	    	
     	 for (int i = 0; i != getPostCount(); i++) {
 		    Point p = getPost(i);
-		   // GWT.log(p.toString());
 		    OperativePoints.add(p);
-		    
 		}
 	
     }

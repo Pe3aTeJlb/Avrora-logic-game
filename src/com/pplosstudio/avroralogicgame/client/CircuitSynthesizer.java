@@ -1,7 +1,6 @@
 package com.pplosstudio.avroralogicgame.client;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -37,7 +36,6 @@ public class CircuitSynthesizer {
 	private boolean ShuntingYardDebug = false;
 	private boolean LogicVectorGeneratorDebug = false;
 	private boolean BasisConverterDebug = false;
-	private boolean dumpCirc = true;
 	public  String dump = ""; 
 	
 	private boolean MDNF, factorize;
@@ -50,7 +48,7 @@ public class CircuitSynthesizer {
 	private Point StartPoint = new Point(1,1); // фиксация начальной точки текущей функции
 	private Point NextStartPoint = new Point(2,2); //фиксация начальной точки следующей функции
 	private Point freeSpace = new Point(3,3); //текущая свободнеая точка
-	
+	private int lastElemPos = 0;
 	
 	ArrayList<ArrayList<String>> list = new ArrayList<>();
 	
@@ -76,10 +74,9 @@ public class CircuitSynthesizer {
 
 	private float minTrue = 0.5f;//Устанавливает максимальное и минимальное количество единиц в вектор функции
 	private float maxTrue = 0.6f;
-	int currCirc = 0; //Индекс текущей схемы
+	int dashCirc = 0; //Индекс текущей схемы для смещения
 	
 	int wireSplitPoint = 0; //x координата перелома провода
-	boolean lastElm = false;
 	
 	BasisConverter converter = new BasisConverter(BasisConverterDebug);
     Factorisator_V_2 factorizator = new Factorisator_V_2();
@@ -175,10 +172,11 @@ public class CircuitSynthesizer {
 						
 					} 
 			
+			dashCirc++;		
 			InitializeParametrs();
 			input_freeSpace.y += 100;
 			freeSpace.y = input_freeSpace.y;
-			currCirc++;
+			
 			
 		}
 		DeleteUnusedInputs();
@@ -241,7 +239,7 @@ public class CircuitSynthesizer {
 		}dump += "Circ count "+ Integer.toString(circCount) + "\n"+"\n" + "maxT" + maxTrue+ "\n";
 		
 		for(int i = 0; i < circCount; i++) {
-			//currCirc = 0;
+			//dashCirc = 0;
 			
 			int Basis = 0;
 			if(circDifficult < 5) {
@@ -303,20 +301,25 @@ public class CircuitSynthesizer {
 							}
 						
 					} 
-		//	try{
+			try{
+				if(!sharedVars.isEmpty())dashCirc++;
+				
 				InitializeParametrs();
+				
 				input_freeSpace.y += 100;
 				freeSpace.y = input_freeSpace.y;
-				if(!sharedVars.isEmpty())currCirc++;
-			//}catch(Exception e){
+				if(sharedVars.isEmpty())lastElemPos = 0;
 				
-			//	dump  = e.toString() +"\n\n"+ dump;
-				
-		//	}
+			}catch(Exception e){	
+				dump  = e.toString() +"\n\n"+ dump;	
+			}
+			
 			if(debug)GWT.log("End of Circuit");
 			dump+="End of Circuit"+"\n\n";
 		}
+		
 		DeleteUnusedInputs();
+		
 		GWT.log(dump);
 	}
 	
@@ -487,7 +490,7 @@ public class CircuitSynthesizer {
 								if(!dictionary.containsKey(blockName)) {
 									
 									freeSpace.x += 125;
-									freeSpace.y = MaxFreeSpaceY+75;
+									freeSpace.y = MaxFreeSpaceY+100;
 								}
 								
 							}
@@ -528,6 +531,11 @@ public class CircuitSynthesizer {
 								freeSpace.y = (int)(( MaxFreeSpaceY - StartPoint.y)/2)+StartPoint.y+50;
 							}
 							
+							if(freeSpace.x < lastElemPos){
+								GWT.log("ASDASD "+lastElemPos);
+								freeSpace.x = lastElemPos;
+							}else {lastElemPos = freeSpace.x;}
+
 						}
 						
 						if(freeSpace.y > MaxFreeSpaceY) {
@@ -544,8 +552,8 @@ public class CircuitSynthesizer {
 							
 							if(i>=1 && list.get(i-1).get(list.get(i-1).size()-2) == operation ) {
 								
-							if(!dictionary.containsKey(blockName))
-								freeSpace.y += 150;
+								if(!dictionary.containsKey(blockName))
+									freeSpace.y += 150;
 								
 							}else {
 								
@@ -558,6 +566,12 @@ public class CircuitSynthesizer {
 							NextStartPoint.y = freeSpace.y;
 							freeSpace.x += 250;
 							freeSpace.y = (int)(( freeSpace.y - StartPoint.y)/2)+StartPoint.y;
+							
+							if(freeSpace.x < lastElemPos){
+								GWT.log("ASDASD "+lastElemPos);
+								freeSpace.x = lastElemPos;
+							}else {lastElemPos = freeSpace.x;}
+
 						}
 					}
 				}
@@ -592,6 +606,11 @@ public class CircuitSynthesizer {
 							freeSpace.y = (int)(( freeSpace.y - StartPoint.y)/2)+StartPoint.y;
 							freeSpace.x += 250;
 						}
+						
+						if(freeSpace.x < lastElemPos){
+							GWT.log("ASDASD "+lastElemPos);
+							freeSpace.x = lastElemPos;
+						}else {lastElemPos = freeSpace.x;}
 
 					}
 						
@@ -687,6 +706,16 @@ public class CircuitSynthesizer {
 		
 		NextStartPoint.y += 100;
 		
+		/*Проверка для случая, когда схема состоит из 1 лог элемента 
+		*(тогда все манипуляции с NextStartPoint были проведены зря, т.к. выссоты по y не хватит и схемы будут накладываться)
+		*Нижнюю точку текущей схемы сравниваем с последним созданным входным элементом схемы из списка inElms
+		*т.к. туда входят только неинвертированные то накидываем 50 для соответствия инвертированному и 75 сверху
+		*/
+		if(NextStartPoint.y < inElems.get(inElems.size()-1).y+50) {
+			
+			NextStartPoint.y = inElems.get(inElems.size()-1).y+50+75;
+		}
+		
 		input_freeSpace.y = NextStartPoint.y;
 		
 		CreateCircuitOutput(blockName);
@@ -711,7 +740,7 @@ public class CircuitSynthesizer {
 		
 		freeSpace = new Point(x+AWL+varNames.length*100, y);
 		StartPoint = new Point(x+AWL+varNames.length*100, y);
-		NextStartPoint = new Point(x+AWL+varNames.length*100, y-30);
+		NextStartPoint = new Point(x+AWL+varNames.length*100, y-45);
 		
 		//добавить кусок провода длиной в 50
 		for(int i = 0; i<varNames.length; i++) {
@@ -727,7 +756,7 @@ public class CircuitSynthesizer {
 			newce.getConnectionPoints(false);
 			elmList.add(newce);
 			
-			CircuitElm newwire = createCe("Wire",newce.OperativePoints.get(0).x,newce.OperativePoints.get(0).y,freeSpace.x+100-minus-(53*currCirc),newce.OperativePoints.get(0).y, 0, 2);
+			CircuitElm newwire = createCe("Wire",newce.OperativePoints.get(0).x,newce.OperativePoints.get(0).y,freeSpace.x+100-minus-(53*dashCirc),newce.OperativePoints.get(0).y, 0, 2);
 			newwire.setPoints();
 			newwire.getConnectionPoints(true);
 			elmList.add(newwire);
@@ -751,7 +780,7 @@ public class CircuitSynthesizer {
 			inverted.getConnectionPoints(true);
 			elmList.add(inverted);
 			
-			CircuitElm wire2 = createCe("Wire",inverted.OperativePoints.get(1).x,inverted.OperativePoints.get(1).y,freeSpace.x+100-minus-(53*currCirc),inverted.OperativePoints.get(1).y, 0, 2);
+			CircuitElm wire2 = createCe("Wire",inverted.OperativePoints.get(1).x,inverted.OperativePoints.get(1).y,freeSpace.x+100-minus-(53*dashCirc),inverted.OperativePoints.get(1).y, 0, 2);
 			wire2.setPoints();
 			wire2.getConnectionPoints(true);
 			elmList.add(wire2);
@@ -777,12 +806,16 @@ public class CircuitSynthesizer {
 	}
 		
 	//Создаёт выходной элемент схемы на последнем лог. элементе
-	
 	void CreateCircuitOutput(String lastBlock) {
 		
 		Point lastBlockOut = dictionary.get(lastBlock).OperativePoints.get(dictionary.get(lastBlock).OperativePoints.size()-1);
 		
-		CircuitElm newce4 = createCe("Loutput",lastBlockOut.x+50, lastBlockOut.y, lastBlockOut.x+100, lastBlockOut.y, 0, 2);
+		//CircuitElm newce4 = createCe("Loutput",lastBlockOut.x+50, lastBlockOut.y, lastBlockOut.x+100, lastBlockOut.y, 0, 2);
+		//newce4.setPoints();
+		//newce4.getConnectionPoints(true);
+		//elmList.add(newce4);
+		
+		CircuitElm newce4 = createCe("Platform",lastBlockOut.x+50, lastBlockOut.y, lastBlockOut.x+50, lastBlockOut.y, 0, 2);
 		newce4.setPoints();
 		newce4.getConnectionPoints(true);
 		elmList.add(newce4);
@@ -929,11 +962,15 @@ public class CircuitSynthesizer {
   			//Разделим данное соединение на 2, для случая, когда выходной элемент на одной линии с входным + он же коннектится с третьим
   			//обавить рандомную x координату для сегментации
   			
+			if(wireSplitPoint == currentInput.x) {
+				wireSplitPoint -= 20;		
+			}
   			
 		  		CircuitElm newce1 = createCe("Wire",prevOutput.x, prevOutput.y, wireSplitPoint, prevOutput.y, 0, 0);
 				newce1.setPoints();
 				newce1.getConnectionPoints(true);
 				elmList.add(newce1);
+				
 				
 				CircuitElm newce2 = createCe("Wire",wireSplitPoint, prevOutput.y, currentInput.x, currentInput.y, 0, 0);
 				newce2.setPoints();
@@ -1049,6 +1086,9 @@ public class CircuitSynthesizer {
     	if(marker.equals("Invertor")) {
     		return (CircuitElm) new InverterElm(x1, y1, x2, y2, f);
     	}
+    	if(marker.equals("Platform")) {
+    		return (CircuitElm) new Platform(x1, y1, x2, y2, f);
+    	}
     	else {return null;}
     	
     }
@@ -1058,5 +1098,16 @@ public class CircuitSynthesizer {
   		max -= min;
   		return (int) (Math.random() * ++max) + min;
   	}
-  	
+  
+  	private boolean RandomOf100(int percent) {
+  		
+  		int max = 100;
+  		
+  		int p = (int) (Math.random() * ++max) + 0;
+  		
+  		if(p<=percent) {
+  			return true;
+  		}else {return false;}
+  		
+  	}
 }

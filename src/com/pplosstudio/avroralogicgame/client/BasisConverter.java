@@ -90,6 +90,7 @@ public class BasisConverter {
                         }
                         operands.add(t[j]);
                     }
+
                     funcName = removeByIndex(funcName, funcName.length()-1);
                     funcName = "~("+funcName+")";
                     operands.add("Nand");
@@ -103,6 +104,9 @@ public class BasisConverter {
 
             buffFuncName = removeByIndex(buffFuncName, buffFuncName.length()-1);
             buffFuncName = "~("+buffFuncName+")";
+            if(terms.size()==1) {
+            	terms.add(terms.get(0));
+            }
             terms.add("Nand");
             terms.add(buffFuncName);
             list.add(terms);
