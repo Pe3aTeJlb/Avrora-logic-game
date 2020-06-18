@@ -1,6 +1,7 @@
 package com.pplosstudio.avroralogicgame.client;
 
 import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -16,18 +17,20 @@ import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandler, MouseWheelHandler{
 
 	static Menu menu;
 	RootLayoutPanel root;
-    Canvas cv;
-    
     DockLayoutPanel layoutPanel;
+    Canvas cv;
+    VerticalPanel vp;
     
     static CirSim mysim;
     
@@ -52,6 +55,8 @@ public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandle
 	
 	public void init() {
 		
+		Constants constants = (Constants) GWT.create(Constants.class);
+		
 		cv = Canvas.createIfSupported();
 		  if (cv==null) {
 			  RootPanel.get().add(new Label("Not working. You need a browser that supports the CANVAS element."));
@@ -61,8 +66,9 @@ public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandle
 		root = RootLayoutPanel.get();
 		 
 		layoutPanel = new DockLayoutPanel(Unit.PX);
+		vp = new VerticalPanel();
 		
-		 Button casula = new Button("Casual", new ClickHandler() {
+		Button casual = new Button(constants.Casual(), new ClickHandler() {
 		      public void onClick(ClickEvent event) {
 		    	  
 		    	  mysim = new CirSim();
@@ -78,10 +84,8 @@ public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandle
 		    	  
 		      }
 		    });
-
-		  root.add(casula);
 		    
-		  Button test = new Button("Test", new ClickHandler() {
+		Button test = new Button(constants.Test(), new ClickHandler() {
 		      public void onClick(ClickEvent event) {
 		    	  
 		    	  mysim = new CirSim();
@@ -97,29 +101,29 @@ public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandle
 		    	  
 		      }
 		    });
-		  root.add(test);
-		  
-		  Button rules = new Button("Test", new ClickHandler() {
+		 
+		Button rules = new Button(constants.Rules(), new ClickHandler() {
 		      public void onClick(ClickEvent event) {
-		    	  
-		    	  mysim = new CirSim();
-		    	  mysim.init();
-
-		    	    Window.addResizeHandler(new ResizeHandler() {
-		    	    	 
-		                public void onResize(ResizeEvent event)
-		                {               
-		                	mysim.setCanvasSize();
-		                }
-		            });
-		    	  
+					AboutBox b = new AboutBox();
+					layoutPanel.add(b);  
 		      }
 		    });
-		  root.add(rules);
-		  
-		   
-		  
+		 
 		
+		
+		 vp.add(casual);
+		 vp.add(test);
+		 vp.add(rules);
+		  
+		 DecoratorPanel decoratorPanel = new DecoratorPanel();
+	     //decoratorPanel.add(vp); 
+
+		 
+		 
+	     root.add(vp);
+	     //root.add(decoratorPanel);
+	     
+	     setCanvasSize();
 	}
 
 	@Override

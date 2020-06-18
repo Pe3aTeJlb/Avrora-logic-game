@@ -13,10 +13,10 @@ public class Factorisator_V_2 {
     private int n = 0;
     
     //массив термов
-    public String[] v = new String[0];
+    private String[] v = new String[0];
 
     //строка невостребованных переменных
-    String unclaimedBuff = "";
+    private String unclaimedBuff = "";
 
     //массив операндов и представление термов в виде биарных строк
     ArrayList<String> operands = new ArrayList<>();

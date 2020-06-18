@@ -6,12 +6,13 @@ import com.google.gwt.core.client.GWT;
 
 public class BasisConverter {
 
-    private String outFunction = "";
+    public String outFunction = "";
     public ArrayList<ArrayList<String>> list = new ArrayList<>();
-    ArrayList<String> operands = new ArrayList<>();
-    ArrayList<String> terms = new ArrayList<>();
+    private ArrayList<String> operands = new ArrayList<>();
+    private ArrayList<String> terms = new ArrayList<>();
     private boolean debug = false;
     public String dmp;
+    public boolean Has1 = false;
     
     public BasisConverter(boolean dbg){debug = dbg;}
 
@@ -256,6 +257,10 @@ public class BasisConverter {
 
         for(int k = 0; k<m-1; k++) {
         	
+            if(k == 0 && vectorFunc.get(0) == 1){
+                //outFunction += "1@";
+                Has1 = true;
+            }
 
             for (int i = 1; i < vectorFunc.size(); i++) {
 
@@ -305,6 +310,7 @@ public class BasisConverter {
             ZhegalikinIndexes.add(vectorFunc.get(0));
         }
         
+        //дополнительный прогон оставшегося списка
         if(vectorFunc.get(0) == 1){
             operands = new ArrayList<>();
             String v = Integer.toBinaryString(m-1);

@@ -8,6 +8,11 @@ class Platform extends CircuitElm{
 	double threshold = 2.5;
 	public String value;
 	public Point InputPoint = new Point();
+	
+	 	Point a = new Point(0,0);
+	    Point b = new Point(0,0);
+	    Point c = new Point(0,0);
+	    Point d = new Point(0,0);
 
 	public Platform(int xx, int yy) {
 	    super(xx, yy);
@@ -21,7 +26,7 @@ class Platform extends CircuitElm{
 		threshold = 2.5;
 	}
 	
-String dump() {return super.dump() + " " + threshold;}
+	String dump() {return super.dump() + " " + threshold;}
 	
 	int getDumpType() { return 'M'; }
 	
@@ -38,7 +43,6 @@ String dump() {return super.dump() + " " + threshold;}
 	
 	void draw(Graphics g) {
 	
-		
 	    g.setColor(lightGrayColor);
 	    String s = (volts[0] < threshold) ? "L" : "H";
 	    
@@ -47,35 +51,39 @@ String dump() {return super.dump() + " " + threshold;}
 	    
 	    setBbox(point1, lead1, 0);
 	    setVoltageColor(g, volts[0]);
+	     
+		    if(s.equals("1")) {
+		    	
+		    	
+		    	a = new Point(point1.x+100, point1.y+15);
+			 	b = new Point(point1.x+200, point1.y+15);
+			 	c = new Point(point1.x+100, point1.y-15);
+			 	d = new Point(point1.x+200, point1.y-15);
+		    	
+		    	
+		    	drawThickLine(g, point1, new Point(point1.x+100, point1.y));
+		    	
+			    drawThickLine(g, a, c);
+			    drawThickLine(g, b, d);
+			    drawThickLine(g, a, b);
+			    drawThickLine(g, c, d);
+			    
+		    }else {
+		    	
+		    	
+			    a = new Point(point1.x, point1.y+15);
+			 	b = new Point(point1.x+100, point1.y+15);
+			 	c = new Point(point1.x, point1.y-15);
+			 	d = new Point(point1.x+100, point1.y-15);
+		    	
+		    	
+			    drawThickLine(g, a, c);
+			    drawThickLine(g, b, d);
+			    drawThickLine(g, a, b);
+			    drawThickLine(g, c, d);
+		    	
+		    }
 	    
-	    
-	    if(s.equals("1")) {
-	    	
-	    	drawThickLine(g, point1, new Point(point1.x+100, point1.y));
-	    	
-	    	Point a = new Point(point1.x+100, point1.y+15);
-	 	    Point b = new Point(point1.x+200, point1.y+15);
-	 	    Point c = new Point(point1.x+100, point1.y-15);
-	 	    Point d = new Point(point1.x+200, point1.y-15);
-		    
-		    drawThickLine(g, a, c);
-		    drawThickLine(g, b, d);
-		    drawThickLine(g, a, b);
-		    drawThickLine(g, c, d);
-		    
-	    }else {
-	    	
-	    	Point a = new Point(point1.x, point1.y+15);
-	 	    Point b = new Point(point1.x+100, point1.y+15);
-	 	    Point c = new Point(point1.x, point1.y-15);
-	 	    Point d = new Point(point1.x+100, point1.y-15);
-		    
-		    drawThickLine(g, a, c);
-		    drawThickLine(g, b, d);
-		    drawThickLine(g, a, b);
-		    drawThickLine(g, c, d);
-	    	
-	    }
 	    
 	    drawPosts(g);
 	    

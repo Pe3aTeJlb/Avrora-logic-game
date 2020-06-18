@@ -20,7 +20,7 @@ public class Main implements EntryPoint {
   }
   
   public void loadSimulator() {
-	  /*
+	  
 	  menu = new Menu();
 	  menu.init();
 	  
@@ -31,8 +31,8 @@ public class Main implements EntryPoint {
             	menu.setCanvasSize();
             }
         });
-	  */
 	  
+	 /* 
 	  mysim = new CirSim();
 	  mysim.init();
 
@@ -43,7 +43,7 @@ public class Main implements EntryPoint {
             	mysim.setCanvasSize();
             }
         });
-        
+        */
 		   
   }
 

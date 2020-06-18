@@ -1,0 +1,31 @@
+body {
+   text-align: center;
+   font-family: verdana, sans-serif;
+}
+
+.center{
+	margin: 0px auto;
+	width: 480px;
+	text-align:center;
+}
+
+.div{
+	margin: center;
+	text-align: center;
+}
+
+.gwt-Button{
+	margin: left;
+	color: #39ad7d;
+}
+
+.gwt-RootLayoutPanel{
+	margin: left;
+	color: #39ad7d;
+}
+
+.gwt-DecoratorPanel{
+	
+	margin: center;
+	
+}

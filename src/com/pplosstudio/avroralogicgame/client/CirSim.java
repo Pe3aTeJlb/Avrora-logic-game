@@ -7,11 +7,18 @@ import java.util.Map;
 import java.util.Random;
 import java.lang.Math;
 import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -24,6 +31,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -64,6 +72,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     MenuBar mainBar;
     MenuBar extrasBar;
     MenuBar editBar;
+    MenuBar toolBar;
     MenuBar infoBar;
      
     CheckboxMenuItem alternativeColorCheckItem;
@@ -112,12 +121,13 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     private ArrayList<CircuitElm> FunctionsOutput;//Список выходных и входных элементов функций
     private ArrayList<SwitchElm> FunctionsInput;
     private int currOutputIndex = 0; // текущая позиция кристалла
-    private int tickCounter = 0;
+    public static int tickCounter = 0;
     private boolean refreshGameState = true;
     private int level = 1;
     
- ////////////////////////
-//Circuit Construction
+    
+  ////////////////////////
+ //Circuit Construction//
 ////////////////////////    
     CirSim() {
     	theSim = this;
@@ -152,58 +162,69 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	 CircuitElm.initClass(this);
 	 elmList = new Vector<CircuitElm>();
 	 
+	 Constants constants = (Constants) GWT.create(Constants.class);
+	 
 	 root = RootLayoutPanel.get();
 	 
 	 layoutPanel = new DockLayoutPanel(Unit.PX);
 	 mainBar     = new MenuBar(false);
 	 extrasBar   = new MenuBar(true);
 	 editBar     = new MenuBar(true);
+	 toolBar     = new MenuBar(true);
      infoBar     = new MenuBar(true);
      
      
-		editBar.addItem(new MenuItem("Center Circuit", new Command() { public void execute(){
+		editBar.addItem(new MenuItem(constants.CenterCirc(), new Command() { public void execute(){
 			centreCircuit();
 		}}));
-		editBar.addItem(new MenuItem("Zoom 100%",  new Command() { public void execute(){
+		editBar.addItem(new MenuItem(constants.Zoom100(),  new Command() { public void execute(){
 			setCircuitScale(1);
 		}}));
-		editBar.addItem(new MenuItem("Zoom In",  new Command() { public void execute(){
+		editBar.addItem(new MenuItem(constants.ZoomIn(),  new Command() { public void execute(){
 			zoomCircuit(20);
 		}}));
-		editBar.addItem(new MenuItem("Zoom Out",  new Command() { public void execute(){
+		editBar.addItem(new MenuItem(constants.ZoomOut(),  new Command() { public void execute(){
 			zoomCircuit(-20);
 		}}));
-		
-		mainBar.addItem("Edit", editBar);
+
 	 
-	 	extrasBar.addItem(printableCheckItem = new CheckboxMenuItem("White back",
+	 	extrasBar.addItem(printableCheckItem = new CheckboxMenuItem(constants.WBack(),
 				new Command() { public void execute(){
 				}}));
 		printableCheckItem.setState(false);
 		
-		extrasBar.addItem(alternativeColorCheckItem = new CheckboxMenuItem("Alt Color",
+		extrasBar.addItem(alternativeColorCheckItem = new CheckboxMenuItem(constants.AltColor(),
 				new Command() { public void execute(){
 					CircuitElm.setColorScale();
 				}}));
 		alternativeColorCheckItem.setState(false);
 		
-		infoBar.addItem(new MenuItem("Level Up",  new Command() { public void execute(){
+		toolBar.addItem(new MenuItem(constants.LevelUp(),  new Command() { public void execute(){
 			level+=1;
       		GenerateCircuit();
 		}}));
 		
-		infoBar.addItem(new MenuItem("Regen Level",  new Command() { public void execute(){
+		toolBar.addItem(new MenuItem(constants.Regen(),  new Command() { public void execute(){
       		GenerateCircuit();
+		}}));
+		
+		infoBar.addItem(new MenuItem(constants.Rules(),  new Command() { public void execute(){
+			AboutBox b = new AboutBox();
+			layoutPanel.add(b);
+		}}));
+		
+		infoBar.addItem(new MenuItem(constants.Developers(),  new Command() { public void execute(){
+			AboutBox b = new AboutBox();
+			layoutPanel.add(b);
 		}}));
 		
 		//initialize wire color
 		CircuitElm.setColorScale();
 		
-		mainBar.addItem("Options",extrasBar);
-		///
-		///
-     	mainBar.addItem("Tools", infoBar);
-		
+		mainBar.addItem(constants.Edit(), editBar);
+		mainBar.addItem(constants.Options(),extrasBar);
+     	mainBar.addItem(constants.Tools(), toolBar);
+     	mainBar.addItem(constants.About(), infoBar);
      	
 		layoutPanel.addNorth(mainBar, MENUBARHEIGHT);
 	 
@@ -248,17 +269,23 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
   		
   		GWT.log("Level"+level);
   		CircuitSynthesizer v = new CircuitSynthesizer();
-		v.Synthesis(width, height, level);
+  		
+		//v.Synthesis(width, height, level);
   		//v.Synthesis(width, height, 6);
 		//v.Synthesis(width, height);
-		//v.Synthesis(width, height,"s");
+		v.Synthesis(width, height,"s");
 		elmList = v.elmList;
 		FunctionsOutput = v.outElems;
 		FunctionsInput = v.inElems;
 		currOutput = new ArrayList();
 		
+  		//CircuitElm newce4 = (CircuitElm) new Crystal(10, 0, 0, 0, 0);
+	//	newce4.setPoints();
+	//	newce4.getConnectionPoints(true);
+		//elmList.add(newce4);
+		
   	}
-  	
+    	
   	
  // *****************************************************************
 //  Void Update	
@@ -270,7 +297,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	 };
 	
    
-	 public void updateCircuit() {
+	public void updateCircuit() {
     	
     	setCanvasSize();
     	analyzeCircuit();
