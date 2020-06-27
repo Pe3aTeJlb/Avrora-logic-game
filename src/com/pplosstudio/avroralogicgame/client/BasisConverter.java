@@ -343,11 +343,32 @@ public class BasisConverter {
         terms.add("Xor");
         terms.add(outFunction);
         list.add(terms);
+      
+
+        //Сортировка схемы соединения последнего блока для корректного отображения
+        //Входные элементы схемы должны подключаться последними
+        
+       
+        for(int i = 0; i< list.get(list.size()-1).size()-3; ++i) {
+        	for(int j = 0; j < list.get(list.size()-1).size()-3 - i; j++) {
+        		if(list.get(list.size()-1).get(j).length() < list.get(list.size()-1).get(j+1).length()) {
+	        			String tmp = list.get(list.size()-1).get(j);
+	        			String tmp2 = list.get(list.size()-1).get(j+1);
+	        			list.get(list.size()-1).set(j, tmp2);
+	        			list.get(list.size()-1).set(j+1, tmp);
+	        			GWT.log("!!!!!!!!!!!!!!0"+list.get(list.size()-1).get(j));
+        			}
+        		}
+        	}
+        
         if(debug)GWT.log(ZhegalikinIndexes.toString());
         if(debug)GWT.log(outFunction);
         if(debug)GWT.log(list.toString());
+        GWT.log(""+list.get(list.size()-1).get(list.get(list.size()-1).size()-3));
         dmp+=ZhegalikinIndexes.toString()+"\n"+outFunction+"\n"+list.toString()+"\n";
+        	
 
+        	
     }
 
     private String removeByIndex(String str, int index) {

@@ -202,11 +202,11 @@ public class CircuitSynthesizer {
 	
 		 MDNF = true;
 		 factorize = true;
-		// basis = "Default";
+		 basis = "Default";
 		// basis = "Nor";
 		// basis = "Nand";
-		 basis = "Zhegalkin";
-		 funcCount = 1;
+		 //basis = "Zhegalkin";
+		 funcCount = 2;
 		 varCount = 3;
 		 
 		 if(debug) {
@@ -474,24 +474,20 @@ public class CircuitSynthesizer {
 				 */
 				
 				//Правила расположения элементов для общего базиса и Жегалкина
-				if(basis.equals("Default") && factorize) 
-				{
+				if(basis.equals("Default") && factorize) {
 					
 					/*
 					 * При факторизации выражения:
 					 * Если есть два блока вида [x1 x2 * x1*x2] и [x3 x1*x2 +* x3+*x1*x2] торой блок будет сдвинут вправо-вниз
 					 */
 						
-						if(i<list.size()-1) 
-						{
+						if(i<list.size()-1) {
 						
-							if(i==0)
-							{		
+							if(i==0){		
 								freeSpace.x += 75;
 								freeSpace.y = StartPoint.y;
 							}
-							else if(i>=1 && list.get(i).get(0).length()<=3) 
-							{
+							else if(i>=1 && list.get(i).get(0).length()<=3) {
 								
 								if(!dictionary.containsKey(blockName)) {
 									
@@ -500,18 +496,24 @@ public class CircuitSynthesizer {
 								}
 								
 							}
-							else if(i>=1 && list.get(i-1).get(list.get(i-1).size()-2) == operation ) 
-							{
-								
-								freeSpace.y += 150;
+					//		else if(i>=1 && list.get(i-1).get(list.get(i-1).size()-2) == operation) {
+						//		freeSpace.y += 150;
 								//freeSpace.x += 25;
-						
-							}
-							else
-							{
+						//	}
+							else{
 								freeSpace.x += 150;
-								freeSpace.y = StartPoint.y+100*Yaccum;
-								Yaccum += 1;
+								freeSpace.y = StartPoint.y+(45*Yaccum);
+								if(Yaccum>0) {Yaccum= 0;}else{Yaccum= 1;}
+							}
+							
+							//Костыль
+							//ни один новый элемент не должен быть левее, чем его входная переменная
+							//Ищем такой косяк, ровняем freeSpace.x и накидываем 50 сверху
+							
+							for(int m = 0; m < list.get(i).size()-2; m++) {
+								if(dictionary.containsKey(list.get(i).get(m)) && freeSpace.x < dictionary.get(list.get(i).get(m)).x) {
+									freeSpace.x = dictionary.get(list.get(i).get(m)).x + 50;
+								}
 							}
 							
 						}
@@ -527,12 +529,12 @@ public class CircuitSynthesizer {
 									freeSpace.x += 125;
 									//freeSpace.y += dictionary.get(list.get(i).get(0)).OperativePoints.get(0).y;
 									freeSpace.y = (int)(( MaxFreeSpaceY - StartPoint.y)/2)+StartPoint.y+50;
-									NextStartPoint.y = freeSpace.y;
+									NextStartPoint.y = MaxFreeSpaceY;
 								}
 							}	
 							else {
 							
-								NextStartPoint.y = freeSpace.y;
+								NextStartPoint.y = MaxFreeSpaceY;
 								freeSpace.x += 250;
 								freeSpace.y = (int)(( MaxFreeSpaceY - StartPoint.y)/2)+StartPoint.y+50;
 								
@@ -548,12 +550,11 @@ public class CircuitSynthesizer {
 						if(freeSpace.y > MaxFreeSpaceY) {
 							MaxFreeSpaceY = freeSpace.y;
 						}
-						//GWT.log(Integer.toString(MaxFreeSpaceY));
 					
 				
 				//Правила расположения элементов для Nor Nand
 				} 
-				else if(basis.equals("Nor") || basis.equals("Nand") || basis.equals("Zhegalkin") || basis.equals("Default")) {
+				else if(basis.equals("Nor") || basis.equals("Nand") || basis.equals("Default")) {
 					
 					if(i<list.size()-1) {
 						
@@ -588,6 +589,37 @@ public class CircuitSynthesizer {
 
 					}
 						
+				}else if(basis.equals("Zhegalkin")) {
+					
+					if(i<list.size()-1) {
+						
+						if(i>=1 && list.get(i-1).get(list.get(i-1).size()-2) == operation &&
+								
+								(float)list.get(i-1).get(list.get(i-1).size()-3).length()/list.get(i).get(list.get(i).size()-3).length() > 0.5f //разделение на каскады по длине имени лог элемента
+						) {
+							
+						if(!dictionary.containsKey(blockName))
+							freeSpace.y += 150;
+							NextStartPoint.y = freeSpace.y;
+						}else {
+							freeSpace.x += 250;
+							freeSpace.y = (int)(( freeSpace.y - StartPoint.y)/2)+StartPoint.y;
+							NextStartPoint.y = freeSpace.y;
+						}
+	
+					}
+					else if (i==list.size()-1) {
+						
+							freeSpace.y += 150;
+							freeSpace.x += 250;
+							NextStartPoint.y = freeSpace.y;
+							
+							if(freeSpace.x < lastElemPos){
+								freeSpace.x = lastElemPos;
+							}else {lastElemPos = freeSpace.x;}
+							
+					}
+					
 				}
 				
 				
@@ -604,7 +636,7 @@ public class CircuitSynthesizer {
 					CircuitElm newce;
 					
 					if(converter.Has1 && i==list.size()-1)inputCount+=1;
-
+	
 					newce = createCe(operation,freeSpace.x,freeSpace.y,freeSpace.x+60,freeSpace.y, 0, inputCount);
 					newce.setPoints();
 					newce.getConnectionPoints(false);
@@ -830,19 +862,14 @@ public class CircuitSynthesizer {
 		*/
 		
 
+		int MaxX = 0;
 		
-		
-		for (int m = LastLogElems.size()-1; m >= 1; m--){  
-            for (int n = 0; n < m; n++){       
-                if(LastLogElems.get(n).x < LastLogElems.get(n+1).x) {               
-                	CircuitElm buff =  LastLogElems.get(n);     
-                	LastLogElems.set(n, LastLogElems.get(n+1));  
-                	LastLogElems.set(n+1, buff);   
+		for (int m =0; m < LastLogElems.size(); m++){         
+                if(MaxX < LastLogElems.get(m).OperativePoints.get(LastLogElems.get(m).OperativePoints.size()-1).x+50) {               
+                	MaxX = LastLogElems.get(m).OperativePoints.get(LastLogElems.get(m).OperativePoints.size()-1).x+50;
                 }
-            }
+            
         }
-		
-		int MaxX = LastLogElems.get(0).OperativePoints.get(LastLogElems.get(0).OperativePoints.size()-1).x+50;
 		
 		for(int i = 0; i < LastLogElems.size(); i++) {
 			
@@ -1121,9 +1148,6 @@ public class CircuitSynthesizer {
     	}
     	if(marker.equals("Platform")) {
     		return (CircuitElm) new Platform(x1, y1, x2, y2, f);
-    	}
-    	if(marker.equals("Crystal")) {
-    		return (CircuitElm) new Crystal(x1, y1, x2, y2, f);
     	}
     	else {return null;}
     	

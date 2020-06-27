@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -33,6 +34,8 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.dom.client.CanvasElement;
+import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -121,15 +124,18 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     private ArrayList<CircuitElm> FunctionsOutput;//Список выходных и входных элементов функций
     private ArrayList<SwitchElm> FunctionsInput;
     private int currOutputIndex = 0; // текущая позиция кристалла
+    private int currCrystalPosY = 0;
     public static int tickCounter = 0;
     private boolean refreshGameState = true;
     private int level = 1;
-    
-    
+    private Image crystal = new Image("Images/B.gif");
+    private boolean lose = false;
+    //Images/crystal.png
+   
   ////////////////////////
  //Circuit Construction//
 ////////////////////////    
-    CirSim() {
+     CirSim() {
     	theSim = this;
     }
 	
@@ -172,7 +178,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	 editBar     = new MenuBar(true);
 	 toolBar     = new MenuBar(true);
      infoBar     = new MenuBar(true);
-     
      
 		editBar.addItem(new MenuItem(constants.CenterCirc(), new Command() { public void execute(){
 			centreCircuit();
@@ -258,6 +263,23 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		
   	}
 
+  	void GenerateCircuit() {
+  		
+  		GWT.log("Level"+level);
+  		CircuitSynthesizer v = new CircuitSynthesizer();
+  		
+		v.Synthesis(width, height, level);
+  		//v.Synthesis(width, height, 6);
+		//v.Synthesis(width, height);
+		//v.Synthesis(width, height,"s");
+		elmList = v.elmList;
+		FunctionsOutput = v.outElems;
+		FunctionsInput = v.inElems;
+		currOutput = new ArrayList();
+		currCrystalPosY = FunctionsOutput.get(currOutputIndex).y - 40;
+				
+  	}
+    
   	//Game Logic
   	//also check update method
   	public void GameOverTrigger() {
@@ -265,27 +287,16 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
   		tickCounter = 0;
   	}
   	
-  	public void GenerateCircuit() {
+  	void GameOver() {
   		
-  		GWT.log("Level"+level);
-  		CircuitSynthesizer v = new CircuitSynthesizer();
+			crystal.setUrl("Images/broken_crystal.png");
+			for(int i = 0; i<FunctionsInput.size(); i++) {
+			//	FunctionsInput.get(i).position = 0;
+			}
+			//currOutputIndex = 0;
   		
-		//v.Synthesis(width, height, level);
-  		//v.Synthesis(width, height, 6);
-		//v.Synthesis(width, height);
-		v.Synthesis(width, height,"s");
-		elmList = v.elmList;
-		FunctionsOutput = v.outElems;
-		FunctionsInput = v.inElems;
-		currOutput = new ArrayList();
-		
-  		//CircuitElm newce4 = (CircuitElm) new Crystal(10, 0, 0, 0, 0);
-	//	newce4.setPoints();
-	//	newce4.getConnectionPoints(true);
-		//elmList.add(newce4);
-		
   	}
-    	
+
   	
  // *****************************************************************
 //  Void Update	
@@ -303,6 +314,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	analyzeCircuit();
     	runCircuit();
    
+    	Graphics g = new Graphics(backcontext);
+    	
     	if(refreshGameState)tickCounter++;
     		
     	//
@@ -319,24 +332,35 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
       		if(currOutputIndex < FunctionsOutput.size()) {
       			
           		GWT.log(currOutput.toString());
+          		
+          		//Условия поигрыша
 	      		if(currOutputIndex != FunctionsOutput.size()-1 && currOutput.get(currOutputIndex).equals("0") && currOutput.get(currOutputIndex+1).equals("0")) {
-	      			GWT.log("Game Over");		
-	      			for(int i = 0; i<FunctionsInput.size(); i++) {
-	      				FunctionsInput.get(i).position = 0;
-	      			}
-      				currOutputIndex = 0;
+	      			GWT.log("Game Over");	
+	      			
+	      			//Ищем, сколько платформ кристал должен пролететь прежде чем разбиться
+	      			for(int i = currOutputIndex; i<FunctionsOutput.size(); i++) {	
+	      				if(currOutput.get(i).equals("0")) {
+	      					currOutputIndex += 1;
+	      				}
+	      				else {break;}
+	      				}
+	      			
+	      			lose = true;
+	      		
 	      		}
 	      		
+	      		//Переход на след платформу
 	      		if(currOutputIndex != FunctionsOutput.size()-1 && currOutput.get(currOutputIndex).equals("0") && currOutput.get(currOutputIndex+1).equals("1")) {
-	      			currOutputIndex++;		
+	      			currOutputIndex++;	
 	      			GWT.log("new curr out index " + currOutputIndex);
 	      		}
-	      		
+	      		//заглушка для последней платформы
 	      		if(currOutputIndex == FunctionsOutput.size()-1 && currOutput.get(currOutputIndex).equals("0")) {
 	      			currOutputIndex++;		
 	      			GWT.log("new curr out index " + currOutputIndex);
 	      		}
 	      		
+	      		//Переход на след уровень
 	          	if(currOutputIndex == FunctionsOutput.size()) {
 	          		
 	          		currOutputIndex = 0;
@@ -353,7 +377,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
    
     	}
     	
-    	Graphics g = new Graphics(backcontext);
     	
     	CircuitElm.selectColor = Color.cyan;
     	
@@ -398,7 +421,17 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	    g.setColor(Color.red);
     	    g.fillOval(cn.x-3, cn.y-3, 7, 7);
     	}
-
+    	
+    	//Отрисовка падения кристалла
+    	if(currCrystalPosY < FunctionsOutput.get(currOutputIndex).y-40) {
+    		currCrystalPosY += 5;
+    		backcontext.drawImage(ImageElement.as(crystal.getElement()), FunctionsOutput.get(currOutputIndex).x+150, currCrystalPosY, 10, 10);
+    	}else {    		
+    		backcontext.drawImage(ImageElement.as(crystal.getElement()), FunctionsOutput.get(currOutputIndex).x+150, FunctionsOutput.get(currOutputIndex).y-40, 50, 50);
+    		
+    		if(lose)GameOver();
+    	}
+    	
     	cvcontext.drawImage(backcontext.getCanvas(),0.0,0.0);
     }
  

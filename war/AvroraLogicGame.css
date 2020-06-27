@@ -1,31 +1,48 @@
-body {
-   text-align: center;
-   font-family: verdana, sans-serif;
-}
-
-.center{
-	margin: 0px auto;
-	width: 480px;
-	text-align:center;
-}
-
-.div{
-	margin: center;
-	text-align: center;
-}
-
-.gwt-Button{
-	margin: left;
+.gwt-RootLayoutPanel{
 	color: #39ad7d;
 }
 
-.gwt-RootLayoutPanel{
-	margin: left;
+.gwt-LayoutPanel{
+	margin: center;
+	text-align: center;
 	color: #39ad7d;
 }
 
 .gwt-DecoratorPanel{
-	
-	margin: center;
-	
+   height: 100%;
+   width: 100%;
+   margin: 0 auto;
+   text-align: 0 auto;
+}
+
+.gwt-DecoratorPanel .middle{
+	margin: 0 auto;
+	text-align: 0 auto;
+}
+
+.gwt-DecoratorPanel .middleCenter {
+   height: 100%;
+   width: 100%;
+   margin: 0 auto;
+   text-align: 0 auto;
+}
+
+.gwt-DecoratorPanel .middleCenterInner { 
+   height: 100%;
+   width: 100%;
+   margin: 0 auto;
+   text-align: 0 auto;
+}
+
+.vpTable{
+   margin: 0 auto;
+   text-align: 0 auto;
+}
+
+.menuButton{
+	height: 100%;
+    width: 100%;
+	margin-top: auto;
+    text-align: 0 auto;
+	color: #39ad7d;
 }
