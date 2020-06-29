@@ -87,13 +87,15 @@ class SwitchElm extends CircuitElm {
     }
     
     void toggle() {
-		position++;
-		if (position >= posCount)
-		    position = 0;
-		
-		sim.GameOverTrigger();
-		//sim.updateCircuit();
-		//sim.analyzeCircuit();
+    	
+    	if(sim.canToggle) {
+			position++;
+			if (position >= posCount)
+			    position = 0;
+			
+			sim.GameOverTrigger();
+    	}
+
     }
     
     

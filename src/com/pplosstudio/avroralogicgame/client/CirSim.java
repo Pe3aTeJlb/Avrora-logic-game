@@ -128,8 +128,9 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     public static int tickCounter = 0;
     private boolean refreshGameState = true;
     private int level = 1;
-    private Image crystal = new Image("Images/B.gif");
+    private Gif crystal;
     private boolean lose = false;
+    public boolean canToggle = true;
     //Images/crystal.png
    
   ////////////////////////
@@ -277,7 +278,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		FunctionsInput = v.inElems;
 		currOutput = new ArrayList();
 		currCrystalPosY = FunctionsOutput.get(currOutputIndex).y - 40;
-				
+		crystal = new Gif("A",1);
   	}
     
   	//Game Logic
@@ -287,14 +288,19 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
   		tickCounter = 0;
   	}
   	
-  	void GameOver() {
+  	void RestartLevel() {
   		
-			crystal.setUrl("Images/broken_crystal.png");
-			for(int i = 0; i<FunctionsInput.size(); i++) {
-			//	FunctionsInput.get(i).position = 0;
-			}
-			//currOutputIndex = 0;
+  		GWT.log("OOOOOOVEr");
+  		lose = false;
+  			
+		for(int i = 0; i<FunctionsInput.size(); i++) {
+			FunctionsInput.get(i).position = 0;
+		}
+		currOutputIndex = 0;
+  		canToggle = true;
   		
+  		crystal = new Gif("A",1);
+  		currCrystalPosY = FunctionsOutput.get(currOutputIndex).y - 40;
   	}
 
   	
@@ -306,8 +312,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	        updateCircuit();
 	      }
 	 };
-	
-   
+
+	 
 	public void updateCircuit() {
     	
     	setCanvasSize();
@@ -346,7 +352,10 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	      				}
 	      			
 	      			lose = true;
-	      		
+	      			crystal.litera = "B";
+	    			crystal.currFrame = 0;
+	    			crystal.frameCount = 7;
+	      			
 	      		}
 	      		
 	      		//Переход на след платформу
@@ -422,16 +431,24 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	    g.fillOval(cn.x-3, cn.y-3, 7, 7);
     	}
     	
+    	
     	//Отрисовка падения кристалла
     	if(currCrystalPosY < FunctionsOutput.get(currOutputIndex).y-40) {
-    		currCrystalPosY += 5;
-    		backcontext.drawImage(ImageElement.as(crystal.getElement()), FunctionsOutput.get(currOutputIndex).x+150, currCrystalPosY, 10, 10);
-    	}else {    		
-    		backcontext.drawImage(ImageElement.as(crystal.getElement()), FunctionsOutput.get(currOutputIndex).x+150, FunctionsOutput.get(currOutputIndex).y-40, 50, 50);
+    		canToggle = false;
+    		currCrystalPosY += 10;
+    		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), FunctionsOutput.get(currOutputIndex).x+150, currCrystalPosY, 10, 10);
+    	}else {    
     		
-    		if(lose)GameOver();
+    		//ожидание окончания гифки и перезапуск уровня. См класс Gif
+    		if(lose) {
+    	  		crystal.Play(150);
+    		}else{canToggle = true;}
+    		
+    		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), FunctionsOutput.get(currOutputIndex).x+150, FunctionsOutput.get(currOutputIndex).y-40, 50, 50);
+    		
+    		if(crystal.gifEnded && lose)RestartLevel();
+    		
     	}
-    	
     	cvcontext.drawImage(backcontext.getCanvas(),0.0,0.0);
     }
  
