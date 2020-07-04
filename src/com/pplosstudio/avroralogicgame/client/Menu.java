@@ -1,10 +1,11 @@
 package com.pplosstudio.avroralogicgame.client;
 
+import java.util.ArrayList;
+
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -22,7 +23,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.HasAlignment;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
@@ -45,11 +45,13 @@ public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandle
     double transform[];
     Rectangle circuitArea; 
     
-    private final int REFRESH_RATE = 30;
+    private final int REFRESH_RATE = 15;
     
     static CirSim mysim;
     
-    public int width,height;
+    int width,height;
+    int x, y = 0;
+    ArrayList<ArrayList<Point>> lines = new ArrayList<ArrayList<Point>>();
 	
 	Menu(){ menu = this;}
 	
@@ -130,7 +132,7 @@ public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandle
 		Button rules = new Button(constants.Rules(), new ClickHandler() {
 		      public void onClick(ClickEvent event) {
 					AboutBox b = new AboutBox();
-					//layoutPanel.add(b);  
+					layoutPanel.add(b);  
 		      }
 		    });
 		 
@@ -156,6 +158,11 @@ public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandle
 		
 		
 	    root.add(layoutPanel);
+	    
+	    Point p = new Point(random(50,width/2),random(50,height-50));
+	    ArrayList<Point> l = new ArrayList<Point>();
+	    l.add(p);
+	    l.add(new Point(p.x+random(20,150), p.y));
 
 	    timer.scheduleRepeating(REFRESH_RATE);
   
@@ -174,6 +181,26 @@ public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandle
 		Graphics g = new Graphics(backcontext);
 		g.setColor(Color.black);
 		g.fillRect(0, 0, g.context.getCanvas().getWidth(), g.context.getCanvas().getHeight());
+		
+		/*
+		for(int i = 0; i < lines.size(); i++) {
+			
+			for(int j = 0; j<lines.get(i).size()-1; j++) {
+				g.setColor(Color.green);
+				g.setLineWidth(1);
+				g.drawLine(lines.get(i).get(j).x, lines.get(i).get(j).y, lines.get(i).get(j+1).x, lines.get(i).get(j+1).y);
+				//lines.get(i).add(new Point(lines.get(i).get(lines.get(i).size()-1).x+random(20,100), lines.get(i).get(lines.get(i).size()-1).y));
+			}
+			
+		}
+		*/
+		x+=3;
+		g.setColor(Color.green);
+		g.setLineWidth(1);
+		g.drawLine(x,50,x+20,50);
+		g.drawLine(x,150,x+20,150);
+		g.drawLine(x,250,x+20,250);
+		
 		//g.draw
 		cv.getContext2d().drawImage(backcontext.getCanvas(), 0.0, 0.0);
 	}
@@ -203,5 +230,10 @@ public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandle
 		
 	}
 	
+  	private int random(int min, int max)
+  	{
+  		max -= min;
+  		return (int) (Math.random() * ++max) + min;
+  	}
 	
 }

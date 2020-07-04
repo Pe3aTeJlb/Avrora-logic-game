@@ -168,6 +168,7 @@ abstract class GateElm extends CircuitElm {
 	    if (isInverting())
 		f = !f;
 	    
+	   
 	    // detect oscillation (using same strategy as Atanua)
 	    if (lastOutput == !f) {
 			if (oscillationCount++ > 50) {

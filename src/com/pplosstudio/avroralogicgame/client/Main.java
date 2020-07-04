@@ -25,13 +25,13 @@ public class Main implements EntryPoint {
 	  menu = new Menu();
 	  menu.init();
 	  
-	    Window.addResizeHandler(new ResizeHandler() {
+	  Window.addResizeHandler(new ResizeHandler() {
 	    	 
-            public void onResize(ResizeEvent event)
-            {               
-            	menu.setCanvasSize();
-            }
-        });
+		  public void onResize(ResizeEvent event)
+          {               
+			  menu.setCanvasSize();
+          }
+      });
 	  
 	 /*
 	  mysim = new CirSim();

@@ -1,6 +1,5 @@
 package com.pplosstudio.avroralogicgame.client;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Image;
 
@@ -39,16 +38,14 @@ public class Gif extends Image {
     };
 
 	
-	public void Play(int Speed) {
+	public void Play(int frameDelay) {
 		
 		if(!isPlaying) {
 			isPlaying = true;
 			gifEnded = false;
-			timer.scheduleRepeating(Speed);
+			timer.scheduleRepeating(frameDelay);
 		}
 		
 	}
 	
-
-
 }

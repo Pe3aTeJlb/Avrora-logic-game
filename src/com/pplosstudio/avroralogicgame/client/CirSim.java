@@ -7,19 +7,11 @@ import java.util.Map;
 import java.util.Random;
 import java.lang.Math;
 import com.google.gwt.canvas.client.Canvas;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -32,14 +24,10 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.MenuItem;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 
 /*
  Скрипт расчёта схемы, он же UI и управление им.
@@ -57,10 +45,10 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	boolean euroGates = false;
     Random random;
 	
-	private final int REFRESH_RATE = 30;
+	private final int REFRESH_RATE = 15; //Устанавливает время между кадрами в мс. Эквивалентно 60 fps
 	
  /////////////////////
-//Set UI Fields//
+//Set UI Fields
 	RootLayoutPanel root;
 	
     Canvas cv;
@@ -87,15 +75,13 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     double transform[];
     
  /////////////////////
-//Events//
+//Events
     long zoomTime;
     int dragScreenX, dragScreenY, initDragGridX, initDragGridY;
     boolean dragging;
     private CircuitElm mouseElm=null;
     static final int POSTGRABSQ=25;
     static final int MINPOSTGRABSIZE = 256;
-    
-    double timeStep = 5e-6;
     
  ////////////////////////
 //Circuit procession
@@ -119,24 +105,25 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     Vector<WireInfo> wireInfoList;
     
     int gridSize, gridMask, gridRound;
-    
+
+ ////////////////////////
+//Game logic vars and data struct
     private ArrayList<String> currOutput; //Хранят текущее состояние выходов функций
     private ArrayList<CircuitElm> FunctionsOutput;//Список выходных и входных элементов функций
     private ArrayList<SwitchElm> FunctionsInput;
     private int currOutputIndex = 0; // текущая позиция кристалла
     private int currCrystalPosY = 0;
-    public static int tickCounter = 0;
+    int tickCounter = 0;
     private boolean refreshGameState = true;
     private int level = 1;
     private Gif crystal;
     private boolean lose = false;
     public boolean canToggle = true;
-    //Images/crystal.png
    
   ////////////////////////
  //Circuit Construction//
 ////////////////////////    
-     CirSim() {
+    CirSim() {
     	theSim = this;
     }
 	
@@ -296,14 +283,25 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		for(int i = 0; i<FunctionsInput.size(); i++) {
 			FunctionsInput.get(i).position = 0;
 		}
-		currOutputIndex = 0;
+		
+		CrystalRestart.schedule(110);
+		
   		canToggle = true;
-  		
-  		crystal = new Gif("A",1);
-  		currCrystalPosY = FunctionsOutput.get(currOutputIndex).y - 40;
   	}
 
-  	
+  	//Необходим ля синхронизации появления нового кристалл и обноления платформы при рестарте
+	final Timer CrystalRestart = new Timer() {
+		
+        public void run() {
+
+        	crystal = new Gif("A",1);
+    		
+      		currOutputIndex = 0;
+      		currCrystalPosY = FunctionsOutput.get(currOutputIndex).y - 40;
+        }
+        
+    };
+  		
  // *****************************************************************
 //  Void Update	
   
@@ -312,14 +310,13 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	        updateCircuit();
 	      }
 	 };
-
-	 
+ 
 	public void updateCircuit() {
     	
     	setCanvasSize();
-    	analyzeCircuit();
     	runCircuit();
-   
+    	analyzeCircuit();
+    	
     	Graphics g = new Graphics(backcontext);
     	
     	if(refreshGameState)tickCounter++;
@@ -354,7 +351,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	      			lose = true;
 	      			crystal.litera = "B";
 	    			crystal.currFrame = 0;
-	    			crystal.frameCount = 7;
+	    			crystal.frameCount = 8;
 	      			
 	      		}
 	      		
@@ -433,10 +430,10 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	
     	
     	//Отрисовка падения кристалла
-    	if(currCrystalPosY < FunctionsOutput.get(currOutputIndex).y-40) {
+    	if(currCrystalPosY < FunctionsOutput.get(currOutputIndex).y-67) {
     		canToggle = false;
-    		currCrystalPosY += 10;
-    		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), FunctionsOutput.get(currOutputIndex).x+150, currCrystalPosY, 10, 10);
+    		currCrystalPosY += 5;
+    		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), FunctionsOutput.get(currOutputIndex).x+130, currCrystalPosY, 50, 50);
     	}else {    
     		
     		//ожидание окончания гифки и перезапуск уровня. См класс Gif
@@ -444,10 +441,9 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	  		crystal.Play(150);
     		}else{canToggle = true;}
     		
-    		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), FunctionsOutput.get(currOutputIndex).x+150, FunctionsOutput.get(currOutputIndex).y-40, 50, 50);
-    		
-    		if(crystal.gifEnded && lose)RestartLevel();
-    		
+    		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), FunctionsOutput.get(currOutputIndex).x+130, FunctionsOutput.get(currOutputIndex).y-67, 50, 50);
+
+    		if(crystal.gifEnded && lose) {RestartLevel();}
     	}
     	cvcontext.drawImage(backcontext.getCanvas(),0.0,0.0);
     }
@@ -593,9 +589,10 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	//int maxIter = getIterCount();
     	boolean debugprint = dumpMatrix;
     	dumpMatrix = false;
-    	long steprate = (long) (100);
+    	long steprate = (long) (250);
     	long tm = System.currentTimeMillis();
     	long lit = lastIterTime;
+    	
     	if (lit == 0) {
     	    lastIterTime = tm;
     	    return;
@@ -611,38 +608,40 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	for (iter = 1; ; iter++) {
     	    int i, j, k, subiter;
     	    for (i = 0; i != elmList.size(); i++) {
-    		CircuitElm ce = getElm(i);
-    		ce.startIteration();
+    	    	CircuitElm ce = getElm(i);
+    	    	ce.startIteration();
     	    }
     	    steps++;
     	    final int subiterCount = 5000;
+    	    //final int subiterCount = 1;
     	    for (subiter = 0; subiter != subiterCount; subiter++) {
-    		converged = true;
-    		subIterations = subiter;
-    		for (i = 0; i != circuitMatrixSize; i++)
-    		    circuitRightSide[i] = origRightSide[i];
-    		if (circuitNonLinear) {
-    		    for (i = 0; i != circuitMatrixSize; i++)
-    			for (j = 0; j != circuitMatrixSize; j++)
-    			    circuitMatrix[i][j] = origMatrix[i][j];
-    		}
-    		for (i = 0; i != elmList.size(); i++) {
-    		    CircuitElm ce = getElm(i);
-    		    ce.doStep();
-    		}
+    	    	converged = true;
+    	    	subIterations = subiter;
+    	    	for (i = 0; i != circuitMatrixSize; i++)
+    	    		circuitRightSide[i] = origRightSide[i];
+	    		if (circuitNonLinear) {
+	    		    for (i = 0; i != circuitMatrixSize; i++)
+	    			for (j = 0; j != circuitMatrixSize; j++)
+	    			    circuitMatrix[i][j] = origMatrix[i][j];
+	    		}
+	    		for (i = 0; i != elmList.size(); i++) {
+	    		    CircuitElm ce = getElm(i);
+	    		    ce.doStep();
+	    		}
     		//if (stopMessage != null)
     		   // return;
     		boolean printit = debugprint;
     		debugprint = false;
     		for (j = 0; j != circuitMatrixSize; j++) {
     		    for (i = 0; i != circuitMatrixSize; i++) {
-    			double x = circuitMatrix[i][j];
-    			if (Double.isNaN(x) || Double.isInfinite(x)) {
-    			    //stop("nan/infinite matrix!", null);
-    			    return;
-    			}
+	    		    double x = circuitMatrix[i][j];
+	    			if (Double.isNaN(x) || Double.isInfinite(x)) {
+	    			    //stop("nan/infinite matrix!", null);
+	    			    return;
+	    			}
     		    }
     		}
+    		/*
     		if (printit) {
     		    for (j = 0; j != circuitMatrixSize; j++) {
     			//String x = "";
@@ -653,6 +652,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     		    }
     		    //console("");
     		}
+    		*/
     		if (circuitNonLinear) {
     		    if (converged && subiter > 0)
     			break;
@@ -662,32 +662,36 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     			return;
     		    }
     		}
-    		lu_solve(circuitMatrix, circuitMatrixSize, circuitPermute,
-    			 circuitRightSide);
+    		lu_solve(circuitMatrix, circuitMatrixSize, circuitPermute, circuitRightSide);
     		
     		for (j = 0; j != circuitMatrixFullSize; j++) {
+    			
     		    RowInfo ri = circuitRowInfo[j];
     		    double res = 0;
     		    if (ri.type == RowInfo.ROW_CONST)
     			res = ri.value;
     		    else
     			res = circuitRightSide[ri.mapCol];
+    		   
     		    if (Double.isNaN(res)) {
     			converged = false;
     			//debugprint = true;
     			break;
     		    }
+    		    
     		    if (j < nodeList.size()-1) {
-    			CircuitNode cn = getCircuitNode(j+1);
-    			for (k = 0; k != cn.links.size(); k++) {
-    			    CircuitNodeLink cnl = (CircuitNodeLink)
-    				cn.links.elementAt(k);
-    			    cnl.elm.setNodeVoltage(cnl.num, res);
-    			}
+	    			CircuitNode cn = getCircuitNode(j+1);
+	    			for (k = 0; k != cn.links.size(); k++) {
+	    			    CircuitNodeLink cnl = (CircuitNodeLink)
+	    				cn.links.elementAt(k);
+	    			    
+	    			    cnl.elm.setNodeVoltage(cnl.num, res);
+	    			    
+	    			}
     		    } else {
-    			int ji = j-(nodeList.size()-1);
-    			//System.out.println("setting vsrc " + ji + " to " + res);
-    			voltageSources[ji].setCurrent(ji, res);
+	    			int ji = j-(nodeList.size()-1);
+	    			//System.out.println("setting vsrc " + ji + " to " + res);
+	    			voltageSources[ji].setCurrent(ji, res);
     		    }
     		}
     		if (!circuitNonLinear)
@@ -710,13 +714,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	    //if (!delayWireProcessing)
     	//	calcWireCurrents();
     	   
-    	    /*
-    	    for (i = 0; i != scopeCount; i++)
-    	    	scopes[i].timeStep();
-    	    for (i=0; i != elmList.size(); i++)
-    		if (getElm(i) instanceof ScopeElm )
-    		    ((ScopeElm)getElm(i)).stepScope();
-    		*/
     	    
     	    tm = System.currentTimeMillis();
     	    lit = tm;
@@ -732,6 +729,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	//calcWireCurrents();
     	
     }
+    
     
     void analyzeCircuit() {
     	 
@@ -829,18 +827,18 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     			    // if it's the ground node, make sure the node voltage is 0,
     			    // cause it may not get set later
     			    if (n == 0)
-    				ce.setNodeVoltage(j, 0);
+    			    	ce.setNodeVoltage(j, 0);
     			}
     		    }
     		    for (j = 0; j != inodes; j++) {
-    			CircuitNode cn = new CircuitNode();
-    			cn.internal = true;
-    			CircuitNodeLink cnl = new CircuitNodeLink();
-    			cnl.num = j+posts;
-    			cnl.elm = ce;
-    			cn.links.addElement(cnl);
-    			ce.setNode(cnl.num, nodeList.size());
-    			nodeList.addElement(cn);
+	    			CircuitNode cn = new CircuitNode();
+	    			cn.internal = true;
+	    			CircuitNodeLink cnl = new CircuitNodeLink();
+	    			cnl.num = j+posts;
+	    			cnl.elm = ce;
+	    			cn.links.addElement(cnl);
+	    			ce.setNode(cnl.num, nodeList.size());
+	    			nodeList.addElement(cn);
     		    }
     		    vscount += ivs;
     		}
@@ -1069,6 +1067,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	 
     	 
     } 
+    
          
     void calculateWireClosure() {
     	
@@ -1664,14 +1663,15 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 // *****************************************************************
 //  TOOLS    
     
+    
     int getrand(int x) {
 		int q = random.nextInt();
 		if (q < 0)
 			q = -q;
 		return q % x;
 	}
-       
-    static SafeHtml LSHTML(String s) { return SafeHtmlUtils.fromTrustedString(s); }
+	  
+    //static SafeHtml LSHTML(String s) { return SafeHtmlUtils.fromTrustedString(s); }
 
     public Rectangle getCircuitBounds() {
     	

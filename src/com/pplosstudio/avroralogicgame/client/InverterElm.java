@@ -1,11 +1,13 @@
 
 package com.pplosstudio.avroralogicgame.client;
 
-    class InverterElm extends CircuitElm {
+class InverterElm extends CircuitElm {
     	
 	double slewRate; // V/ns
 	
 	double highVoltage;
+	
+	double timeStep = 5e-6;
 	
 	public InverterElm(int xx, int yy) {
 	    super(xx, yy);
@@ -80,9 +82,10 @@ package com.pplosstudio.avroralogicgame.client;
 	}
 	
 	void doStep() {
+		
 	    double v0 = volts[1];
-	    double out = volts[0] > highVoltage*.5 ? 0 : highVoltage;
-	    double maxStep = slewRate * sim.timeStep * 1e9;
+	    double out = volts[0] >= highVoltage*.5? 0 : highVoltage;
+	    double maxStep = slewRate * timeStep * 1e9;
 	    out = Math.max(Math.min(v0+maxStep, out), v0-maxStep);
 	    sim.updateVoltageSource(0, nodes[1], voltSource, out);
 	}
@@ -112,4 +115,4 @@ package com.pplosstudio.avroralogicgame.client;
 	    return 0;
 	}
 
-    }
+}

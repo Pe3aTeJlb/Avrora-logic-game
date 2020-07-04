@@ -193,12 +193,12 @@ public abstract class CircuitElm  {
     
     // set voltage of x'th node, called by simulator logic
     void setNodeVoltage(int n, double c) {
-	volts[n] = c;
-	calculateCurrent();
+    	volts[n] = c;
+    	//calculateCurrent();  	
     }
     
     // calculate current in response to node voltages changing
-    void calculateCurrent() {}
+   // void calculateCurrent() {}
     
     // calculate post locations and other convenience values used for drawing.  Called when element is moved 
     void setPoints() {

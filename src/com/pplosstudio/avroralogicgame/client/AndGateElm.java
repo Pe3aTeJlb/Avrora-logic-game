@@ -41,6 +41,7 @@ class AndGateElm extends GateElm {
 	    }
 	    
 	}
+
 	String getGateName() { return "AND gate"; }
 	
 	boolean calcFunction() {
