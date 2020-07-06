@@ -1,3 +1,27 @@
+/*    
+Copyright (C) Pplos Studio
+    
+    This file is a part of Avrora Logic Game, which based on CircuitJS1
+    https://github.com/Pe3aTeJlb/Avrora-logic-game
+    
+    CircuitJS1 was originally written by Paul Falstad.
+	http://www.falstad.com/
+
+	JavaScript conversion by Iain Sharp.
+	http://lushprojects.com/
+    
+    Avrora Logic Game is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 1, 2 of the License, or
+    (at your option) any later version.
+    Avrora Logic Game is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License 
+    along with Avrora Logic Game.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.pplosstudio.avroralogicgame.client;
 
 import java.util.ArrayList;
@@ -8,8 +32,8 @@ public class Factorisator_V_2 {
     //Символы разделители
     private String splitSymbol = "\\+";
     private String splitSymbol2 = "\\*";
-    private static String interstitialSeparator = "+";
-    private static String insideSeparator = "*";
+    private String interstitialSeparator = "+";
+    private String insideSeparator = "*";
     private int n = 0;
     
     //массив термов
@@ -19,13 +43,14 @@ public class Factorisator_V_2 {
     private String unclaimedBuff = "";
 
     //массив операндов и представление термов в виде биарных строк
-    ArrayList<String> operands = new ArrayList<>();
-    ArrayList<String> binaryTerms = new ArrayList<>();
-
-    String output = "";
+    private ArrayList<String> operands = new ArrayList<>();
+    private ArrayList<String> binaryTerms = new ArrayList<>();
+    
     private String expr = "";
 
-    CustomData data = new CustomData();
+    private CustomData data = new CustomData();
+    
+    public String output = "";
 
     public void PrepareData(String expression, int varcount) {
     	n = varcount;
@@ -332,7 +357,6 @@ public class Factorisator_V_2 {
             String unc = "";
 
             buff.Delete(collisions);
-   
 
             if(crossCollision2.size()>0) {
 
@@ -368,7 +392,7 @@ public class Factorisator_V_2 {
         return str.substring(0,index)+str.substring(index+1);
     }
 
-    public void Exit(String out){
+    private void Exit(String out){
         output = out;
     }
 }

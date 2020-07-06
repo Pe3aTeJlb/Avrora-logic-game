@@ -1,3 +1,27 @@
+/*    
+Copyright (C) Pplos Studio
+    
+    This file is a part of Avrora Logic Game, which based on CircuitJS1
+    https://github.com/Pe3aTeJlb/Avrora-logic-game
+    
+    CircuitJS1 was originally written by Paul Falstad.
+	http://www.falstad.com/
+
+	JavaScript conversion by Iain Sharp.
+	http://lushprojects.com/
+    
+    Avrora Logic Game is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 1, 2 of the License, or
+    (at your option) any later version.
+    Avrora Logic Game is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License 
+    along with Avrora Logic Game.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.pplosstudio.avroralogicgame.client;
 
 import java.util.ArrayList;
@@ -42,7 +66,7 @@ public class CircuitSynthesizer {
 	private String basis = "";
 	private int funcCount = 0;
 	private int varCount = 0;
-	private ArrayList<String> sharedVars = new ArrayList();
+	private ArrayList<String> sharedVars = new ArrayList<String>();
 
 	private Point input_freeSpace = new Point(50,80); //Точка начала отрисовки входов схемы
 	private Point StartPoint = new Point(1,1); // фиксация начальной точки текущей функции
@@ -61,14 +85,14 @@ public class CircuitSynthesizer {
 	//Для удаления неиспользуемых входных переменных
 	private ArrayList<ArrayList<CircuitElm>> UnusedInputs = new ArrayList<>();
 	private ArrayList<String> UnusedVarNames = new ArrayList<>();
-	private ArrayList<ArrayList<String>> allInputs = new ArrayList(); 
+	private ArrayList<ArrayList<String>> allInputs = new ArrayList<ArrayList<String>>(); 
 	
 	//Для игровой логики
-	public ArrayList<SwitchElm> inElems = new ArrayList(); //список входных элементов
-	public ArrayList<CircuitElm> outElems = new ArrayList(); //список выходных элементов
+	public ArrayList<SwitchElm> inElems = new ArrayList<SwitchElm>(); //список входных элементов
+	public ArrayList<CircuitElm> outElems = new ArrayList<CircuitElm>(); //список выходных элементов
 
 	//AWL = Additional Wire Length
-	private int AWL;
+	private final int AWL = 100;
 	
 	public int width, height;
 
@@ -78,19 +102,16 @@ public class CircuitSynthesizer {
 	
 	private int wireSplitPoint = 0; //x координата перелома провода
 	
-	private ArrayList<CircuitElm> LastLogElems = new ArrayList();//список последнего лог элемента подсхемы нужен для выравнивания платформ
+	private ArrayList<CircuitElm> LastLogElems = new ArrayList<CircuitElm>();//список последнего лог элемента подсхемы нужен для выравнивания платформ
 	
 	private BasisConverter converter = new BasisConverter(BasisConverterDebug);
 	private Factorisator_V_2 factorizator = new Factorisator_V_2();
     private ShuntingYard shuntingYard = new ShuntingYard(ShuntingYardDebug);
     private LogicFunctionGenerator generator = new LogicFunctionGenerator(LogicVectorGeneratorDebug);  
-	
-    
-    
     
 	public void Synthesis(int w, int h) {
 		
-		sharedVars = new ArrayList();	
+		sharedVars = new ArrayList<String>();	
 		
 		width = w;
 		height = h;
@@ -196,7 +217,7 @@ public class CircuitSynthesizer {
 		height = h;
 	
 		//GetConfigurationFile();
-		sharedVars = new ArrayList();	
+		sharedVars = new ArrayList<String>();	
 	
 		 MDNF = true;
 		 factorize = true;
@@ -225,7 +246,7 @@ public class CircuitSynthesizer {
 		
 		generator.callOnce = true;
 		
-		sharedVars = new ArrayList();	
+		sharedVars = new ArrayList<String>();	
 		
 		width = w;
 		height = h;
@@ -374,11 +395,10 @@ public class CircuitSynthesizer {
         						);
         sol.run();
 		
-        ArrayList<String> lst = new ArrayList();
+        ArrayList<String> lst = new ArrayList<String>();
         for(int i = 0; i < generator.VarNames.length; i++) {
         	lst.add(generator.VarNames[i]);
         }
-        //GWT.log(lst.toString());
         allInputs.add(lst);
 		CreateInputElm(generator.VarNames);
         
@@ -462,7 +482,6 @@ public class CircuitSynthesizer {
 				int inputCount = list.get(i).size()-2;
 				String operation= list.get(i).get(list.get(i).size()-2);
 				blockName = list.get(i).get(list.get(i).size()-1);
-				//GWT.log("new Block Name " + blockName);
 				
 	
 				/*
@@ -661,10 +680,6 @@ public class CircuitSynthesizer {
 							UnusedVarNames.remove(list.get(i).get(j));
 						}
 						
-						//GWT.log("connect " + list.get(i).get(j) + " with "+ blockName);
-						//GWT.log(Boolean.toString(dictionary.containsKey(list.get(i).get(j))));
-						//GWT.log(Boolean.toString(dictionary.containsKey(blockName)));
-						
 						//обработка 1 в Жегалкине
 						if(converter.Has1 && i == list.size()-1) {
 							
@@ -729,7 +744,6 @@ public class CircuitSynthesizer {
 					if(debug)GWT.log("End of block");
 					dump+="End of block"+"\n";
 				}
-				//wireSplitPoint -= 40;
 				
 		}
 		
@@ -764,10 +778,8 @@ public class CircuitSynthesizer {
 	private void CreateInputElm(String[] varNames) {
 		
 		int minus = 0;
-		AWL = 100;
 		int x = input_freeSpace.x;
 		int y = input_freeSpace.y;
-		//AWL = 2*varNames.length * 50;
 		
 		freeSpace = new Point(x+AWL+varNames.length*100, y);
 		StartPoint = new Point(x+AWL+varNames.length*100, y);
@@ -909,24 +921,21 @@ public class CircuitSynthesizer {
   			// Теперь, текущий вертикальный провод мы дробим на 2, актуальный для дальнейшего соединения становится нижний кусок	
   				if(currentInput.y < out.OperativePoints.get(0).y && currentInput.y > out.OperativePoints.get(1).y) {
   					
+  					CircuitElm wire1 = createCe("Wire",prevOutput.x, out.OperativePoints.get(0).y, prevOutput.x, currentInput.y, 0, 0);
+  		  			wire1.setPoints();
+  		  			wire1.getConnectionPoints(true);
+  		  			elmList.add(wire1);
   					
-  					//GWT.log(outName);
+  					CircuitElm wire2 = createCe("Wire",prevOutput.x, currentInput.y, currentInput.x, currentInput.y, 0, 0);
+  					wire2.setPoints();
+  		  			elmList.add(wire2);
   					
-  					CircuitElm shit1 = createCe("Wire",prevOutput.x, out.OperativePoints.get(0).y, prevOutput.x, currentInput.y, 0, 0);
-  		  			shit1.setPoints();
-		  			shit1.getConnectionPoints(true);
-  		  			elmList.add(shit1);
-  					
-  					CircuitElm shit2 = createCe("Wire",prevOutput.x, currentInput.y, currentInput.x, currentInput.y, 0, 0);
-  		  			shit2.setPoints();
-  		  			elmList.add(shit2);
-  					
-  					CircuitElm shit3 = createCe("Wire",prevOutput.x, currentInput.y, prevOutput.x, out.OperativePoints.get(1).y, 0, 0);
-  		  			shit3.setPoints();
-  		  			elmList.add(shit3);
+  					CircuitElm wire3 = createCe("Wire",prevOutput.x, currentInput.y, prevOutput.x, out.OperativePoints.get(1).y, 0, 0);
+  					wire3.setPoints();
+  		  			elmList.add(wire3);
   		  			
   		  			elmList.remove(out);
-  		  			dictionary.replace(outName, shit1);
+  		  			dictionary.replace(outName, wire1);
   					
   				}else {
   					
@@ -939,16 +948,16 @@ public class CircuitSynthesizer {
 	  					prevOutput =   out.OperativePoints.get(0);					
 	  				}
 	  				
-	  				CircuitElm shit2 = createCe("Wire",prevOutput.x, prevOutput.y, prevOutput.x, currentInput.y, 0, 0);
-		  			shit2.setPoints();
-		  			shit2.getConnectionPoints(true);
-		  			elmList.add(shit2);
+	  				CircuitElm wire2 = createCe("Wire",prevOutput.x, prevOutput.y, prevOutput.x, currentInput.y, 0, 0);
+	  				wire2.setPoints();
+	  				wire2.getConnectionPoints(true);
+		  			elmList.add(wire2);
 		  			
-		  			CircuitElm shit3 = createCe("Wire",prevOutput.x, currentInput.y, currentInput.x, currentInput.y, 0, 0);
-		  			shit3.setPoints();
-		  			elmList.add(shit3);
+		  			CircuitElm wire3 = createCe("Wire",prevOutput.x, currentInput.y, currentInput.x, currentInput.y, 0, 0);
+		  			wire3.setPoints();
+		  			elmList.add(wire3);
 	  				
-		  			dictionary.replace(outName, shit2);
+		  			dictionary.replace(outName, wire2);
 	  			
   				}
   				
@@ -962,49 +971,39 @@ public class CircuitSynthesizer {
   				//Если это входной элемент схемы
   				if(isInputElm) { 
   					  					
-  					CircuitElm shit2 = createCe("Wire",prevOutput.x, prevOutput.y, prevOutput.x, currentInput.y, 0, 0);
-  		  			shit2.setPoints();
-  		  			shit2.getConnectionPoints(true);
-  		  			elmList.add(shit2);
+  					CircuitElm wire2 = createCe("Wire",prevOutput.x, prevOutput.y, prevOutput.x, currentInput.y, 0, 0);
+  					wire2.setPoints();
+  					wire2.getConnectionPoints(true);
+  		  			elmList.add(wire2);
   		  			
   		  			
-  		  			CircuitElm shit3 = createCe("Wire",prevOutput.x, currentInput.y, currentInput.x, currentInput.y, 0, 0);
-  		  			shit3.setPoints();
-  		  			elmList.add(shit3);	
+  		  			CircuitElm wire3 = createCe("Wire",prevOutput.x, currentInput.y, currentInput.x, currentInput.y, 0, 0);
+  		  			wire3.setPoints();
+  		  			elmList.add(wire3);	
   		  			
-  		  			dictionary.replace(outName, shit2);
+  		  			dictionary.replace(outName, wire2);
   					
   				}
   				else { 
-  				
-  					//diap = ((prevOutput.x+20) + (int) (Math.random() * (currentInput.x-prevOutput.x-40)));
-	  		  		//int temp = diap%10;
-	  		  		
-	  		  		//if(temp!=0) {
-	  		  		//	diap = diap + (10-diap%10);
-	  		  		//}
-  					
-  					//if(!sharedVars.isEmpty())
-  					//wireSplitPoint -= 20;
-  					  					
+  				  					  					
   					diap = wireSplitPoint;
 	  		  		
-		  			CircuitElm shit1 = createCe("Wire",prevOutput.x, prevOutput.y, diap, prevOutput.y, 0, 0);
-		  			shit1.setPoints();
-		  			elmList.add(shit1);
+		  			CircuitElm wire1 = createCe("Wire",prevOutput.x, prevOutput.y, diap, prevOutput.y, 0, 0);
+		  			wire1.setPoints();
+		  			elmList.add(wire1);
 		  			
 		  			
-		  			CircuitElm shit2 = createCe("Wire",diap, prevOutput.y, diap, currentInput.y, 0, 0);
-		  			shit2.setPoints();
-		  			shit2.getConnectionPoints(true);
-		  			elmList.add(shit2);
+		  			CircuitElm wire2 = createCe("Wire",diap, prevOutput.y, diap, currentInput.y, 0, 0);
+		  			wire2.setPoints();
+		  			wire2.getConnectionPoints(true);
+		  			elmList.add(wire2);
 		  			
 		  			
-		  			CircuitElm shit3 = createCe("Wire",diap, currentInput.y, currentInput.x, currentInput.y, 0, 0);
-		  			shit3.setPoints();
-		  			elmList.add(shit3);
+		  			CircuitElm wire3 = createCe("Wire",diap, currentInput.y, currentInput.x, currentInput.y, 0, 0);
+		  			wire3.setPoints();
+		  			elmList.add(wire3);
 	  		  		
-		  			dictionary.replace(outName, shit2);
+		  			dictionary.replace(outName, wire2);
 		  			
   				}
 
@@ -1020,9 +1019,9 @@ public class CircuitSynthesizer {
   			//Разделим данное соединение на 2, для случая, когда выходной элемент на одной линии с входным + он же коннектится с третьим
   			//обавить рандомную x координату для сегментации
   			
-			if(wireSplitPoint == currentInput.x) {
-				wireSplitPoint -= 20;		
-			}
+				if(wireSplitPoint == currentInput.x) {
+					wireSplitPoint -= 20;		
+				}
   			
 		  		CircuitElm newce1 = createCe("Wire",prevOutput.x, prevOutput.y, wireSplitPoint, prevOutput.y, 0, 0);
 				newce1.setPoints();
@@ -1041,12 +1040,9 @@ public class CircuitSynthesizer {
 				if(in.OperativePoints.size()>1) {
 	  				in.OperativePoints.remove(closestInputIndex);
 	  			}
-				
-				//wireSplitPoint = 0;
   			
   		}
 		
-  		
   	}
 	
   	private void DeleteUnusedInputs() {

@@ -1,3 +1,27 @@
+/*    
+Copyright (C) Pplos Studio
+    
+    This file is a part of Avrora Logic Game, which based on CircuitJS1
+    https://github.com/Pe3aTeJlb/Avrora-logic-game
+    
+    CircuitJS1 was originally written by Paul Falstad.
+	http://www.falstad.com/
+
+	JavaScript conversion by Iain Sharp.
+	http://lushprojects.com/
+    
+    Avrora Logic Game is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 1, 2 of the License, or
+    (at your option) any later version.
+    Avrora Logic Game is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License 
+    along with Avrora Logic Game.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.pplosstudio.avroralogicgame.client;
 
 import java.util.ArrayList;
@@ -34,11 +58,8 @@ public class LogicFunctionGenerator {
     private boolean debug = false;
     public String dmp = "";
 	public boolean callOnce = false;
-	private ArrayList<String> prevFunc = new ArrayList();
-	private ArrayList<String> currFunc= new ArrayList();
-
-    public LogicFunctionGenerator() {}
-    
+	private ArrayList<String> prevFunc = new ArrayList<String>();
+	private ArrayList<String> currFunc= new ArrayList<String>();
     
     public LogicFunctionGenerator(boolean dbg){
     	maxTruePercent = 0.3f;
@@ -66,8 +87,6 @@ public class LogicFunctionGenerator {
     	if(sharedVars.size()>0) {
             if(debug) {
                 GWT.log("Shared var length "+Integer.toString(sharedVars.size()));
-                //GWT.log(sharedVars.get(0));
-                //GWT.log(sharedVars.get(1));
                 }
             dmp+= "Shared var length "+Integer.toString(sharedVars.size()) + "\n";
     		for(int i = 0; i < sharedVars.size(); i++) {
@@ -135,7 +154,7 @@ public class LogicFunctionGenerator {
     }
 
     //Реализация Генератора
-    public void Generator (int totalVarCount){
+    private void Generator (int totalVarCount){
 
     	currFunc.clear();
         buffVector = new char[totalVarCount][1];
@@ -144,7 +163,6 @@ public class LogicFunctionGenerator {
 
         for(int j = 1; j < totalVarCount; j++)
         {
-           // int random = randomBit(Random.nextInt());
             int random = randomBit(seed);
             if(random == 1){unitCounter++;}
             buffVector[j][0] = Integer.toString(random).charAt(0);
@@ -158,12 +176,10 @@ public class LogicFunctionGenerator {
                 || currFunc.equals(prevFunc)
         ){
             Generator(totalVarCount);
-          //  GWT.log("ReGen");
         }else{
         
         	//текущий вектор не должен совпадать с вектором предыдущей функции
        
-        	//GWT.log("Copy");
         	//Глубокое копирование Текущая функция становится предыдущей
         	prevFunc.clear();
             for(String obj : currFunc)
@@ -177,7 +193,7 @@ public class LogicFunctionGenerator {
 
     }
 
-    public static int randomBit(long seed){
+    private static int randomBit(long seed){
         return (int) (Math.random() * ++seed);
     }
 

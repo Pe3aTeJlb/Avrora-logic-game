@@ -1,5 +1,3 @@
-
-
 package com.pplosstudio.avroralogicgame.client;
 
 import java.util.Enumeration;

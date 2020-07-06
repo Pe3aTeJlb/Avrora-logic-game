@@ -1,3 +1,30 @@
+/*    
+Copyright (C) Paul Falstad and Iain Sharp
+	Modified by Pplos Studio
+    
+    This file is a part of Avrora Logic Game, which based on CircuitJS1
+    https://github.com/Pe3aTeJlb/Avrora-logic-game
+    
+    CircuitJS1 was originally written by Paul Falstad.
+	http://www.falstad.com/
+	https://github.com/pfalstad/circuitjs1
+
+	JavaScript conversion by Iain Sharp.
+	http://lushprojects.com/
+	https://github.com/sharpie7/circuitjs1
+    
+    Avrora Logic Game is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 1, 2 of the License, or
+    (at your option) any later version.
+    Avrora Logic Game is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License 
+    along with Avrora Logic Game.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.pplosstudio.avroralogicgame.client;
 
 import java.util.Vector;
@@ -263,7 +290,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		elmList = v.elmList;
 		FunctionsOutput = v.outElems;
 		FunctionsInput = v.inElems;
-		currOutput = new ArrayList();
+		currOutput = new ArrayList<String>();
 		currCrystalPosY = FunctionsOutput.get(currOutputIndex).y - 40;
 		crystal = new Gif("A",1);
   	}
@@ -324,7 +351,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	//
     	if(tickCounter > 6 && refreshGameState && currOutputIndex < FunctionsOutput.size()) {
     		
-    		currOutput = new ArrayList();
+    		currOutput = new ArrayList<String>();
     		
     		for(int i = 0; i<FunctionsOutput.size(); i++) {
       			String s = FunctionsOutput.get(i).volts[0] < 2.5 ? "0" : "1";
@@ -432,7 +459,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	//Отрисовка падения кристалла
     	if(currCrystalPosY < FunctionsOutput.get(currOutputIndex).y-67) {
     		canToggle = false;
-    		currCrystalPosY += 5;
+    		currCrystalPosY += 3;
     		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), FunctionsOutput.get(currOutputIndex).x+130, currCrystalPosY, 50, 50);
     	}else {    
     		
@@ -587,7 +614,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	}
     	int iter;
     	//int maxIter = getIterCount();
-    	boolean debugprint = dumpMatrix;
+    	//boolean debugprint = dumpMatrix;
     	dumpMatrix = false;
     	long steprate = (long) (250);
     	long tm = System.currentTimeMillis();
@@ -630,8 +657,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	    		}
     		//if (stopMessage != null)
     		   // return;
-    		boolean printit = debugprint;
-    		debugprint = false;
+    		//boolean printit = debugprint;
+    		//debugprint = false;
     		for (j = 0; j != circuitMatrixSize; j++) {
     		    for (i = 0; i != circuitMatrixSize; i++) {
 	    		    double x = circuitMatrix[i][j];
@@ -769,16 +796,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     		// is ground
     	
     		if (!gotGround && volt != null && !gotRail) {
-    		    CircuitNode cn = new CircuitNode();
-    		    Point pt = volt.getPost(0);
-    		    nodeList.addElement(cn);
-
-    		    // update node map
-    		    NodeMapEntry cln = nodeMap.get(pt);
-    		    if (cln != null)
-    			cln.node = 0;
-    		    else
-    			nodeMap.put(pt, new NodeMapEntry(0));
     		} 
     		else {
     		    // otherwise allocate extra node for ground
