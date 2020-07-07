@@ -46,9 +46,5 @@ package com.pplosstudio.avroralogicgame.client;
 		f ^= getInput(i);
 	    return f;
 	}
-	
-	int getDumpType() { return 154; }
-	
-	int getShortcut() { return '4'; }
-	
+		
 }

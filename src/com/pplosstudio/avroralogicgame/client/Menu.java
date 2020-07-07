@@ -32,14 +32,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.MouseWheelEvent;
-import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Timer;
@@ -54,7 +46,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandler, MouseWheelHandler{
+public class Menu{
 
 	static Menu menu;
 	RootLayoutPanel root;
@@ -106,24 +98,28 @@ public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandle
 		Constants constants = (Constants) GWT.create(Constants.class);
 		
 		cv = Canvas.createIfSupported();
-		  if (cv==null) {
-			  RootPanel.get().add(new Label("Not working. You need a browser that supports the CANVAS element."));
+		if (cv==null) {
+			RootPanel.get().add(new Label("Not working. You need a browser that supports the CANVAS element."));
 			  return;
-		  }
+		}
 		backcv = Canvas.createIfSupported();
 		backcontext = backcv.getContext2d();
 		
 		root = RootLayoutPanel.get();
 		layoutPanel = new LayoutPanel();
 		vp = new VerticalPanel();
+		DecoratorPanel dp = new DecoratorPanel();
 		
 		layoutPanel.add(cv);
 		
 		Button casual = new Button(constants.Casual(), new ClickHandler() {
 		      public void onClick(ClickEvent event) {
 		    	  
+		    	  timer.cancel();
+		    	  root.clear();
+		    	  
 		    	  mysim = new CirSim();
-		    	  mysim.init();
+		    	  mysim.init("Test");
 
 		    	    Window.addResizeHandler(new ResizeHandler() {
 		    	    	 
@@ -139,8 +135,11 @@ public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandle
 		Button test = new Button(constants.Test(), new ClickHandler() {
 		      public void onClick(ClickEvent event) {
 		    	  
+		    	  timer.cancel();
+		    	  root.clear();
+		    	  
 		    	  mysim = new CirSim();
-		    	  mysim.init();
+		    	  mysim.init("Test");
 
 		    	    Window.addResizeHandler(new ResizeHandler() {
 		    	    	 
@@ -156,7 +155,7 @@ public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandle
 		Button rules = new Button(constants.Rules(), new ClickHandler() {
 		      public void onClick(ClickEvent event) {
 					AboutBox b = new AboutBox();
-					layoutPanel.add(b);  
+					dp.add(b.vp);
 		      }
 		    });
 		 
@@ -173,13 +172,11 @@ public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandle
 		vp.setCellHorizontalAlignment(rules, HasHorizontalAlignment.ALIGN_CENTER);
 		vp.setStyleName("vpTable");
 		
-		DecoratorPanel dp = new DecoratorPanel();
 		dp.add(vp);
 		
 		layoutPanel.add(dp);
 		layoutPanel.setWidgetLeftRight(dp, 40, Style.Unit.EM, 40, Style.Unit.EM);
 		layoutPanel.setWidgetTopBottom(dp, 20, Style.Unit.EM, 20, Style.Unit.EM);
-		
 		
 	    root.add(layoutPanel);
 	    
@@ -189,7 +186,7 @@ public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandle
 	    l.add(new Point(p.x+random(20,150), p.y));
 
 	    timer.scheduleRepeating(REFRESH_RATE);
-  
+	   
 	}
 
 	final Timer timer = new Timer() {
@@ -228,32 +225,7 @@ public class Menu implements  MouseDownHandler,  MouseUpHandler, MouseMoveHandle
 		//g.draw
 		cv.getContext2d().drawImage(backcontext.getCanvas(), 0.0, 0.0);
 	}
-	
-	
-	@Override
-	public void onMouseWheel(MouseWheelEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void onMouseMove(MouseMoveEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onMouseUp(MouseUpEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onMouseDown(MouseDownEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-	
   	private int random(int min, int max)
   	{
   		max -= min;

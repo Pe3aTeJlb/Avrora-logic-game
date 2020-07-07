@@ -91,12 +91,12 @@ public abstract class CircuitElm  {
     public boolean selected;
     
 //    abstract int getDumpType();
-    int getDumpType() {
+    //int getDumpType() {
 	
-	throw new IllegalStateException(); // Seems necessary to work-around what appears to be a compiler
+//	throw new IllegalStateException(); // Seems necessary to work-around what appears to be a compiler
 	// bug affecting OTAElm to make sure this method (which should really be abstract) throws
 	// an exception
-    }
+   // }
     
     // leftover from java, doesn't do anything anymore. 
     Class getDumpClass() { return getClass(); }
@@ -182,12 +182,14 @@ public abstract class CircuitElm  {
 		}
     }
     
+    /*
     // dump component state for export/undo
     String dump() {
 		int t = getDumpType();
 		return (t < 127 ? ((char)t)+" " : t+" ") + x + " " + y + " " +
 		    x2 + " " + y2 + " " + flags;
     }
+    */
     
     // handle reset button
     void reset() {
@@ -831,6 +833,7 @@ public abstract class CircuitElm  {
     
     void setupAdjust() {}
     
+    /*
     // get component info for display in lower right
     void getInfo(String arr[]) {
     }
@@ -846,6 +849,7 @@ public abstract class CircuitElm  {
         getInfo(info);
         return info[0];
     }
+    */
     
     Color getVoltageColor(Graphics g, double volts) {
     	
@@ -908,17 +912,6 @@ public abstract class CircuitElm  {
     
     double getPower() { return getVoltageDiff()*current;}
     
- //   double getScopeValue(int x) {
-	//return (x == Scope.VAL_CURRENT) ? getCurrent() :
-	 //   (x == Scope.VAL_POWER) ? getPower() : getVoltageDiff();
-   // }
-    //int getScopeUnits(int x) {
-	//return (x == Scope.VAL_CURRENT) ? Scope.UNITS_A :
-	 //   (x == Scope.VAL_POWER) ? Scope.UNITS_W : Scope.UNITS_V;
-    //}
-    //public EditInfo getEditInfo(int n) { return null; }
-   // public void setEditValue(int n, EditInfo ei) {}
-    
     // get number of nodes that can be retrieved by getConnectionNode()
     int getConnectionNodeCount() { return getPostCount(); }
     
@@ -976,9 +969,9 @@ public abstract class CircuitElm  {
     
     Rectangle getBoundingBox() { return boundingBox; }
     
-    boolean needsShortcut() { return getShortcut() > 0; }
+    //boolean needsShortcut() { return getShortcut() > 0; }
     
-    int getShortcut() { return 0; }
+    //int getShortcut() { return 0; }
 
     boolean isGraphicElmt() { return false; }
     

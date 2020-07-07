@@ -30,8 +30,6 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
 
 public class Main implements EntryPoint {
-
-	public static final String versionString="2.2.9js (isharp)";
 	
 	// Set to true if the server runs the shortrelay.php file in the same directory as the circuit simulator
 	public static final boolean shortRelaySupported = true;
@@ -40,12 +38,11 @@ public class Main implements EntryPoint {
 	static Menu menu;
 	
   public void onModuleLoad() {  
-	  loadSimulator();
+	  loadMenu();
   }
   
-  public void loadSimulator() {
+  public void loadMenu() {
 	
-	 
 	  menu = new Menu();
 	  menu.init();
 	  
@@ -56,20 +53,7 @@ public class Main implements EntryPoint {
 			  menu.setCanvasSize();
           }
       });
-	  
-	 /*
-	  mysim = new CirSim();
-	  mysim.init();
-
-	    Window.addResizeHandler(new ResizeHandler() {
-	    	 
-            public void onResize(ResizeEvent event)
-            {               
-            	mysim.setCanvasSize();
-            }
-        });
-        */
-		   
+	  		   
   }
 
 }

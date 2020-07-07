@@ -51,13 +51,7 @@ class LogicInputElm extends SwitchElm {
 	
 	boolean isNumeric() { return true;
 	}
-	
-	int getDumpType() { return 'L'; }
-	
-	String dump() {
-	    return super.dump() + " " + hiV + " " + loV;
-	}
-	
+		
 	int getPostCount() { return 1; }
 	
 	void setPoints() {
@@ -101,18 +95,7 @@ class LogicInputElm extends SwitchElm {
 	
 	double getVoltageDiff() { return volts[0]; }
 	
-	void getInfo(String arr[]) {
-	    arr[0] = "logic input";
-	    arr[1] = (position == 0) ? "low" : "high";
-	    if (isNumeric())
-		arr[1] = "" + position;
-	    arr[1] += " (" + getVoltageText(volts[0]) + ")";
-	    arr[2] = "I = " + getCurrentText(getCurrent());
-	}
-	
 	boolean hasGroundConnection(int n1) { return true; }
-	
-	int getShortcut() { return 'i'; }
 	
 	double getCurrentIntoNode(int n) {
 	    return -current;

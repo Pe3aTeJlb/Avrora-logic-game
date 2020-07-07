@@ -52,11 +52,6 @@ class InverterElm extends CircuitElm {
 	    highVoltage = 5;
 	    
 	}
-	String dump() {
-	    return super.dump() + " " + slewRate + " " + highVoltage;
-	}
-	
-	int getDumpType() { return 'I'; }
 	
 	Point center;
 	
@@ -118,13 +113,6 @@ class InverterElm extends CircuitElm {
 	
 	double getVoltageDiff() { return volts[0]; }
 	
-	void getInfo(String arr[]) {
-	    arr[0] = "inverter";
-	    arr[1] = "Vi = " + getVoltageText(volts[0]);
-	    arr[2] = "Vo = " + getVoltageText(volts[1]);
-	}
-	
-	
 	// there is no current path through the inverter input, but there
 	// is an indirect path through the output to ground.
 	boolean getConnection(int n1, int n2) { return false; }
@@ -132,8 +120,6 @@ class InverterElm extends CircuitElm {
 	boolean hasGroundConnection(int n1) {
 	    return (n1 == 1);
 	}
-	
-	int getShortcut() { return '1'; }
 	
 	@Override double getCurrentIntoNode(int n) {
 	    if (n == 1)

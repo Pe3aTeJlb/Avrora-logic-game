@@ -78,8 +78,4 @@ class AndGateElm extends GateElm {
 	    return f;
 	}
 	
-	int getDumpType() { return 150; }
-	
-	int getShortcut() { return '2'; }
-	
-    }
+}

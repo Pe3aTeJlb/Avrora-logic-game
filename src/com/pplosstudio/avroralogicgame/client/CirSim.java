@@ -34,11 +34,14 @@ import java.util.Map;
 import java.util.Random;
 import java.lang.Math;
 import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -47,11 +50,16 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -76,6 +84,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	
  /////////////////////
 //Set UI Fields
+	
 	RootLayoutPanel root;
 	
     Canvas cv;
@@ -103,6 +112,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     
  /////////////////////
 //Events
+    
     long zoomTime;
     int dragScreenX, dragScreenY, initDragGridX, initDragGridY;
     boolean dragging;
@@ -112,6 +122,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     
  ////////////////////////
 //Circuit procession
+    
     double circuitMatrix[][],circuitRightSide[],
 	origRightSide[], origMatrix[][];
     RowInfo circuitRowInfo[];
@@ -135,6 +146,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 
  ////////////////////////
 //Game logic vars and data struct
+    
     private ArrayList<String> currOutput; //Хранят текущее состояние выходов функций
     private ArrayList<CircuitElm> FunctionsOutput;//Список выходных и входных элементов функций
     private ArrayList<SwitchElm> FunctionsInput;
@@ -146,10 +158,13 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     private Gif crystal;
     private boolean lose = false;
     public boolean canToggle = true;
+    
+    private String gameType;
    
   ////////////////////////
  //Circuit Construction//
-////////////////////////    
+////////////////////////   
+    
     CirSim() {
     	theSim = this;
     }
@@ -176,7 +191,9 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		
   }
   
-  	public void init() {
+  	public void init(String gType) {
+  		
+  	 gameType = gType;
 	 
 	 transform = new double[6];
 	 
@@ -193,6 +210,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	 editBar     = new MenuBar(true);
 	 toolBar     = new MenuBar(true);
      infoBar     = new MenuBar(true);
+     
      
 		editBar.addItem(new MenuItem(constants.CenterCirc(), new Command() { public void execute(){
 			centreCircuit();
@@ -245,7 +263,26 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		mainBar.addItem(constants.Options(),extrasBar);
      	mainBar.addItem(constants.Tools(), toolBar);
      	mainBar.addItem(constants.About(), infoBar);
-     	
+     	mainBar.addItem(new MenuItem(constants.ToMenu(), new Scheduler.ScheduledCommand() {
+
+			@Override
+			public void execute() {
+				timer.cancel();
+				root.clear();
+				
+				  Main.menu = new Menu();
+				  Main.menu.init();
+				  
+				  Window.addResizeHandler(new ResizeHandler() {
+				    	 
+					  public void onResize(ResizeEvent event)
+			          {               
+						  Main.menu.setCanvasSize();
+			          }
+			      });
+				
+			} }));
+
 		layoutPanel.addNorth(mainBar, MENUBARHEIGHT);
 	 
 		cv = Canvas.createIfSupported();
@@ -273,20 +310,21 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		centreCircuit();
 		
 		GenerateCircuit();
-		
+				
 		timer.scheduleRepeating(REFRESH_RATE);
 		
   	}
 
-  	void GenerateCircuit() {
+  	private void GenerateCircuit() {
   		
   		GWT.log("Level"+level);
   		CircuitSynthesizer v = new CircuitSynthesizer();
   		
-		v.Synthesis(width, height, level);
-  		//v.Synthesis(width, height, 6);
-		//v.Synthesis(width, height);
-		//v.Synthesis(width, height,"s");
+  		if(gameType.equals("Test")) {
+  			v.Synthesis(width, height, level);
+		}else {
+			v.Synthesis(width, height);
+		}
 		elmList = v.elmList;
 		FunctionsOutput = v.outElems;
 		FunctionsInput = v.inElems;

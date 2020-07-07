@@ -54,10 +54,6 @@ class Platform extends CircuitElm{
 		prevVal = 0;
 	}
 	
-	String dump() {return super.dump() + " " + threshold;}
-	
-	int getDumpType() { return 'M'; }
-	
 	int getPostCount() { return 1; }
 	
 	boolean isNumeric() { return true; }
@@ -200,15 +196,5 @@ class Platform extends CircuitElm{
 	}
 	
 	double getVoltageDiff() { return volts[0]; }
-	
-	void getInfo(String arr[]) {
-	    arr[0] = "logic output";
-	    arr[1] = (volts[0] < threshold) ? "low" : "high";
-	    if (isNumeric())
-		arr[1] = value;
-	    arr[2] = "V = " + getVoltageText(volts[0]);
-	}
-	
-	int getShortcut() { return 'o'; }
 	
 }

@@ -68,17 +68,7 @@ package com.pplosstudio.avroralogicgame.client;
 	boolean mustShowVoltage() {
 	    return (flags & FLAG_SHOWVOLTAGE) != 0;
 	}
-	
-	//int getVoltageSourceCount() { return 1; }
-	
-	void getInfo(String arr[]) {
-	    arr[0] = "wire";
-	    arr[1] = "I = " + getCurrentDText(getCurrent());
-	    arr[2] = "V = " + getVoltageText(volts[0]);
-	}
-	
-	int getDumpType() { return 'w'; }
-	
+		
 	double getPower() { return 0; }
 	
 	double getVoltageDiff() { return volts[0]; }

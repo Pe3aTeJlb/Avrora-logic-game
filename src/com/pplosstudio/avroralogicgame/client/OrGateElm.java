@@ -90,9 +90,5 @@ class OrGateElm extends GateElm {
 	    return f;
 	    
 	}
-	
-	int getDumpType() { return 152; }
-	
-	int getShortcut() { return '3'; }
-	
+		
 }

@@ -53,12 +53,6 @@ class SwitchElm extends CircuitElm {
 	    posCount = 2;
     }
     
-    int getDumpType() { return 's'; }
-    
-    String dump() {
-    	return super.dump() + " " + position + " " + momentary;
-    }
-
     Point ps, ps2;
     
     void setPoints() {
@@ -125,24 +119,8 @@ class SwitchElm extends CircuitElm {
 
     }
     
-    
-    void getInfo(String arr[]) {
-		arr[0] = (momentary) ? "push switch (SPST)" : "switch (SPST)";
-		if (position == 1) {
-		    arr[1] = "open";
-		    arr[2] = "Vd = " + getVoltageDText(getVoltageDiff());
-		} else {
-		    arr[1] = "closed";
-		    arr[2] = "V = " + getVoltageText(volts[0]);
-		    arr[3] = "I = " + getCurrentDText(getCurrent());
-		}
-    }
-    
-    
     boolean getConnection(int n1, int n2) { return position == 0; }
     
     boolean isWire() { return position == 0; }
-    
-    int getShortcut() { return 's'; }
     
 }

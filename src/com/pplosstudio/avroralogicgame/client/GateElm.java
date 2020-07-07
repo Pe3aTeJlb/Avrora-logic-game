@@ -27,8 +27,6 @@ Copyright (C) Paul Falstad and Iain Sharp
 
 package com.pplosstudio.avroralogicgame.client;
 
-//import com.google.gwt.core.client.GWT;
-
 abstract class GateElm extends CircuitElm {
     	
 	final int FLAG_SMALL = 1;
@@ -62,7 +60,9 @@ abstract class GateElm extends CircuitElm {
 	}
 	
 	boolean isInverting() { return false; }
+	
 	int gsize, gwidth, gwidth2, gheight, hs2;
+	
 	void setSize(int s) {
 	    gsize = s;
 	    gwidth = 7*s;
@@ -70,10 +70,6 @@ abstract class GateElm extends CircuitElm {
 	    gheight = 8*s;
 	    flags &= ~FLAG_SMALL;
 	    flags |= (s == 1) ? FLAG_SMALL : 0;
-	}
-	
-	String dump() {
-	    return super.dump() + " " + inputCount + " " + volts[inputCount] + " " + highVoltage;
 	}
 	
 	public Point inPosts[], inGates[];
@@ -164,13 +160,7 @@ abstract class GateElm extends CircuitElm {
 	int getVoltageSourceCount() { return 1; }
 	
 	abstract String getGateName();
-	
-	void getInfo(String arr[]) {
-	    arr[0] = getGateName();
-	    arr[1] = "Vout = " + getVoltageText(volts[inputCount]);
-	    arr[2] = "Iout = " + getCurrentText(getCurrent());
-	}
-	
+		
 	void stamp() {
 	    sim.stampVoltageSource(0, nodes[inputCount], voltSource);
 	}
