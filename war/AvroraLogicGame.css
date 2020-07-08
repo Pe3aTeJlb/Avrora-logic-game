@@ -8,11 +8,16 @@
 	color: #39ad7d;
 }
 
+
+
 .gwt-DecoratorPanel{
-   height: 100%;
-   width: 100%;
-   margin: 0 auto;
-   text-align: 0 auto;
+	height: 100%;
+	width: 100%;
+	margin: 0 auto;
+
+	
+	outline-color: navy;
+	background: #223242;
 }
 
 .gwt-DecoratorPanel .middle{
@@ -21,28 +26,71 @@
 }
 
 .gwt-DecoratorPanel .middleCenter {
-   height: 100%;
-   width: 100%;
-   margin: 0 auto;
-   text-align: 0 auto;
+	height: 100%;
+	width: 100%;
+	margin: 0 auto;
+	text-align: 0 auto;
 }
 
 .gwt-DecoratorPanel .middleCenterInner { 
-   height: 100%;
-   width: 100%;
-   margin: 0 auto;
-   text-align: 0 auto;
+	height: 100%;
+	width: 100%;
+	margin: 0 auto;
+	text-align: 0 auto;
+}
+
+.gwt-DecoratorPanel .topCenter {
+  border-top: 1px solid red;
+  line-height: 0px;
+}
+.gwt-DecoratorPanel .bottomCenter {
+  border-bottom: 1px solid red;
+  line-height: 0px;
+}
+
+.gwt-DecoratorPanel .middleLeft {
+  border-left: 1px solid red;
+}
+.gwt-DecoratorPanel .middleRight {
+  border-right: 1px solid red;
+}
+
+.gwt-DecoratorPanel .topLeft {
+  line-height: 0px;
+  background: url() no-repeat 0px -6px;
+}
+.gwt-DecoratorPanel .topRight {
+  line-height: 0px;
+  background: url() no-repeat -5px -6px;
+}
+.gwt-DecoratorPanel .bottomLeft {
+  line-height: 0px;
+  background: url() no-repeat 0px -11px;
+}
+.gwt-DecoratorPanel .bottomRight {
+  line-height: 0px;
+  background: url() no-repeat -5px -11px;
 }
 
 .vpTable{
-   margin: 0 auto;
-   text-align: 0 auto;
+	margin: 0 auto;
+	text-align: 0 auto;
 }
 
 .menuButton{
-	height: 100%;
-    width: 100%;
-	margin-top: auto;
-    text-align: 0 auto;
-	color: #39ad7d;
+	height: 35px;
+    width: 300%;
+	margin: 70% auto;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+	color: #CECFE5;
+
+	background: #3F4D5A; /* Ð¡Ð¸Ð½Ð¸Ð¹ Ñ†Ð²ÐµÑ‚ Ñ„Ð¾Ð½Ð° */ 
+    font-size: 9pt; /* Ð Ð°Ð·Ð¼ÐµÑ€ ÑˆÑ€Ð¸Ñ„Ñ‚Ð° Ð² Ð¿ÑƒÐ½ÐºÑ‚Ð°Ñ… */
+}
+
+.gwt-MenuItem-selected 
+{
+color:red; 
 }

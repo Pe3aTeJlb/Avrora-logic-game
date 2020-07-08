@@ -167,12 +167,13 @@ public class Menu{
 		vp.add(test);
 		vp.add(rules);
 	
-		vp.setCellHorizontalAlignment(casual, HasHorizontalAlignment.ALIGN_CENTER);
-		vp.setCellHorizontalAlignment(test, HasHorizontalAlignment.ALIGN_CENTER);
-		vp.setCellHorizontalAlignment(rules, HasHorizontalAlignment.ALIGN_CENTER);
+		vp.setCellHorizontalAlignment(casual, HasHorizontalAlignment.ALIGN_JUSTIFY);
+		vp.setCellHorizontalAlignment(test, HasHorizontalAlignment.ALIGN_JUSTIFY);
+		vp.setCellHorizontalAlignment(rules, HasHorizontalAlignment.ALIGN_JUSTIFY);
 		vp.setStyleName("vpTable");
 		
 		dp.add(vp);
+		
 		
 		layoutPanel.add(dp);
 		layoutPanel.setWidgetLeftRight(dp, 40, Style.Unit.EM, 40, Style.Unit.EM);
