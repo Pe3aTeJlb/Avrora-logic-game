@@ -53,6 +53,7 @@ public class AboutBox extends PopupPanel {
 				close();
 			}
 		});
+		okButton.setStyleName("helpButton");
 		center();
 		show();
 	}

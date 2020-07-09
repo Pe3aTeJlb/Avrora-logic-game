@@ -8,14 +8,10 @@
 	color: #39ad7d;
 }
 
-
-
 .gwt-DecoratorPanel{
 	height: 100%;
 	width: 100%;
 	margin: 0 auto;
-
-	
 	outline-color: navy;
 	background: #223242;
 }
@@ -40,19 +36,19 @@
 }
 
 .gwt-DecoratorPanel .topCenter {
-  border-top: 1px solid red;
+  border-top: 0px solid;
   line-height: 0px;
 }
 .gwt-DecoratorPanel .bottomCenter {
-  border-bottom: 1px solid red;
+  border-top: 0px solid;
   line-height: 0px;
 }
 
 .gwt-DecoratorPanel .middleLeft {
-  border-left: 1px solid red;
+  border-top: 0px solid;
 }
 .gwt-DecoratorPanel .middleRight {
-  border-right: 1px solid red;
+  border-top: 0px solid;
 }
 
 .gwt-DecoratorPanel .topLeft {
@@ -88,6 +84,21 @@
 
 	background: #3F4D5A; /* Ð¡Ð¸Ð½Ð¸Ð¹ Ñ†Ð²ÐµÑ‚ Ñ„Ð¾Ð½Ð° */ 
     font-size: 9pt; /* Ð Ð°Ð·Ð¼ÐµÑ€ ÑˆÑ€Ð¸Ñ„Ñ‚Ð° Ð² Ð¿ÑƒÐ½ÐºÑ‚Ð°Ñ… */
+}
+
+.helpButton {
+  margin: 0;
+  padding: 3px 5px;
+  text-decoration: none;
+  font-size: small;
+  cursor: pointer;
+  cursor: hand;
+  background: url("images/hborder.png") repeat-x 0px -27px;
+  border: 1px outset #000;
+}
+
+.helpText{
+	
 }
 
 .gwt-MenuItem-selected 

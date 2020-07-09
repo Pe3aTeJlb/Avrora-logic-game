@@ -39,7 +39,7 @@ public class Gif extends Image {
 	Gif(String lit, int fCount){
 		litera = lit;
 		frameCount = fCount;
-		currFrame = 1;
+		currFrame = 0;
 		String tmp =  "Images/" + litera + currFrame + ".png";
 		img = new Image(tmp);
 		
@@ -48,15 +48,14 @@ public class Gif extends Image {
 	final Timer timer = new Timer() {
 		
         public void run() {
-        	currFrame += 1;
-	        if (currFrame <= frameCount) {
+	        if (currFrame < frameCount) {
 	        	String tmp =  "Images/" + litera + currFrame + ".png";
 				img.setUrl(tmp);
 	        }else {
 	        	cancel();
 	        	gifEnded = true;
 	        }
-
+	        currFrame += 1;
         }
         
     };

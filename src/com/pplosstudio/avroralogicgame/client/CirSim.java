@@ -201,12 +201,11 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	 root = RootLayoutPanel.get();
 	 
 	 layoutPanel = new DockLayoutPanel(Unit.PX);
-	 mainBar     = new MenuBar(false);
+	 mainBar     = new MenuBar(false); 
 	 extrasBar   = new MenuBar(true);
 	 editBar     = new MenuBar(true);
 	 toolBar     = new MenuBar(true);
      infoBar     = new MenuBar(true);
-     
      
 		editBar.addItem(new MenuItem(constants.CenterCirc(), new Command() { public void execute(){
 			centreCircuit();
@@ -256,9 +255,13 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		CircuitElm.setColorScale();
 		
 		mainBar.addItem(constants.Edit(), editBar);
+		mainBar.addSeparator();
 		mainBar.addItem(constants.Options(),extrasBar);
+		mainBar.addSeparator();
      	mainBar.addItem(constants.Tools(), toolBar);
+     	mainBar.addSeparator();
      	mainBar.addItem(constants.About(), infoBar);
+     	mainBar.addSeparator();
      	mainBar.addItem(new MenuItem(constants.ToMenu(), new Scheduler.ScheduledCommand() {
 
 			@Override
@@ -326,7 +329,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		FunctionsInput = v.inElems;
 		currOutput = new ArrayList<String>();
 		currCrystalPosY = FunctionsOutput.get(currOutputIndex).y - 40;
-		crystal = new Gif("A",1);
+		crystal = new Gif("Z",1);
   	}
     
   	//Game Logic
@@ -355,7 +358,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		
         public void run() {
 
-        	crystal = new Gif("A",1);
+        	crystal = new Gif("Z",1);
     		
       		currOutputIndex = 0;
       		currCrystalPosY = FunctionsOutput.get(currOutputIndex).y - 40;
@@ -410,9 +413,9 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	      				}
 	      			
 	      			lose = true;
-	      			crystal.litera = "B";
+	      			crystal.litera = "Blok";
 	    			crystal.currFrame = 0;
-	    			crystal.frameCount = 8;
+	    			crystal.frameCount = 30;
 	      			
 	      		}
 	      		
@@ -493,13 +496,13 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	//Отрисовка падения кристалла
     	if(currCrystalPosY < FunctionsOutput.get(currOutputIndex).y-67) {
     		canToggle = false;
-    		currCrystalPosY += 3;
+    		currCrystalPosY += 5;
     		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), FunctionsOutput.get(currOutputIndex).x+130, currCrystalPosY, 50, 50);
     	}else {    
     		
     		//ожидание окончания гифки и перезапуск уровня. См класс Gif
     		if(lose) {
-    	  		crystal.Play(150);
+    	  		crystal.Play(75);
     		}else{canToggle = true;}
     		
     		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), FunctionsOutput.get(currOutputIndex).x+130, FunctionsOutput.get(currOutputIndex).y-67, 50, 50);

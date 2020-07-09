@@ -69,7 +69,7 @@ class LogicInputElm extends SwitchElm {
 	    if (isNumeric())
 		s = "" + position;
 	    
-	    setBbox(point1, lead1, 0);
+	    setBbox(point1, new Point(lead1.x-50,lead1.y), 0);
 	    drawCenteredText(g, s, x2, y2, true);
 	    setVoltageColor(g, volts[0]);
 	    drawThickLine(g, point1, lead1);
