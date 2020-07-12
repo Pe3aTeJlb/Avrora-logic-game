@@ -469,7 +469,7 @@ Zh,com.google.gwt.lang.ClassLiteralHolder::Lcom_google_web_bindery_event_shared_
 $h,com.google.gwt.lang.ClassLiteralHolder::Lcom_google_web_bindery_event_shared_UmbrellaException_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Lcom_google_web_bindery_event_shared_UmbrellaException_2_classLit,com/google/web/bindery/event/shared/UmbrellaException.java,27,-1
 _h,com.google.gwt.lang.ClassLiteralHolder::Lcom_pplosstudio_avroralogicgame_client_Color_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Lcom_pplosstudio_avroralogicgame_client_Color_2_classLit,com/pplosstudio/avroralogicgame/client/Color.java,30,-1
 ai,com.google.gwt.lang.ClassLiteralHolder::Lcom_pplosstudio_avroralogicgame_client_Main$1_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Lcom_pplosstudio_avroralogicgame_client_Main$1_2_classLit,com/pplosstudio/avroralogicgame/client/Main.java,49,-1
-bi,com.google.gwt.lang.ClassLiteralHolder::Lcom_pplosstudio_avroralogicgame_client_Menu$1_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Lcom_pplosstudio_avroralogicgame_client_Menu$1_2_classLit,com/pplosstudio/avroralogicgame/client/Menu.java,193,-1
+bi,com.google.gwt.lang.ClassLiteralHolder::Lcom_pplosstudio_avroralogicgame_client_Menu$1_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Lcom_pplosstudio_avroralogicgame_client_Menu$1_2_classLit,com/pplosstudio/avroralogicgame/client/Menu.java,194,-1
 ci,com.google.gwt.lang.ClassLiteralHolder::Lcom_pplosstudio_avroralogicgame_client_Menu_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Lcom_pplosstudio_avroralogicgame_client_Menu_2_classLit,com/pplosstudio/avroralogicgame/client/Menu.java,49,-1
 di,com.google.gwt.lang.ClassLiteralHolder::Lcom_pplosstudio_avroralogicgame_client_Rectangle_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Lcom_pplosstudio_avroralogicgame_client_Rectangle_2_classLit,com/pplosstudio/avroralogicgame/client/Rectangle.java,30,-1
 ei,com.google.gwt.lang.ClassLiteralHolder::Ljava_lang_AbstractStringBuilder_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Ljava_lang_AbstractStringBuilder_2_classLit,com/google/gwt/emul/java/lang/AbstractStringBuilder.java,24,-1
@@ -801,16 +801,16 @@ Main$1,,com.pplosstudio.avroralogicgame.client.Main$1,,com/pplosstudio/avroralog
 Tl,com.pplosstudio.avroralogicgame.client.Main$1::Main$1(Lcom/pplosstudio/avroralogicgame/client/Main;) <init>,com.pplosstudio.avroralogicgame.client.Main$1,Main$1,com/pplosstudio/avroralogicgame/client/Main.java,49,0
 Ul,com.pplosstudio.avroralogicgame.client.Main$1::onResize(Lcom/google/gwt/event/logical/shared/ResizeEvent;)V,com.pplosstudio.avroralogicgame.client.Main$1,onResize,com/pplosstudio/avroralogicgame/client/Main.java,51,0
 Menu,,com.pplosstudio.avroralogicgame.client.Menu,,com/pplosstudio/avroralogicgame/client/Menu.java,49,-1
-Vl,com.pplosstudio.avroralogicgame.client.Menu::$Update(Lcom/pplosstudio/avroralogicgame/client/Menu;)V,com.pplosstudio.avroralogicgame.client.Menu,$Update,com/pplosstudio/avroralogicgame/client/Menu.java,199,0
+Vl,com.pplosstudio.avroralogicgame.client.Menu::$Update(Lcom/pplosstudio/avroralogicgame/client/Menu;)V,com.pplosstudio.avroralogicgame.client.Menu,$Update,com/pplosstudio/avroralogicgame/client/Menu.java,200,0
 Wl,com.pplosstudio.avroralogicgame.client.Menu::$setCanvasSize(Lcom/pplosstudio/avroralogicgame/client/Menu;)V,com.pplosstudio.avroralogicgame.client.Menu,$setCanvasSize,com/pplosstudio/avroralogicgame/client/Menu.java,74,0
 Xl,com.pplosstudio.avroralogicgame.client.Menu::Menu() <init>,com.pplosstudio.avroralogicgame.client.Menu,Menu,com/pplosstudio/avroralogicgame/client/Menu.java,72,0
 a,com.pplosstudio.avroralogicgame.client.Menu::height,com.pplosstudio.avroralogicgame.client.Menu,height,com/pplosstudio/avroralogicgame/client/Menu.java,68,-1
 b,com.pplosstudio.avroralogicgame.client.Menu::width,com.pplosstudio.avroralogicgame.client.Menu,width,com/pplosstudio/avroralogicgame/client/Menu.java,68,-1
 c,com.pplosstudio.avroralogicgame.client.Menu::x,com.pplosstudio.avroralogicgame.client.Menu,x,com/pplosstudio/avroralogicgame/client/Menu.java,69,-1
-Menu$1,,com.pplosstudio.avroralogicgame.client.Menu$1,,com/pplosstudio/avroralogicgame/client/Menu.java,193,-1
-Yl,com.pplosstudio.avroralogicgame.client.Menu$1::Menu$1(Lcom/pplosstudio/avroralogicgame/client/Menu;) <init>,com.pplosstudio.avroralogicgame.client.Menu$1,Menu$1,com/pplosstudio/avroralogicgame/client/Menu.java,193,0
-Zl,com.pplosstudio.avroralogicgame.client.Menu$1::run()V,com.pplosstudio.avroralogicgame.client.Menu$1,run,com/pplosstudio/avroralogicgame/client/Menu.java,194,0
-a,com.pplosstudio.avroralogicgame.client.Menu$1::this$01,com.pplosstudio.avroralogicgame.client.Menu$1,this$01,com/pplosstudio/avroralogicgame/client/Menu.java,193,-1
+Menu$1,,com.pplosstudio.avroralogicgame.client.Menu$1,,com/pplosstudio/avroralogicgame/client/Menu.java,194,-1
+Yl,com.pplosstudio.avroralogicgame.client.Menu$1::Menu$1(Lcom/pplosstudio/avroralogicgame/client/Menu;) <init>,com.pplosstudio.avroralogicgame.client.Menu$1,Menu$1,com/pplosstudio/avroralogicgame/client/Menu.java,194,0
+Zl,com.pplosstudio.avroralogicgame.client.Menu$1::run()V,com.pplosstudio.avroralogicgame.client.Menu$1,run,com/pplosstudio/avroralogicgame/client/Menu.java,195,0
+a,com.pplosstudio.avroralogicgame.client.Menu$1::this$01,com.pplosstudio.avroralogicgame.client.Menu$1,this$01,com/pplosstudio/avroralogicgame/client/Menu.java,194,-1
 Rectangle,,com.pplosstudio.avroralogicgame.client.Rectangle,,com/pplosstudio/avroralogicgame/client/Rectangle.java,30,-1
 $l,com.pplosstudio.avroralogicgame.client.Rectangle::Rectangle(IIII) <init>,com.pplosstudio.avroralogicgame.client.Rectangle,Rectangle,com/pplosstudio/avroralogicgame/client/Rectangle.java,43,0
 _l,com.pplosstudio.avroralogicgame.client.Rectangle::equals(Ljava/lang/Object;)Z,com.pplosstudio.avroralogicgame.client.Rectangle,equals,com/pplosstudio/avroralogicgame/client/Rectangle.java,163,0

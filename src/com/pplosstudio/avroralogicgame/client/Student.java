@@ -1,0 +1,20 @@
+package com.pplosstudio.avroralogicgame.client;
+
+public class Student {
+
+	private int practiseCompleteCount;
+	private int testScore;
+	private int testAttemptCount;
+	
+	public Student(){
+		
+	}
+	
+	public void AdjustPractiseCount() { practiseCompleteCount += 1;}
+	
+	public void setScore(int Score) {testScore = Score;}
+	
+	public void AdjustTestAttemptCount() {testAttemptCount += 1;}
+	
+	
+}

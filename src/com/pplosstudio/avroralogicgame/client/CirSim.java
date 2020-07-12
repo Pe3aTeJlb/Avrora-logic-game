@@ -494,11 +494,24 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	
     	
     	//Отрисовка падения кристалла
-    	if(currCrystalPosY < FunctionsOutput.get(currOutputIndex).y-67) {
+    	if(currOutputIndex == FunctionsOutput.size()) {
+    		
+    		canToggle = false;
+    		currCrystalPosY += 7;
+    		if(lose && currCrystalPosY > FunctionsOutput.get(3).y) {
+    			crystal.Play(60);
+    		}
+    		if(crystal.gifEnded && lose) {RestartLevel();}
+    		
+    		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), FunctionsOutput.get(0).x+130, currCrystalPosY, 50, 50);
+
+    	}
+    	else if(currOutputIndex < FunctionsOutput.size() && currCrystalPosY < FunctionsOutput.get(currOutputIndex).y-67) {
     		canToggle = false;
     		currCrystalPosY += 5;
     		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), FunctionsOutput.get(currOutputIndex).x+130, currCrystalPosY, 50, 50);
-    	}else {    
+    	}
+    	else {    
     		
     		//ожидание окончания гифки и перезапуск уровня. См класс Gif
     		if(lose) {
@@ -529,7 +542,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     		NodeMapEntry() { node = -1; }
     		NodeMapEntry(int n) { node = n; }
     }
-     
+    
     class WireInfo {
     		WireElm wire;
     		Vector<CircuitElm> neighbors;

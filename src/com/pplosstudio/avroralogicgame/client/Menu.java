@@ -66,9 +66,7 @@ public class Menu{
     static CirSim mysim;
     
     int width,height;
-    int x, y = 0;
-    ArrayList<ArrayList<Point>> lines = new ArrayList<ArrayList<Point>>();
-	
+ 
 	Menu(){ menu = this;}
 	
 	public void setCanvasSize(){
@@ -176,8 +174,9 @@ public class Menu{
 		
 		
 		layoutPanel.add(dp);
-		layoutPanel.setWidgetLeftRight(dp, 40, Style.Unit.EM, 40, Style.Unit.EM);
-		layoutPanel.setWidgetTopBottom(dp, 20, Style.Unit.EM, 20, Style.Unit.EM);
+		//layoutPanel.setStyleName("menuLayout");
+		layoutPanel.setWidgetLeftRight(dp, 30, Style.Unit.PCT, 30, Style.Unit.PCT);
+		layoutPanel.setWidgetTopBottom(dp, 30, Style.Unit.PCT, 30, Style.Unit.PCT);
 		
 	    root.add(layoutPanel);
 	    
@@ -185,11 +184,11 @@ public class Menu{
 	    ArrayList<Point> l = new ArrayList<Point>();
 	    l.add(p);
 	    l.add(new Point(p.x+random(20,150), p.y));
-
+	   
 	    timer.scheduleRepeating(REFRESH_RATE);
 	   
 	}
-
+	
 	final Timer timer = new Timer() {
 	      public void run() {
 	       Update();
@@ -204,26 +203,9 @@ public class Menu{
 		g.setColor(Color.black);
 		g.fillRect(0, 0, g.context.getCanvas().getWidth(), g.context.getCanvas().getHeight());
 		
-		/*
-		for(int i = 0; i < lines.size(); i++) {
-			
-			for(int j = 0; j<lines.get(i).size()-1; j++) {
-				g.setColor(Color.green);
-				g.setLineWidth(1);
-				g.drawLine(lines.get(i).get(j).x, lines.get(i).get(j).y, lines.get(i).get(j+1).x, lines.get(i).get(j+1).y);
-				//lines.get(i).add(new Point(lines.get(i).get(lines.get(i).size()-1).x+random(20,100), lines.get(i).get(lines.get(i).size()-1).y));
-			}
-			
-		}
-		*/
-		x+=3;
-		g.setColor(Color.green);
-		g.setLineWidth(1);
-		g.drawLine(x,50,x+20,50);
-		g.drawLine(x,150,x+20,150);
-		g.drawLine(x,250,x+20,250);
+    
 		
-		//g.draw
+		
 		cv.getContext2d().drawImage(backcontext.getCanvas(), 0.0, 0.0);
 	}
 

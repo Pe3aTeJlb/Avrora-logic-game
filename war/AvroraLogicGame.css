@@ -12,7 +12,7 @@
 	height: 100%;
 	width: 100%;
 	margin: 0 auto;
-	outline-color: navy;
+    border: 3px inset #2b425d;
 	background: #223242;
 }
 
@@ -35,39 +35,6 @@
 	text-align: 0 auto;
 }
 
-.gwt-DecoratorPanel .topCenter {
-  border-top: 0px solid;
-  line-height: 0px;
-}
-.gwt-DecoratorPanel .bottomCenter {
-  border-top: 0px solid;
-  line-height: 0px;
-}
-
-.gwt-DecoratorPanel .middleLeft {
-  border-top: 0px solid;
-}
-.gwt-DecoratorPanel .middleRight {
-  border-top: 0px solid;
-}
-
-.gwt-DecoratorPanel .topLeft {
-  line-height: 0px;
-  background: url() no-repeat 0px -6px;
-}
-.gwt-DecoratorPanel .topRight {
-  line-height: 0px;
-  background: url() no-repeat -5px -6px;
-}
-.gwt-DecoratorPanel .bottomLeft {
-  line-height: 0px;
-  background: url() no-repeat 0px -11px;
-}
-.gwt-DecoratorPanel .bottomRight {
-  line-height: 0px;
-  background: url() no-repeat -5px -11px;
-}
-
 .vpTable{
 	margin: 0 auto;
 	text-align: 0 auto;
@@ -76,14 +43,15 @@
 .menuButton{
 	height: 35px;
     width: 300%;
-	margin: 70% auto;
+	margin: 40% auto;
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
 	color: #CECFE5;
 
-	background: #3F4D5A; /* Ð¡Ð¸Ð½Ð¸Ð¹ Ñ†Ð²ÐµÑ‚ Ñ„Ð¾Ð½Ð° */ 
-    font-size: 9pt; /* Ð Ð°Ð·Ð¼ÐµÑ€ ÑˆÑ€Ð¸Ñ„Ñ‚Ð° Ð² Ð¿ÑƒÐ½ÐºÑ‚Ð°Ñ… */
+	background: #3F4D5A;
+    font-size: 9pt;
+    box-shadow: 0.4em 0.4em 20px rgba(122,122,122,0.5);
 }
 
 .helpButton {
@@ -93,15 +61,7 @@
   font-size: small;
   cursor: pointer;
   cursor: hand;
+  color: #A5C6FF;
   background: url("images/hborder.png") repeat-x 0px -27px;
-  border: 1px outset #000;
-}
-
-.helpText{
-	
-}
-
-.gwt-MenuItem-selected 
-{
-color:red; 
+  border: 1px outset #3f4d5a;
 }

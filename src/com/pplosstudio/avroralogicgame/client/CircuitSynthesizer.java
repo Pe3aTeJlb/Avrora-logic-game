@@ -109,6 +109,7 @@ public class CircuitSynthesizer {
     private ShuntingYard shuntingYard = new ShuntingYard(ShuntingYardDebug);
     private LogicFunctionGenerator generator = new LogicFunctionGenerator(LogicVectorGeneratorDebug);  
     
+    //Training
 	public void Synthesis(int w, int h) {
 		
 		sharedVars = new ArrayList<String>();	
@@ -209,6 +210,7 @@ public class CircuitSynthesizer {
 		//GWT.log("Demp"+dump);	
 }
 	
+	//Custom circuit
 	public void Synthesis(int w, int h, String url) {
 		
 		generator.callOnce = true;
@@ -242,6 +244,7 @@ public class CircuitSynthesizer {
 	
 }
 	
+	//Practise
 	public void Synthesis(int w, int h, int circDifficult) {
 		
 		generator.callOnce = true;

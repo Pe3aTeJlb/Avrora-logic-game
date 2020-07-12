@@ -210,7 +210,8 @@ a, a:visited, a:hover {
 }
 .gwt-MenuBar .gwt-MenuItem {
   color: #A5C6FF;
-  background: #3F4D5A;
+  box-shadow: 0.4em 0.4em 5px rgba(122,122,122,0.5);
+  background: #2D4257;
   cursor: default;
 }
 .gwt-MenuBar .gwt-MenuItem-selected {
@@ -222,7 +223,7 @@ a, a:visited, a:hover {
 }
 .gwt-MenuBar-horizontal {
   background: #223242;
-  border-bottom: 0.5px solid #283c50;
+  border-bottom: 2px solid #2d4257;
 }
 .gwt-MenuBar-horizontal .gwt-MenuItem {
   padding: 4px 50px; 
@@ -233,10 +234,10 @@ a, a:visited, a:hover {
   width: 1px;
   padding: 0px;
   margin: 0px;
-  background: #263e56;
+  background: #2d4257;
 }
 .gwt-MenuBar-horizontal .gwt-MenuItemSeparator .menuSeparatorInner {
-  width: 2px;
+  width: 1px;
   height: 1px;
   background: #263e56;
 }
@@ -321,9 +322,11 @@ a, a:visited, a:hover {
 }
 
 .gwt-PopupPanel {
-  border: 3px solid #283c50;
+  margin: 10% 20% 10% 20%;
+  border: 3px ridge #283c5033;
   padding: 3px;
   background: #223242;
+  box-shadow: 0 0 5px;
 }
 
 .gwt-DecoratedPopupPanel .popupContent {
