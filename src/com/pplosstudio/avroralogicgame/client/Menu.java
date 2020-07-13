@@ -66,6 +66,8 @@ public class Menu{
     static CirSim mysim;
     
     int width,height;
+    
+    ArrayList<Particle> particles = new ArrayList<Particle>();
  
 	Menu(){ menu = this;}
 	
@@ -117,7 +119,7 @@ public class Menu{
 		    	  root.clear();
 		    	  
 		    	  mysim = new CirSim();
-		    	  mysim.init("Test");
+		    	  mysim.init("Pracrise");
 
 		    	    Window.addResizeHandler(new ResizeHandler() {
 		    	    	 
@@ -174,17 +176,19 @@ public class Menu{
 		
 		
 		layoutPanel.add(dp);
-		//layoutPanel.setStyleName("menuLayout");
 		layoutPanel.setWidgetLeftRight(dp, 30, Style.Unit.PCT, 30, Style.Unit.PCT);
 		layoutPanel.setWidgetTopBottom(dp, 30, Style.Unit.PCT, 30, Style.Unit.PCT);
 		
 	    root.add(layoutPanel);
 	    
-	    Point p = new Point(random(50,width/2),random(50,height-50));
-	    ArrayList<Point> l = new ArrayList<Point>();
-	    l.add(p);
-	    l.add(new Point(p.x+random(20,150), p.y));
-	   
+	    setCanvasSize();	
+	    
+	    for(int i = 0; i < 5; i++) {
+	    	
+	    	Particle p = new Particle(backcontext, width, height);
+	    	particles.add(p);
+	    }
+	    
 	    timer.scheduleRepeating(REFRESH_RATE);
 	   
 	}
@@ -203,9 +207,12 @@ public class Menu{
 		g.setColor(Color.black);
 		g.fillRect(0, 0, g.context.getCanvas().getWidth(), g.context.getCanvas().getHeight());
 		
-    
+		g.setColor(Color.green);
 		
-		
+		for(int i = 0; i < particles.size(); i++) {
+			particles.get(i).doStep();
+		}
+					
 		cv.getContext2d().drawImage(backcontext.getCanvas(), 0.0, 0.0);
 	}
 

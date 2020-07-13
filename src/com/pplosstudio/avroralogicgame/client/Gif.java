@@ -29,18 +29,29 @@ import com.google.gwt.user.client.ui.Image;
 
 public class Gif extends Image {
 	
-	public String litera;
+	public String fileName;
 	public int frameCount;
-	public int currFrame;
+	public int currFrame, frameWidth;
+	int width, height;
 	public Image img;
 	public boolean gifEnded = false;
 	public boolean isPlaying = false;
+	public int currX, currY, nextX, nextY;
 	
-	Gif(String lit, int fCount){
-		litera = lit;
-		frameCount = fCount;
+	Gif(String file, int w, int h, int frameW, int fCount){
+		
+		fileName = file;
+		
+		width = w;
+		height = h;
+		frameWidth = frameW;
+		
 		currFrame = 0;
-		String tmp =  "Images/" + litera + currFrame + ".png";
+		frameCount = fCount;
+		
+		nextX = currX + frameWidth;
+				
+		String tmp =  "Images/" + fileName + ".png";
 		img = new Image(tmp);
 		
 	}
@@ -48,14 +59,26 @@ public class Gif extends Image {
 	final Timer timer = new Timer() {
 		
         public void run() {
-	        if (currFrame < frameCount) {
-	        	String tmp =  "Images/" + litera + currFrame + ".png";
-				img.setUrl(tmp);
+        	
+	        if (currX < width && currFrame < frameCount) {
+	        	
+	        	nextX += frameWidth;
+	        	
 	        }else {
 	        	cancel();
 	        	gifEnded = true;
 	        }
+	        
+	        
+	        if(nextX == width) {
+	        	nextX = 0;
+	        	nextY += frameWidth+1;
+	        }
+	        
 	        currFrame += 1;
+	        
+	        currX = nextX;
+	        currY = nextY;
         }
         
     };
@@ -68,6 +91,21 @@ public class Gif extends Image {
 			gifEnded = false;
 			timer.scheduleRepeating(frameDelay);
 		}
+		
+	}
+	
+	public void RestartGif(int fCount) {
+		frameCount = fCount;
+		currFrame = 0;
+		
+		currX = 0;
+		currY = 0;
+		
+		nextX = currX + frameWidth;
+		nextY = 0;
+		
+		isPlaying = false;
+		gifEnded = false;
 		
 	}
 	

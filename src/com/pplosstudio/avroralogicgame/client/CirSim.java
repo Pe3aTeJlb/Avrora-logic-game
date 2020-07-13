@@ -155,8 +155,19 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     private boolean lose = false;
     public boolean canToggle = true;
     
+    
+    
     private String gameType;
-   
+    private double Score = 100;
+    private int testTime = 15; //minutes for test
+    private double TimeSpend;
+    private double penaltyPerFrame = 0;
+    private double failPenalty = 20;
+    
+    MenuItem ScoreText;
+    
+    Constants constants = (Constants) GWT.create(Constants.class);
+    
   ////////////////////////
  //Circuit Construction//
 ////////////////////////   
@@ -190,13 +201,14 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
   	public void init(String gType) {
   		
   	 gameType = gType;
+  	 
+  	if(gameType.equals("Test")) {Score = 100;}
+  	else {Score = 0;}
 	 
 	 transform = new double[6];
 	 
 	 CircuitElm.initClass(this);
 	 elmList = new Vector<CircuitElm>();
-	 
-	 Constants constants = (Constants) GWT.create(Constants.class);
 	 
 	 root = RootLayoutPanel.get();
 	 
@@ -206,6 +218,15 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	 editBar     = new MenuBar(true);
 	 toolBar     = new MenuBar(true);
      infoBar     = new MenuBar(true);
+     
+     ScoreText = new MenuItem(constants.Score() + " " + (int)Score, new Command() {
+
+		@Override
+		public void execute() {
+			
+		}});
+
+     
      
 		editBar.addItem(new MenuItem(constants.CenterCirc(), new Command() { public void execute(){
 			centreCircuit();
@@ -263,7 +284,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
      	mainBar.addItem(constants.About(), infoBar);
      	mainBar.addSeparator();
      	mainBar.addItem(new MenuItem(constants.ToMenu(), new Scheduler.ScheduledCommand() {
-
+     	
 			@Override
 			public void execute() {
 				timer.cancel();
@@ -281,7 +302,9 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 			      });
 				
 			} }));
-
+     	mainBar.addSeparator();
+     	mainBar.addItem(ScoreText);
+     	
 		layoutPanel.addNorth(mainBar, MENUBARHEIGHT);
 	 
 		cv = Canvas.createIfSupported();
@@ -309,6 +332,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		centreCircuit();
 		
 		GenerateCircuit();
+		
+		penaltyPerFrame = Score / (testTime * 60 * 60);  
 				
 		timer.scheduleRepeating(REFRESH_RATE);
 		
@@ -322,14 +347,16 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
   		if(gameType.equals("Test")) {
   			v.Synthesis(width, height, level);
 		}else {
-			v.Synthesis(width, height);
+			Score = 0;
+			v.Synthesis(width, height, level);
+			//v.Synthesis(width, height);
 		}
 		elmList = v.elmList;
 		FunctionsOutput = v.outElems;
 		FunctionsInput = v.inElems;
 		currOutput = new ArrayList<String>();
 		currCrystalPosY = FunctionsOutput.get(currOutputIndex).y - 40;
-		crystal = new Gif("Z",1);
+		crystal = new Gif("GIF", 1024, 1024, 128, 1);
   	}
     
   	//Game Logic
@@ -341,7 +368,6 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
   	
   	void RestartLevel() {
   		
-  		GWT.log("OOOOOOVEr");
   		lose = false;
   			
 		for(int i = 0; i<FunctionsInput.size(); i++) {
@@ -358,7 +384,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		
         public void run() {
 
-        	crystal = new Gif("Z",1);
+        	crystal.RestartGif(1);;
     		
       		currOutputIndex = 0;
       		currCrystalPosY = FunctionsOutput.get(currOutputIndex).y - 40;
@@ -371,10 +397,13 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
   
 	final Timer timer = new Timer() {
 	      public void run() {
+	    	Score -= penaltyPerFrame;
+	    	TimeSpend += 0.015;
+	    	ScoreText.setText(constants.Score() + " " + (int)Score);
 	        updateCircuit();
 	      }
 	 };
- 
+
 	public void updateCircuit() {
     	
     	setCanvasSize();
@@ -413,9 +442,10 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	      				}
 	      			
 	      			lose = true;
-	      			crystal.litera = "Blok";
-	    			crystal.currFrame = 0;
-	    			crystal.frameCount = 30;
+	      			
+	      			if(gameType == "Test")Score -= failPenalty;
+	      			
+	      			crystal.RestartGif(30);
 	      			
 	      		}
 	      		
@@ -499,17 +529,17 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     		canToggle = false;
     		currCrystalPosY += 7;
     		if(lose && currCrystalPosY > FunctionsOutput.get(3).y) {
-    			crystal.Play(60);
+    			crystal.Play(40);
     		}
     		if(crystal.gifEnded && lose) {RestartLevel();}
-    		
-    		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), FunctionsOutput.get(0).x+130, currCrystalPosY, 50, 50);
+    
+    		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), crystal.currX, crystal.currY, crystal.frameWidth, crystal.frameWidth, FunctionsOutput.get(0).x+130, currCrystalPosY, 50, 50);
 
     	}
     	else if(currOutputIndex < FunctionsOutput.size() && currCrystalPosY < FunctionsOutput.get(currOutputIndex).y-67) {
     		canToggle = false;
     		currCrystalPosY += 5;
-    		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), FunctionsOutput.get(currOutputIndex).x+130, currCrystalPosY, 50, 50);
+    		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), crystal.currX, crystal.currY, crystal.frameWidth, crystal.frameWidth, FunctionsOutput.get(currOutputIndex).x+130, currCrystalPosY, 50, 50);
     	}
     	else {    
     		
@@ -518,8 +548,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	  		crystal.Play(75);
     		}else{canToggle = true;}
     		
-    		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), FunctionsOutput.get(currOutputIndex).x+130, FunctionsOutput.get(currOutputIndex).y-67, 50, 50);
-
+    		backcontext.drawImage(ImageElement.as(crystal.img.getElement()), crystal.currX, crystal.currY, crystal.frameWidth, crystal.frameWidth, FunctionsOutput.get(currOutputIndex).x+130, FunctionsOutput.get(currOutputIndex).y-67, 50, 50);
+    		
     		if(crystal.gifEnded && lose) {RestartLevel();}
     	}
     	cvcontext.drawImage(backcontext.getCanvas(),0.0,0.0);
