@@ -192,6 +192,7 @@ public class Menu{
 	    timer.scheduleRepeating(REFRESH_RATE);
 	   
 	}
+
 	
 	final Timer timer = new Timer() {
 	      public void run() {
@@ -207,11 +208,11 @@ public class Menu{
 		g.setColor(Color.black);
 		g.fillRect(0, 0, g.context.getCanvas().getWidth(), g.context.getCanvas().getHeight());
 		
-		g.setColor(Color.green);
+		//g.setColor(Color.green);
 		
-		for(int i = 0; i < particles.size(); i++) {
-			particles.get(i).doStep();
-		}
+		//for(int i = 0; i < particles.size(); i++) {
+			//particles.get(i).doStep();
+		//}
 					
 		cv.getContext2d().drawImage(backcontext.getCanvas(), 0.0, 0.0);
 	}

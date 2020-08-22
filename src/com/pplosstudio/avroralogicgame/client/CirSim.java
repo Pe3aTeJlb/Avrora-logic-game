@@ -164,6 +164,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     private double penaltyPerFrame = 0;
     private double failPenalty = 20;
     
+    private int maxLevelCount = 10;
+    
     MenuItem ScoreText;
     
     Constants constants = (Constants) GWT.create(Constants.class);
@@ -341,24 +343,36 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 
   	private void GenerateCircuit() {
   		
-  		GWT.log("Level"+level);
-  		CircuitSynthesizer v = new CircuitSynthesizer();
-  		
-  		if(gameType.equals("Test")) {
-  			v.Synthesis(width, height, level);
-		}else {
-			Score = 0;
-			v.Synthesis(width, height, level);
-			//v.Synthesis(width, height);
-		}
-		elmList = v.elmList;
-		FunctionsOutput = v.outElems;
-		FunctionsInput = v.inElems;
-		currOutput = new ArrayList<String>();
-		currCrystalPosY = FunctionsOutput.get(currOutputIndex).y - 40;
-		crystal = new Gif("GIF", 1024, 1024, 128, 1);
+  		if(level <= maxLevelCount) {
+	  		GWT.log("Level"+level);
+	  		CircuitSynthesizer v = new CircuitSynthesizer();
+	  		
+	  		if(gameType.equals("Test")) {
+	  			v.Synthesis(width, height, level);
+			}else {
+				Score = 0;
+				v.Synthesis(width, height, level);
+				//v.Synthesis(width, height);
+			}
+			elmList = v.elmList;
+			FunctionsOutput = v.outElems;
+			FunctionsInput = v.inElems;
+			currOutput = new ArrayList<String>();
+			currCrystalPosY = FunctionsOutput.get(currOutputIndex).y - 40;
+			crystal = new Gif("GIF", 1024, 1024, 128, 1);
+  		}
+  		else {
+  			
+  			Exit();
+  		}
   	}
     
+  	public void Exit() {
+  		
+  		GWT.log("Exit");
+  		
+  	}
+  	
   	//Game Logic
   	//also check update method
   	public void GameOverTrigger() {
@@ -1658,7 +1672,8 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		e.preventDefault();
 	
 		if (e.getNativeButton() != NativeEvent.BUTTON_LEFT && 
-			e.getNativeButton() != NativeEvent.BUTTON_MIDDLE
+			e.getNativeButton() != NativeEvent.BUTTON_MIDDLE 
+			//.getNativeButton() != NativeEvent.BUTTON_RIGHT 
 			)
 	    	{return;}
 		
@@ -1668,7 +1683,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
     	int gx = inverseTransformX(sx);
     	int gy = inverseTransformY(sy);
 				
-		if(e.getNativeButton()==NativeEvent.BUTTON_MIDDLE) {
+		if(e.getNativeButton()==NativeEvent.BUTTON_MIDDLE || e.getNativeButton() == NativeEvent.BUTTON_LEFT) {
 			dragging = true;
 		}
 		

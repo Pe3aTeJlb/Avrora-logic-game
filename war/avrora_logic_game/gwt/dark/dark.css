@@ -69,16 +69,17 @@ a, a:visited, a:hover {
 
 .gwt-DecoratorPanel {
 }
-.gwt-DecoratorPanel .topCenter{}
-.gwt-DecoratorPanel .bottomCenter{}
-.gwt-DecoratorPanel .middleLeft{}
-.gwt-DecoratorPanel .middleRight{}
-
-.gwt-DecoratorPanel .topLeft,{}
-.gwt-DecoratorPanel .topRight,{}
-.gwt-DecoratorPanel .bottomLeft,{}
-.gwt-DecoratorPanel .bottomRight {}
-
+.gwt-DecoratorPanel .topCenter,
+.gwt-DecoratorPanel .bottomCenter,
+.gwt-DecoratorPanel .middleLeft,
+.gwt-DecoratorPanel .middleRight,
+.gwt-DecoratorPanel .topLeft,
+.gwt-DecoratorPanel .topRight,
+.gwt-DecoratorPanel .bottomLeft,
+.gwt-DecoratorPanel .bottomRight {
+  background: #00CCFF;
+  zoom: 1;
+}
 .gwt-DecoratorPanel .topLeftInner,
 .gwt-DecoratorPanel .topRightInner,
 .gwt-DecoratorPanel .bottomLeftInner,
@@ -209,37 +210,36 @@ a, a:visited, a:hover {
   cursor: default;
 }
 .gwt-MenuBar .gwt-MenuItem {
-  color: #A5C6FF;
-  box-shadow: 0.4em 0.4em 5px rgba(122,122,122,0.5);
-  background: #2D4257;
   cursor: default;
 }
 .gwt-MenuBar .gwt-MenuItem-selected {
-  background: #65707B;
-  color: #A5C6FF;
+  background: #666;
+  color: #0cf;
 }
 .gwt-MenuBar .gwt-MenuItem-disabled {
-  color: #A5C6FF;
+  color: #ccc;
 }
 .gwt-MenuBar-horizontal {
-  background: #223242;
-  border-bottom: 2px solid #2d4257;
+  background: #222222;
+  border: 1px solid #777;
 }
 .gwt-MenuBar-horizontal .gwt-MenuItem {
-  padding: 4px 50px; 
+  padding: 0px 10px;
+  vertical-align: bottom;
   font-weight: bold;
 }
-
 .gwt-MenuBar-horizontal .gwt-MenuItemSeparator {
   width: 1px;
   padding: 0px;
   margin: 0px;
-  background: #2d4257;
+  border: 0px;
+  border-left: 1px solid #bec7cc;
+  background: #000;
 }
 .gwt-MenuBar-horizontal .gwt-MenuItemSeparator .menuSeparatorInner {
   width: 1px;
   height: 1px;
-  background: #263e56;
+  background: #000;
 }
 .gwt-MenuBar-vertical {
   margin-top: 0px;
@@ -322,11 +322,9 @@ a, a:visited, a:hover {
 }
 
 .gwt-PopupPanel {
-  margin: 10% 20% 10% 20%;
-  border: 3px ridge #283c5033;
+  border: 3px solid #00CCFF;
   padding: 3px;
-  background: #223242;
-  box-shadow: 0 0 5px;
+  background: #4D4D4D;
 }
 
 .gwt-DecoratedPopupPanel .popupContent {
