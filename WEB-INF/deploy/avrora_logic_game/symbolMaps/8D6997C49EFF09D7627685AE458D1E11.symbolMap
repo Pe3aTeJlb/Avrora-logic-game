@@ -469,7 +469,7 @@ Zh,com.google.gwt.lang.ClassLiteralHolder::Lcom_google_web_bindery_event_shared_
 $h,com.google.gwt.lang.ClassLiteralHolder::Lcom_google_web_bindery_event_shared_UmbrellaException_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Lcom_google_web_bindery_event_shared_UmbrellaException_2_classLit,com/google/web/bindery/event/shared/UmbrellaException.java,27,-1
 _h,com.google.gwt.lang.ClassLiteralHolder::Lcom_pplosstudio_avroralogicgame_client_Color_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Lcom_pplosstudio_avroralogicgame_client_Color_2_classLit,com/pplosstudio/avroralogicgame/client/Color.java,30,-1
 ai,com.google.gwt.lang.ClassLiteralHolder::Lcom_pplosstudio_avroralogicgame_client_Main$1_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Lcom_pplosstudio_avroralogicgame_client_Main$1_2_classLit,com/pplosstudio/avroralogicgame/client/Main.java,49,-1
-bi,com.google.gwt.lang.ClassLiteralHolder::Lcom_pplosstudio_avroralogicgame_client_Menu$1_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Lcom_pplosstudio_avroralogicgame_client_Menu$1_2_classLit,com/pplosstudio/avroralogicgame/client/Menu.java,196,-1
+bi,com.google.gwt.lang.ClassLiteralHolder::Lcom_pplosstudio_avroralogicgame_client_Menu$1_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Lcom_pplosstudio_avroralogicgame_client_Menu$1_2_classLit,com/pplosstudio/avroralogicgame/client/Menu.java,197,-1
 ci,com.google.gwt.lang.ClassLiteralHolder::Lcom_pplosstudio_avroralogicgame_client_Menu_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Lcom_pplosstudio_avroralogicgame_client_Menu_2_classLit,com/pplosstudio/avroralogicgame/client/Menu.java,49,-1
 di,com.google.gwt.lang.ClassLiteralHolder::Lcom_pplosstudio_avroralogicgame_client_Rectangle_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Lcom_pplosstudio_avroralogicgame_client_Rectangle_2_classLit,com/pplosstudio/avroralogicgame/client/Rectangle.java,30,-1
 ei,com.google.gwt.lang.ClassLiteralHolder::Ljava_lang_AbstractStringBuilder_2_classLit,com.google.gwt.lang.ClassLiteralHolder,Ljava_lang_AbstractStringBuilder_2_classLit,com/google/gwt/emul/java/lang/AbstractStringBuilder.java,24,-1
@@ -781,83 +781,81 @@ gf,com.google.web.bindery.event.shared.UmbrellaException::UmbrellaException(Ljav
 a,com.google.web.bindery.event.shared.UmbrellaException::causes,com.google.web.bindery.event.shared.UmbrellaException,causes,com/google/web/bindery/event/shared/UmbrellaException.java,62,-1
 hf,com.google.web.bindery.event.shared.UmbrellaException::makeMessage(Ljava/util/Set;)Ljava/lang/String;,com.google.web.bindery.event.shared.UmbrellaException,makeMessage,com/google/web/bindery/event/shared/UmbrellaException.java,39,0
 Color,,com.pplosstudio.avroralogicgame.client.Color,,com/pplosstudio/avroralogicgame/client/Color.java,30,-1
-Kl,com.pplosstudio.avroralogicgame.client.Color::$$init(Lcom/pplosstudio/avroralogicgame/client/Color;)V,com.pplosstudio.avroralogicgame.client.Color,$$init,com/pplosstudio/avroralogicgame/client/Color.java,30,0
-Jl,com.pplosstudio.avroralogicgame.client.Color::$clinit()V,com.pplosstudio.avroralogicgame.client.Color,$clinit,com/pplosstudio/avroralogicgame/client/Color.java,30,0
-Ll,com.pplosstudio.avroralogicgame.client.Color::$getHexValue(Lcom/pplosstudio/avroralogicgame/client/Color;)Ljava/lang/String;,com.pplosstudio.avroralogicgame.client.Color,$getHexValue,com/pplosstudio/avroralogicgame/client/Color.java,80,0
-Ml,com.pplosstudio.avroralogicgame.client.Color::$pad(Lcom/pplosstudio/avroralogicgame/client/Color;Ljava/lang/String;)Ljava/lang/String;,com.pplosstudio.avroralogicgame.client.Color,$pad,com/pplosstudio/avroralogicgame/client/Color.java,92,0
-Nl,com.pplosstudio.avroralogicgame.client.Color::Color(III) <init>,com.pplosstudio.avroralogicgame.client.Color,Color,com/pplosstudio/avroralogicgame/client/Color.java,58,0
-Ol,com.pplosstudio.avroralogicgame.client.Color::Color(Ljava/lang/String;) <init>,com.pplosstudio.avroralogicgame.client.Color,Color,com/pplosstudio/avroralogicgame/client/Color.java,54,0
+Jl,com.pplosstudio.avroralogicgame.client.Color::$$init(Lcom/pplosstudio/avroralogicgame/client/Color;)V,com.pplosstudio.avroralogicgame.client.Color,$$init,com/pplosstudio/avroralogicgame/client/Color.java,30,0
+Il,com.pplosstudio.avroralogicgame.client.Color::$clinit()V,com.pplosstudio.avroralogicgame.client.Color,$clinit,com/pplosstudio/avroralogicgame/client/Color.java,30,0
+Kl,com.pplosstudio.avroralogicgame.client.Color::$getHexValue(Lcom/pplosstudio/avroralogicgame/client/Color;)Ljava/lang/String;,com.pplosstudio.avroralogicgame.client.Color,$getHexValue,com/pplosstudio/avroralogicgame/client/Color.java,80,0
+Ll,com.pplosstudio.avroralogicgame.client.Color::$pad(Lcom/pplosstudio/avroralogicgame/client/Color;Ljava/lang/String;)Ljava/lang/String;,com.pplosstudio.avroralogicgame.client.Color,$pad,com/pplosstudio/avroralogicgame/client/Color.java,92,0
+Ml,com.pplosstudio.avroralogicgame.client.Color::Color(III) <init>,com.pplosstudio.avroralogicgame.client.Color,Color,com/pplosstudio/avroralogicgame/client/Color.java,58,0
+Nl,com.pplosstudio.avroralogicgame.client.Color::Color(Ljava/lang/String;) <init>,com.pplosstudio.avroralogicgame.client.Color,Color,com/pplosstudio/avroralogicgame/client/Color.java,54,0
 a,com.pplosstudio.avroralogicgame.client.Color::b,com.pplosstudio.avroralogicgame.client.Color,b,com/pplosstudio/avroralogicgame/client/Color.java,49,-1
 Hl,com.pplosstudio.avroralogicgame.client.Color::black,com.pplosstudio.avroralogicgame.client.Color,black,com/pplosstudio/avroralogicgame/client/Color.java,38,-1
 b,com.pplosstudio.avroralogicgame.client.Color::colorText,com.pplosstudio.avroralogicgame.client.Color,colorText,com/pplosstudio/avroralogicgame/client/Color.java,52,-1
 c,com.pplosstudio.avroralogicgame.client.Color::g,com.pplosstudio.avroralogicgame.client.Color,g,com/pplosstudio/avroralogicgame/client/Color.java,49,-1
-Il,com.pplosstudio.avroralogicgame.client.Color::green,com.pplosstudio.avroralogicgame.client.Color,green,com/pplosstudio/avroralogicgame/client/Color.java,43,-1
 d,com.pplosstudio.avroralogicgame.client.Color::r,com.pplosstudio.avroralogicgame.client.Color,r,com/pplosstudio/avroralogicgame/client/Color.java,49,-1
-Pl,com.pplosstudio.avroralogicgame.client.Color::toString()Ljava/lang/String;,com.pplosstudio.avroralogicgame.client.Color,toString,com/pplosstudio/avroralogicgame/client/Color.java,103,0
-Ql,com.pplosstudio.avroralogicgame.client.Graphics::$setColor(Lcom/pplosstudio/avroralogicgame/client/Graphics;Lcom/pplosstudio/avroralogicgame/client/Color;)V,com.pplosstudio.avroralogicgame.client.Graphics,$setColor,com/pplosstudio/avroralogicgame/client/Graphics.java,43,0
-Rl,com.pplosstudio.avroralogicgame.client.Main::menu,com.pplosstudio.avroralogicgame.client.Main,menu,com/pplosstudio/avroralogicgame/client/Main.java,38,-1
+Ol,com.pplosstudio.avroralogicgame.client.Color::toString()Ljava/lang/String;,com.pplosstudio.avroralogicgame.client.Color,toString,com/pplosstudio/avroralogicgame/client/Color.java,103,0
+Pl,com.pplosstudio.avroralogicgame.client.Graphics::$setColor(Lcom/pplosstudio/avroralogicgame/client/Graphics;Lcom/pplosstudio/avroralogicgame/client/Color;)V,com.pplosstudio.avroralogicgame.client.Graphics,$setColor,com/pplosstudio/avroralogicgame/client/Graphics.java,43,0
+Ql,com.pplosstudio.avroralogicgame.client.Main::menu,com.pplosstudio.avroralogicgame.client.Main,menu,com/pplosstudio/avroralogicgame/client/Main.java,38,-1
 Main$1,,com.pplosstudio.avroralogicgame.client.Main$1,,com/pplosstudio/avroralogicgame/client/Main.java,49,-1
-Sl,com.pplosstudio.avroralogicgame.client.Main$1::Main$1(Lcom/pplosstudio/avroralogicgame/client/Main;) <init>,com.pplosstudio.avroralogicgame.client.Main$1,Main$1,com/pplosstudio/avroralogicgame/client/Main.java,49,0
-Tl,com.pplosstudio.avroralogicgame.client.Main$1::onResize(Lcom/google/gwt/event/logical/shared/ResizeEvent;)V,com.pplosstudio.avroralogicgame.client.Main$1,onResize,com/pplosstudio/avroralogicgame/client/Main.java,51,0
+Rl,com.pplosstudio.avroralogicgame.client.Main$1::Main$1(Lcom/pplosstudio/avroralogicgame/client/Main;) <init>,com.pplosstudio.avroralogicgame.client.Main$1,Main$1,com/pplosstudio/avroralogicgame/client/Main.java,49,0
+Sl,com.pplosstudio.avroralogicgame.client.Main$1::onResize(Lcom/google/gwt/event/logical/shared/ResizeEvent;)V,com.pplosstudio.avroralogicgame.client.Main$1,onResize,com/pplosstudio/avroralogicgame/client/Main.java,51,0
 Menu,,com.pplosstudio.avroralogicgame.client.Menu,,com/pplosstudio/avroralogicgame/client/Menu.java,49,-1
-Ul,com.pplosstudio.avroralogicgame.client.Menu::$Update(Lcom/pplosstudio/avroralogicgame/client/Menu;)V,com.pplosstudio.avroralogicgame.client.Menu,$Update,com/pplosstudio/avroralogicgame/client/Menu.java,202,0
-Vl,com.pplosstudio.avroralogicgame.client.Menu::$setCanvasSize(Lcom/pplosstudio/avroralogicgame/client/Menu;)V,com.pplosstudio.avroralogicgame.client.Menu,$setCanvasSize,com/pplosstudio/avroralogicgame/client/Menu.java,74,0
-Wl,com.pplosstudio.avroralogicgame.client.Menu::Menu() <init>,com.pplosstudio.avroralogicgame.client.Menu,Menu,com/pplosstudio/avroralogicgame/client/Menu.java,72,0
+Tl,com.pplosstudio.avroralogicgame.client.Menu::$Update(Lcom/pplosstudio/avroralogicgame/client/Menu;)V,com.pplosstudio.avroralogicgame.client.Menu,$Update,com/pplosstudio/avroralogicgame/client/Menu.java,203,0
+Ul,com.pplosstudio.avroralogicgame.client.Menu::$setCanvasSize(Lcom/pplosstudio/avroralogicgame/client/Menu;)V,com.pplosstudio.avroralogicgame.client.Menu,$setCanvasSize,com/pplosstudio/avroralogicgame/client/Menu.java,74,0
+Vl,com.pplosstudio.avroralogicgame.client.Menu::Menu() <init>,com.pplosstudio.avroralogicgame.client.Menu,Menu,com/pplosstudio/avroralogicgame/client/Menu.java,72,0
 a,com.pplosstudio.avroralogicgame.client.Menu::height,com.pplosstudio.avroralogicgame.client.Menu,height,com/pplosstudio/avroralogicgame/client/Menu.java,68,-1
-b,com.pplosstudio.avroralogicgame.client.Menu::particles,com.pplosstudio.avroralogicgame.client.Menu,particles,com/pplosstudio/avroralogicgame/client/Menu.java,70,-1
-c,com.pplosstudio.avroralogicgame.client.Menu::width,com.pplosstudio.avroralogicgame.client.Menu,width,com/pplosstudio/avroralogicgame/client/Menu.java,68,-1
-Menu$1,,com.pplosstudio.avroralogicgame.client.Menu$1,,com/pplosstudio/avroralogicgame/client/Menu.java,196,-1
-Xl,com.pplosstudio.avroralogicgame.client.Menu$1::Menu$1(Lcom/pplosstudio/avroralogicgame/client/Menu;) <init>,com.pplosstudio.avroralogicgame.client.Menu$1,Menu$1,com/pplosstudio/avroralogicgame/client/Menu.java,196,0
-Yl,com.pplosstudio.avroralogicgame.client.Menu$1::run()V,com.pplosstudio.avroralogicgame.client.Menu$1,run,com/pplosstudio/avroralogicgame/client/Menu.java,197,0
-a,com.pplosstudio.avroralogicgame.client.Menu$1::this$01,com.pplosstudio.avroralogicgame.client.Menu$1,this$01,com/pplosstudio/avroralogicgame/client/Menu.java,196,-1
+b,com.pplosstudio.avroralogicgame.client.Menu::width,com.pplosstudio.avroralogicgame.client.Menu,width,com/pplosstudio/avroralogicgame/client/Menu.java,68,-1
+Menu$1,,com.pplosstudio.avroralogicgame.client.Menu$1,,com/pplosstudio/avroralogicgame/client/Menu.java,197,-1
+Wl,com.pplosstudio.avroralogicgame.client.Menu$1::Menu$1(Lcom/pplosstudio/avroralogicgame/client/Menu;) <init>,com.pplosstudio.avroralogicgame.client.Menu$1,Menu$1,com/pplosstudio/avroralogicgame/client/Menu.java,197,0
+Xl,com.pplosstudio.avroralogicgame.client.Menu$1::run()V,com.pplosstudio.avroralogicgame.client.Menu$1,run,com/pplosstudio/avroralogicgame/client/Menu.java,198,0
+a,com.pplosstudio.avroralogicgame.client.Menu$1::this$01,com.pplosstudio.avroralogicgame.client.Menu$1,this$01,com/pplosstudio/avroralogicgame/client/Menu.java,197,-1
 Rectangle,,com.pplosstudio.avroralogicgame.client.Rectangle,,com/pplosstudio/avroralogicgame/client/Rectangle.java,30,-1
-Zl,com.pplosstudio.avroralogicgame.client.Rectangle::Rectangle(IIII) <init>,com.pplosstudio.avroralogicgame.client.Rectangle,Rectangle,com/pplosstudio/avroralogicgame/client/Rectangle.java,43,0
-$l,com.pplosstudio.avroralogicgame.client.Rectangle::equals(Ljava/lang/Object;)Z,com.pplosstudio.avroralogicgame.client.Rectangle,equals,com/pplosstudio/avroralogicgame/client/Rectangle.java,163,0
+Yl,com.pplosstudio.avroralogicgame.client.Rectangle::Rectangle(IIII) <init>,com.pplosstudio.avroralogicgame.client.Rectangle,Rectangle,com/pplosstudio/avroralogicgame/client/Rectangle.java,43,0
+Zl,com.pplosstudio.avroralogicgame.client.Rectangle::equals(Ljava/lang/Object;)Z,com.pplosstudio.avroralogicgame.client.Rectangle,equals,com/pplosstudio/avroralogicgame/client/Rectangle.java,163,0
 a,com.pplosstudio.avroralogicgame.client.Rectangle::height,com.pplosstudio.avroralogicgame.client.Rectangle,height,com/pplosstudio/avroralogicgame/client/Rectangle.java,34,-1
-_l,com.pplosstudio.avroralogicgame.client.Rectangle::toString()Ljava/lang/String;,com.pplosstudio.avroralogicgame.client.Rectangle,toString,com/pplosstudio/avroralogicgame/client/Rectangle.java,160,0
+$l,com.pplosstudio.avroralogicgame.client.Rectangle::toString()Ljava/lang/String;,com.pplosstudio.avroralogicgame.client.Rectangle,toString,com/pplosstudio/avroralogicgame/client/Rectangle.java,160,0
 b,com.pplosstudio.avroralogicgame.client.Rectangle::width,com.pplosstudio.avroralogicgame.client.Rectangle,width,com/pplosstudio/avroralogicgame/client/Rectangle.java,33,-1
 c,com.pplosstudio.avroralogicgame.client.Rectangle::x,com.pplosstudio.avroralogicgame.client.Rectangle,x,com/pplosstudio/avroralogicgame/client/Rectangle.java,31,-1
 d,com.pplosstudio.avroralogicgame.client.Rectangle::y,com.pplosstudio.avroralogicgame.client.Rectangle,y,com/pplosstudio/avroralogicgame/client/Rectangle.java,32,-1
 AbstractStringBuilder,,java.lang.AbstractStringBuilder,,com/google/gwt/emul/java/lang/AbstractStringBuilder.java,24,-1
-am,java.lang.AbstractStringBuilder::AbstractStringBuilder(Ljava/lang/String;) <init>,java.lang.AbstractStringBuilder,AbstractStringBuilder,com/google/gwt/emul/java/lang/AbstractStringBuilder.java,28,0
+_l,java.lang.AbstractStringBuilder::AbstractStringBuilder(Ljava/lang/String;) <init>,java.lang.AbstractStringBuilder,AbstractStringBuilder,com/google/gwt/emul/java/lang/AbstractStringBuilder.java,28,0
 a,java.lang.AbstractStringBuilder::string,java.lang.AbstractStringBuilder,string,com/google/gwt/emul/java/lang/AbstractStringBuilder.java,26,-1
-bm,java.lang.AbstractStringBuilder::toString()Ljava/lang/String;,java.lang.AbstractStringBuilder,toString,com/google/gwt/emul/java/lang/AbstractStringBuilder.java,107,0
+am,java.lang.AbstractStringBuilder::toString()Ljava/lang/String;,java.lang.AbstractStringBuilder,toString,com/google/gwt/emul/java/lang/AbstractStringBuilder.java,107,0
 ArrayStoreException,,java.lang.ArrayStoreException,,com/google/gwt/emul/java/lang/ArrayStoreException.java,23,-1
-cm,java.lang.ArrayStoreException::ArrayStoreException() <init>,java.lang.ArrayStoreException,ArrayStoreException,com/google/gwt/emul/java/lang/ArrayStoreException.java,25,0
+bm,java.lang.ArrayStoreException::ArrayStoreException() <init>,java.lang.ArrayStoreException,ArrayStoreException,com/google/gwt/emul/java/lang/ArrayStoreException.java,25,0
 AssertionError,,java.lang.AssertionError,,com/google/gwt/emul/java/lang/AssertionError.java,21,-1
 Boolean,,java.lang.Boolean,,com/google/gwt/emul/java/lang/Boolean.java,29,-1
-dm,java.lang.Boolean::$clinit()V,java.lang.Boolean,$clinit,com/google/gwt/emul/java/lang/Boolean.java,29,0
+cm,java.lang.Boolean::$clinit()V,java.lang.Boolean,$clinit,com/google/gwt/emul/java/lang/Boolean.java,29,0
 Class,,java.lang.Class,,com/google/gwt/emul/java/lang/Class.java,33,-1
-fm,java.lang.Class::$ensureNamesAreInitialized(Ljava/lang/Class;)V,java.lang.Class,$ensureNamesAreInitialized,com/google/gwt/emul/java/lang/Class.java,334,0
-gm,java.lang.Class::$getName(Ljava/lang/Class;)Ljava/lang/String;,java.lang.Class,$getName,com/google/gwt/emul/java/lang/Class.java,355,0
-hm,java.lang.Class::Class() <init>,java.lang.Class,Class,com/google/gwt/emul/java/lang/Class.java,317,0
+em,java.lang.Class::$ensureNamesAreInitialized(Ljava/lang/Class;)V,java.lang.Class,$ensureNamesAreInitialized,com/google/gwt/emul/java/lang/Class.java,334,0
+fm,java.lang.Class::$getName(Ljava/lang/Class;)Ljava/lang/String;,java.lang.Class,$getName,com/google/gwt/emul/java/lang/Class.java,355,0
+gm,java.lang.Class::Class() <init>,java.lang.Class,Class,com/google/gwt/emul/java/lang/Class.java,317,0
 a,java.lang.Class::arrayLiterals,java.lang.Class,arrayLiterals,com/google/gwt/emul/java/lang/Class.java,302,-1
 b,java.lang.Class::canonicalName,java.lang.Class,canonicalName,com/google/gwt/emul/java/lang/Class.java,294,-1
 c,java.lang.Class::componentType,java.lang.Class,componentType,com/google/gwt/emul/java/lang/Class.java,281,-1
 d,java.lang.Class::compoundName,java.lang.Class,compoundName,com/google/gwt/emul/java/lang/Class.java,298,-1
-im,java.lang.Class::createClassLiteralForArray(I)Ljava/lang/Class;,java.lang.Class,createClassLiteralForArray,com/google/gwt/emul/java/lang/Class.java,55,0
-jm,java.lang.Class::createClassObject(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)Ljava/lang/Class;,java.lang.Class,createClassObject,com/google/gwt/emul/java/lang/Class.java,152,0
-km,java.lang.Class::createForClass(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/Class;)Ljava/lang/Class;,java.lang.Class,createForClass,com/google/gwt/emul/java/lang/Class.java,73,0
-lm,java.lang.Class::createForEnum(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/Class;Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)Ljava/lang/Class;,java.lang.Class,createForEnum,com/google/gwt/emul/java/lang/Class.java,87,0
-mm,java.lang.Class::getCanonicalName()Ljava/lang/String;,java.lang.Class,getCanonicalName,com/google/gwt/emul/java/lang/Class.java,341,0
-nm,java.lang.Class::getClassLiteralForArray(Ljava/lang/Class;I)Ljava/lang/Class;,java.lang.Class,getClassLiteralForArray,com/google/gwt/emul/java/lang/Class.java,48,0
-om,java.lang.Class::getName()Ljava/lang/String;,java.lang.Class,getName,com/google/gwt/emul/java/lang/Class.java,355,0
-pm,java.lang.Class::getPrototypeForClass(Ljava/lang/Class;)Lcom/google/gwt/core/client/JavaScriptObject;,java.lang.Class,getPrototypeForClass,com/google/gwt/emul/java/lang/Class.java,128,0
-qm,java.lang.Class::getSimpleName()Ljava/lang/String;,java.lang.Class,getSimpleName,com/google/gwt/emul/java/lang/Class.java,360,0
-rm,java.lang.Class::initializeNames(Ljava/lang/Class;)V,java.lang.Class,initializeNames,com/google/gwt/emul/java/lang/Class.java,202,0
-sm,java.lang.Class::isArray()Z,java.lang.Class,isArray,com/google/gwt/emul/java/lang/Class.java,373,0
-tm,java.lang.Class::isPrimitive()Z,java.lang.Class,isPrimitive,com/google/gwt/emul/java/lang/Class.java,385,0
-um,java.lang.Class::join(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)Ljava/lang/String;,java.lang.Class,join,com/google/gwt/emul/java/lang/Class.java,232,0
-vm,java.lang.Class::maybeSetClassLiteral(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/Class;)V,java.lang.Class,maybeSetClassLiteral,com/google/gwt/emul/java/lang/Class.java,173,0
+hm,java.lang.Class::createClassLiteralForArray(I)Ljava/lang/Class;,java.lang.Class,createClassLiteralForArray,com/google/gwt/emul/java/lang/Class.java,55,0
+im,java.lang.Class::createClassObject(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)Ljava/lang/Class;,java.lang.Class,createClassObject,com/google/gwt/emul/java/lang/Class.java,152,0
+jm,java.lang.Class::createForClass(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/Class;)Ljava/lang/Class;,java.lang.Class,createForClass,com/google/gwt/emul/java/lang/Class.java,73,0
+km,java.lang.Class::createForEnum(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/Class;Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)Ljava/lang/Class;,java.lang.Class,createForEnum,com/google/gwt/emul/java/lang/Class.java,87,0
+lm,java.lang.Class::getCanonicalName()Ljava/lang/String;,java.lang.Class,getCanonicalName,com/google/gwt/emul/java/lang/Class.java,341,0
+mm,java.lang.Class::getClassLiteralForArray(Ljava/lang/Class;I)Ljava/lang/Class;,java.lang.Class,getClassLiteralForArray,com/google/gwt/emul/java/lang/Class.java,48,0
+nm,java.lang.Class::getName()Ljava/lang/String;,java.lang.Class,getName,com/google/gwt/emul/java/lang/Class.java,355,0
+om,java.lang.Class::getPrototypeForClass(Ljava/lang/Class;)Lcom/google/gwt/core/client/JavaScriptObject;,java.lang.Class,getPrototypeForClass,com/google/gwt/emul/java/lang/Class.java,128,0
+pm,java.lang.Class::getSimpleName()Ljava/lang/String;,java.lang.Class,getSimpleName,com/google/gwt/emul/java/lang/Class.java,360,0
+qm,java.lang.Class::initializeNames(Ljava/lang/Class;)V,java.lang.Class,initializeNames,com/google/gwt/emul/java/lang/Class.java,202,0
+rm,java.lang.Class::isArray()Z,java.lang.Class,isArray,com/google/gwt/emul/java/lang/Class.java,373,0
+sm,java.lang.Class::isPrimitive()Z,java.lang.Class,isPrimitive,com/google/gwt/emul/java/lang/Class.java,385,0
+tm,java.lang.Class::join(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)Ljava/lang/String;,java.lang.Class,join,com/google/gwt/emul/java/lang/Class.java,232,0
+um,java.lang.Class::maybeSetClassLiteral(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/Class;)V,java.lang.Class,maybeSetClassLiteral,com/google/gwt/emul/java/lang/Class.java,173,0
 e,java.lang.Class::modifiers,java.lang.Class,modifiers,com/google/gwt/emul/java/lang/Class.java,279,-1
-em,java.lang.Class::nextSequentialId,java.lang.Class,nextSequentialId,com/google/gwt/emul/java/lang/Class.java,310,-1
+dm,java.lang.Class::nextSequentialId,java.lang.Class,nextSequentialId,com/google/gwt/emul/java/lang/Class.java,310,-1
 f,java.lang.Class::packageName,java.lang.Class,packageName,com/google/gwt/emul/java/lang/Class.java,296,-1
 g,java.lang.Class::simpleName,java.lang.Class,simpleName,com/google/gwt/emul/java/lang/Class.java,290,-1
-wm,java.lang.Class::toString()Ljava/lang/String;,java.lang.Class,toString,com/google/gwt/emul/java/lang/Class.java,390,0
+vm,java.lang.Class::toString()Ljava/lang/String;,java.lang.Class,toString,com/google/gwt/emul/java/lang/Class.java,390,0
 h,java.lang.Class::typeId,java.lang.Class,typeId,com/google/gwt/emul/java/lang/Class.java,300,-1
 i,java.lang.Class::typeName,java.lang.Class,typeName,com/google/gwt/emul/java/lang/Class.java,292,-1
 ClassCastException,,java.lang.ClassCastException,,com/google/gwt/emul/java/lang/ClassCastException.java,21,-1
-xm,java.lang.ClassCastException::ClassCastException() <init>,java.lang.ClassCastException,ClassCastException,com/google/gwt/emul/java/lang/ClassCastException.java,23,0
+wm,java.lang.ClassCastException::ClassCastException() <init>,java.lang.ClassCastException,ClassCastException,com/google/gwt/emul/java/lang/ClassCastException.java,23,0
 Double,,java.lang.Double,,com/google/gwt/emul/java/lang/Double.java,27,-1
 Enum,,java.lang.Enum,,com/google/gwt/emul/java/lang/Enum.java,34,-1
 Kc,java.lang.Enum::Enum(Ljava/lang/String;I) <init>,java.lang.Enum,Enum,com/google/gwt/emul/java/lang/Enum.java,80,0
@@ -870,28 +868,28 @@ Error,,java.lang.Error,,com/google/gwt/emul/java/lang/Error.java,23,-1
 Cl,java.lang.Error::Error(Ljava/lang/String;Ljava/lang/Throwable;) <init>,java.lang.Error,Error,com/google/gwt/emul/java/lang/Error.java,29,0
 Exception,,java.lang.Exception,,com/google/gwt/emul/java/lang/Exception.java,23,-1
 IllegalArgumentException,,java.lang.IllegalArgumentException,,com/google/gwt/emul/java/lang/IllegalArgumentException.java,23,-1
-ym,java.lang.IllegalArgumentException::IllegalArgumentException(Ljava/lang/String;) <init>,java.lang.IllegalArgumentException,IllegalArgumentException,com/google/gwt/emul/java/lang/IllegalArgumentException.java,28,0
+xm,java.lang.IllegalArgumentException::IllegalArgumentException(Ljava/lang/String;) <init>,java.lang.IllegalArgumentException,IllegalArgumentException,com/google/gwt/emul/java/lang/IllegalArgumentException.java,28,0
 IllegalStateException,,java.lang.IllegalStateException,,com/google/gwt/emul/java/lang/IllegalStateException.java,22,-1
-zm,java.lang.IllegalStateException::IllegalStateException(Ljava/lang/String;) <init>,java.lang.IllegalStateException,IllegalStateException,com/google/gwt/emul/java/lang/IllegalStateException.java,27,0
+ym,java.lang.IllegalStateException::IllegalStateException(Ljava/lang/String;) <init>,java.lang.IllegalStateException,IllegalStateException,com/google/gwt/emul/java/lang/IllegalStateException.java,27,0
 IndexOutOfBoundsException,,java.lang.IndexOutOfBoundsException,,com/google/gwt/emul/java/lang/IndexOutOfBoundsException.java,23,-1
-Am,java.lang.IndexOutOfBoundsException::IndexOutOfBoundsException() <init>,java.lang.IndexOutOfBoundsException,IndexOutOfBoundsException,com/google/gwt/emul/java/lang/IndexOutOfBoundsException.java,25,0
-Bm,java.lang.IndexOutOfBoundsException::IndexOutOfBoundsException(Ljava/lang/String;) <init>,java.lang.IndexOutOfBoundsException,IndexOutOfBoundsException,com/google/gwt/emul/java/lang/IndexOutOfBoundsException.java,28,0
+zm,java.lang.IndexOutOfBoundsException::IndexOutOfBoundsException() <init>,java.lang.IndexOutOfBoundsException,IndexOutOfBoundsException,com/google/gwt/emul/java/lang/IndexOutOfBoundsException.java,25,0
+Am,java.lang.IndexOutOfBoundsException::IndexOutOfBoundsException(Ljava/lang/String;) <init>,java.lang.IndexOutOfBoundsException,IndexOutOfBoundsException,com/google/gwt/emul/java/lang/IndexOutOfBoundsException.java,28,0
 Integer,,java.lang.Integer,,com/google/gwt/emul/java/lang/Integer.java,21,-1
-Cm,java.lang.Integer::Integer(I) <init>,java.lang.Integer,Integer,com/google/gwt/emul/java/lang/Integer.java,263,0
-Dm,java.lang.Integer::equals(Ljava/lang/Object;)Z,java.lang.Integer,equals,com/google/gwt/emul/java/lang/Integer.java,287,0
-Em,java.lang.Integer::hashCode()I,java.lang.Integer,hashCode,com/google/gwt/emul/java/lang/Integer.java,297,0
-Fm,java.lang.Integer::toString()Ljava/lang/String;,java.lang.Integer,toString,com/google/gwt/emul/java/lang/Integer.java,317,0
+Bm,java.lang.Integer::Integer(I) <init>,java.lang.Integer,Integer,com/google/gwt/emul/java/lang/Integer.java,263,0
+Cm,java.lang.Integer::equals(Ljava/lang/Object;)Z,java.lang.Integer,equals,com/google/gwt/emul/java/lang/Integer.java,287,0
+Dm,java.lang.Integer::hashCode()I,java.lang.Integer,hashCode,com/google/gwt/emul/java/lang/Integer.java,297,0
+Em,java.lang.Integer::toString()Ljava/lang/String;,java.lang.Integer,toString,com/google/gwt/emul/java/lang/Integer.java,317,0
 a,java.lang.Integer::value,java.lang.Integer,value,com/google/gwt/emul/java/lang/Integer.java,261,-1
-Gm,java.lang.Integer::valueOf(I)Ljava/lang/Integer;,java.lang.Integer,valueOf,com/google/gwt/emul/java/lang/Integer.java,231,0
-Im,java.lang.Integer$BoxedValues::$clinit()V,java.lang.Integer$BoxedValues,$clinit,com/google/gwt/emul/java/lang/Integer.java,32,0
-Hm,java.lang.Integer$BoxedValues::boxedValues,java.lang.Integer$BoxedValues,boxedValues,com/google/gwt/emul/java/lang/Integer.java,34,-1
+Fm,java.lang.Integer::valueOf(I)Ljava/lang/Integer;,java.lang.Integer,valueOf,com/google/gwt/emul/java/lang/Integer.java,231,0
+Hm,java.lang.Integer$BoxedValues::$clinit()V,java.lang.Integer$BoxedValues,$clinit,com/google/gwt/emul/java/lang/Integer.java,32,0
+Gm,java.lang.Integer$BoxedValues::boxedValues,java.lang.Integer$BoxedValues,boxedValues,com/google/gwt/emul/java/lang/Integer.java,34,-1
 JsException,,java.lang.JsException,,com/google/gwt/emul/java/lang/JsException.java,23,-1
-Jm,java.lang.Math::max(II)I,java.lang.Math,max,com/google/gwt/emul/java/lang/Math.java,201,0
+Im,java.lang.Math::max(II)I,java.lang.Math,max,com/google/gwt/emul/java/lang/Math.java,201,0
 Math$NativeMath,,java.lang.Math$NativeMath,,com/google/gwt/emul/java/lang/Math.java,372,-1
 NullPointerException,,java.lang.NullPointerException,,com/google/gwt/emul/java/lang/NullPointerException.java,26,-1
-Km,java.lang.NullPointerException::NullPointerException() <init>,java.lang.NullPointerException,NullPointerException,com/google/gwt/emul/java/lang/NullPointerException.java,28,0
-Lm,java.lang.NullPointerException::NullPointerException(Ljava/lang/String;) <init>,java.lang.NullPointerException,NullPointerException,com/google/gwt/emul/java/lang/NullPointerException.java,31,0
-Mm,java.lang.NullPointerException::createError(Ljava/lang/String;)Ljava/lang/Object;,java.lang.NullPointerException,createError,com/google/gwt/emul/java/lang/NullPointerException.java,40,0
+Jm,java.lang.NullPointerException::NullPointerException() <init>,java.lang.NullPointerException,NullPointerException,com/google/gwt/emul/java/lang/NullPointerException.java,28,0
+Km,java.lang.NullPointerException::NullPointerException(Ljava/lang/String;) <init>,java.lang.NullPointerException,NullPointerException,com/google/gwt/emul/java/lang/NullPointerException.java,31,0
+Lm,java.lang.NullPointerException::createError(Ljava/lang/String;)Ljava/lang/Object;,java.lang.NullPointerException,createError,com/google/gwt/emul/java/lang/NullPointerException.java,40,0
 NullPointerException$NativeTypeError,,java.lang.NullPointerException$NativeTypeError,,com/google/gwt/emul/java/lang/NullPointerException.java,45,-1
 Number,,java.lang.Number,,com/google/gwt/emul/java/lang/Number.java,27,-1
 Object,,java.lang.Object,,com/google/gwt/emul/java/lang/Object.java,27,-1
@@ -911,18 +909,18 @@ Mb,java.lang.RuntimeException::RuntimeException() <init>,java.lang.RuntimeExcept
 Nb,java.lang.RuntimeException::RuntimeException(Ljava/lang/String;) <init>,java.lang.RuntimeException,RuntimeException,com/google/gwt/emul/java/lang/RuntimeException.java,28,0
 Ob,java.lang.RuntimeException::RuntimeException(Ljava/lang/String;Ljava/lang/Throwable;) <init>,java.lang.RuntimeException,RuntimeException,com/google/gwt/emul/java/lang/RuntimeException.java,32,0
 String,,java.lang.String,,com/google/gwt/emul/java/lang/String.java,46,-1
-Nm,java.lang.String::$charAt(Ljava/lang/String;I)C,java.lang.String,$charAt,com/google/gwt/emul/java/lang/String.java,360,0
-Om,java.lang.String::$equals(Ljava/lang/String;Ljava/lang/Object;)Z,java.lang.String,$equals,com/google/gwt/emul/java/lang/String.java,410,0
-Pm,java.lang.String::$equalsIgnoreCase(Ljava/lang/String;Ljava/lang/String;)Z,java.lang.String,$equalsIgnoreCase,com/google/gwt/emul/java/lang/String.java,416,0
-Qm,java.lang.String::$trim(Ljava/lang/String;)Ljava/lang/String;,java.lang.String,$trim,com/google/gwt/emul/java/lang/String.java,743,0
+Mm,java.lang.String::$charAt(Ljava/lang/String;I)C,java.lang.String,$charAt,com/google/gwt/emul/java/lang/String.java,360,0
+Nm,java.lang.String::$equals(Ljava/lang/String;Ljava/lang/Object;)Z,java.lang.String,$equals,com/google/gwt/emul/java/lang/String.java,410,0
+Om,java.lang.String::$equalsIgnoreCase(Ljava/lang/String;Ljava/lang/String;)Z,java.lang.String,$equalsIgnoreCase,com/google/gwt/emul/java/lang/String.java,416,0
+Pm,java.lang.String::$trim(Ljava/lang/String;)Ljava/lang/String;,java.lang.String,$trim,com/google/gwt/emul/java/lang/String.java,743,0
 String$NativeFunction,,java.lang.String$NativeFunction,,com/google/gwt/emul/java/lang/String.java,160,-1
 String$NativeString,,java.lang.String$NativeString,,com/google/gwt/emul/java/lang/String.java,757,-1
 length,java.lang.String$NativeString::length,java.lang.String$NativeString,length,com/google/gwt/emul/java/lang/String.java,759,-1
 StringBuilder,,java.lang.StringBuilder,,com/google/gwt/emul/java/lang/StringBuilder.java,26,-1
-Rm,java.lang.StringBuilder::$append(Ljava/lang/StringBuilder;Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;,java.lang.StringBuilder,$append,com/google/gwt/emul/java/lang/StringBuilder.java,71,0
-Sm,java.lang.StringBuilder::$append(Ljava/lang/StringBuilder;Ljava/lang/String;)Ljava/lang/StringBuilder;,java.lang.StringBuilder,$append,com/google/gwt/emul/java/lang/StringBuilder.java,107,0
-Tm,java.lang.StringBuilder::StringBuilder() <init>,java.lang.StringBuilder,StringBuilder,com/google/gwt/emul/java/lang/StringBuilder.java,28,0
-Um,java.lang.StringBuilder::StringBuilder(Ljava/lang/String;) <init>,java.lang.StringBuilder,StringBuilder,com/google/gwt/emul/java/lang/StringBuilder.java,45,0
+Qm,java.lang.StringBuilder::$append(Ljava/lang/StringBuilder;Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;,java.lang.StringBuilder,$append,com/google/gwt/emul/java/lang/StringBuilder.java,71,0
+Rm,java.lang.StringBuilder::$append(Ljava/lang/StringBuilder;Ljava/lang/String;)Ljava/lang/StringBuilder;,java.lang.StringBuilder,$append,com/google/gwt/emul/java/lang/StringBuilder.java,107,0
+Sm,java.lang.StringBuilder::StringBuilder() <init>,java.lang.StringBuilder,StringBuilder,com/google/gwt/emul/java/lang/StringBuilder.java,28,0
+Tm,java.lang.StringBuilder::StringBuilder(Ljava/lang/String;) <init>,java.lang.StringBuilder,StringBuilder,com/google/gwt/emul/java/lang/StringBuilder.java,45,0
 System,,java.lang.System,,com/google/gwt/emul/java/lang/System.java,35,-1
 Throwable,,java.lang.Throwable,,com/google/gwt/emul/java/lang/Throwable.java,37,-1
 Cb,java.lang.Throwable::$addSuppressed(Ljava/lang/Throwable;Ljava/lang/Throwable;)V,java.lang.Throwable,$addSuppressed,com/google/gwt/emul/java/lang/Throwable.java,154,0
@@ -943,248 +941,247 @@ i,java.lang.Throwable::writetableStackTrace,java.lang.Throwable,writetableStackT
 Throwable$NativeError,,java.lang.Throwable$NativeError,,com/google/gwt/emul/java/lang/Throwable.java,301,-1
 Throwable$NativeTypeError,,java.lang.Throwable$NativeTypeError,,com/google/gwt/emul/java/lang/Throwable.java,306,-1
 UnsupportedOperationException,,java.lang.UnsupportedOperationException,,com/google/gwt/emul/java/lang/UnsupportedOperationException.java,23,-1
-Vm,java.lang.UnsupportedOperationException::UnsupportedOperationException(Ljava/lang/String;) <init>,java.lang.UnsupportedOperationException,UnsupportedOperationException,com/google/gwt/emul/java/lang/UnsupportedOperationException.java,28,0
+Um,java.lang.UnsupportedOperationException::UnsupportedOperationException(Ljava/lang/String;) <init>,java.lang.UnsupportedOperationException,UnsupportedOperationException,com/google/gwt/emul/java/lang/UnsupportedOperationException.java,28,0
 AbstractCollection,,java.util.AbstractCollection,,com/google/gwt/emul/java/util/AbstractCollection.java,30,-1
-Wm,java.util.AbstractCollection::$advanceToFind(Ljava/util/AbstractCollection;Ljava/lang/Object;Z)Z,java.util.AbstractCollection,$advanceToFind,com/google/gwt/emul/java/util/AbstractCollection.java,147,0
-Xm,java.util.AbstractCollection::$containsAll(Ljava/util/AbstractCollection;Ljava/util/Collection;)Z,java.util.AbstractCollection,$containsAll,com/google/gwt/emul/java/util/AbstractCollection.java,65,0
-Ym,java.util.AbstractCollection::$toString(Ljava/util/AbstractCollection;)Ljava/lang/String;,java.util.AbstractCollection,$toString,com/google/gwt/emul/java/util/AbstractCollection.java,139,0
-Zm,java.util.AbstractCollection::add(Ljava/lang/Object;)Z,java.util.AbstractCollection,add,com/google/gwt/emul/java/util/AbstractCollection.java,36,0
-$m,java.util.AbstractCollection::contains(Ljava/lang/Object;)Z,java.util.AbstractCollection,contains,com/google/gwt/emul/java/util/AbstractCollection.java,60,0
-_m,java.util.AbstractCollection::isEmpty()Z,java.util.AbstractCollection,isEmpty,com/google/gwt/emul/java/util/AbstractCollection.java,77,0
-an,java.util.AbstractCollection::toString()Ljava/lang/String;,java.util.AbstractCollection,toString,com/google/gwt/emul/java/util/AbstractCollection.java,139,0
+Vm,java.util.AbstractCollection::$advanceToFind(Ljava/util/AbstractCollection;Ljava/lang/Object;Z)Z,java.util.AbstractCollection,$advanceToFind,com/google/gwt/emul/java/util/AbstractCollection.java,147,0
+Wm,java.util.AbstractCollection::$containsAll(Ljava/util/AbstractCollection;Ljava/util/Collection;)Z,java.util.AbstractCollection,$containsAll,com/google/gwt/emul/java/util/AbstractCollection.java,65,0
+Xm,java.util.AbstractCollection::$toString(Ljava/util/AbstractCollection;)Ljava/lang/String;,java.util.AbstractCollection,$toString,com/google/gwt/emul/java/util/AbstractCollection.java,139,0
+Ym,java.util.AbstractCollection::add(Ljava/lang/Object;)Z,java.util.AbstractCollection,add,com/google/gwt/emul/java/util/AbstractCollection.java,36,0
+Zm,java.util.AbstractCollection::contains(Ljava/lang/Object;)Z,java.util.AbstractCollection,contains,com/google/gwt/emul/java/util/AbstractCollection.java,60,0
+$m,java.util.AbstractCollection::isEmpty()Z,java.util.AbstractCollection,isEmpty,com/google/gwt/emul/java/util/AbstractCollection.java,77,0
+_m,java.util.AbstractCollection::toString()Ljava/lang/String;,java.util.AbstractCollection,toString,com/google/gwt/emul/java/util/AbstractCollection.java,139,0
 AbstractHashMap,,java.util.AbstractHashMap,,com/google/gwt/emul/java/util/AbstractHashMap.java,37,-1
-hn,java.util.AbstractHashMap::$containsKey(Ljava/util/AbstractHashMap;Ljava/lang/Object;)Z,java.util.AbstractHashMap,$containsKey,com/google/gwt/emul/java/util/AbstractHashMap.java,174,0
-jn,java.util.AbstractHashMap::$get(Ljava/util/AbstractHashMap;Ljava/lang/Object;)Ljava/lang/Object;,java.util.AbstractHashMap,$get,com/google/gwt/emul/java/util/AbstractHashMap.java,200,0
-kn,java.util.AbstractHashMap::$hasStringValue(Ljava/util/AbstractHashMap;Ljava/lang/String;)Z,java.util.AbstractHashMap,$hasStringValue,com/google/gwt/emul/java/util/AbstractHashMap.java,266,0
-ln,java.util.AbstractHashMap::$put(Ljava/util/AbstractHashMap;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;,java.util.AbstractHashMap,$put,com/google/gwt/emul/java/util/AbstractHashMap.java,207,0
-mn,java.util.AbstractHashMap::$remove(Ljava/util/AbstractHashMap;Ljava/lang/Object;)Ljava/lang/Object;,java.util.AbstractHashMap,$remove,com/google/gwt/emul/java/util/AbstractHashMap.java,214,0
-nn,java.util.AbstractHashMap::$reset(Ljava/util/AbstractHashMap;)V,java.util.AbstractHashMap,$reset,com/google/gwt/emul/java/util/AbstractHashMap.java,166,0
-on,java.util.AbstractHashMap::$size(Ljava/util/AbstractHashMap;)I,java.util.AbstractHashMap,$size,com/google/gwt/emul/java/util/AbstractHashMap.java,220,0
+gn,java.util.AbstractHashMap::$containsKey(Ljava/util/AbstractHashMap;Ljava/lang/Object;)Z,java.util.AbstractHashMap,$containsKey,com/google/gwt/emul/java/util/AbstractHashMap.java,174,0
+hn,java.util.AbstractHashMap::$get(Ljava/util/AbstractHashMap;Ljava/lang/Object;)Ljava/lang/Object;,java.util.AbstractHashMap,$get,com/google/gwt/emul/java/util/AbstractHashMap.java,200,0
+jn,java.util.AbstractHashMap::$hasStringValue(Ljava/util/AbstractHashMap;Ljava/lang/String;)Z,java.util.AbstractHashMap,$hasStringValue,com/google/gwt/emul/java/util/AbstractHashMap.java,266,0
+kn,java.util.AbstractHashMap::$put(Ljava/util/AbstractHashMap;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;,java.util.AbstractHashMap,$put,com/google/gwt/emul/java/util/AbstractHashMap.java,207,0
+ln,java.util.AbstractHashMap::$remove(Ljava/util/AbstractHashMap;Ljava/lang/Object;)Ljava/lang/Object;,java.util.AbstractHashMap,$remove,com/google/gwt/emul/java/util/AbstractHashMap.java,214,0
+mn,java.util.AbstractHashMap::$reset(Ljava/util/AbstractHashMap;)V,java.util.AbstractHashMap,$reset,com/google/gwt/emul/java/util/AbstractHashMap.java,166,0
+nn,java.util.AbstractHashMap::$size(Ljava/util/AbstractHashMap;)I,java.util.AbstractHashMap,$size,com/google/gwt/emul/java/util/AbstractHashMap.java,220,0
 a,java.util.AbstractHashMap::hashCodeMap,java.util.AbstractHashMap,hashCodeMap,com/google/gwt/emul/java/util/AbstractHashMap.java,132,-1
 b,java.util.AbstractHashMap::stringMap,java.util.AbstractHashMap,stringMap,com/google/gwt/emul/java/util/AbstractHashMap.java,137,-1
 AbstractHashMap$EntrySet,,java.util.AbstractHashMap$EntrySet,,com/google/gwt/emul/java/util/AbstractHashMap.java,39,-1
-rn,java.util.AbstractHashMap$EntrySet::$contains(Ljava/util/AbstractHashMap$EntrySet;Ljava/lang/Object;)Z,java.util.AbstractHashMap$EntrySet,$contains,com/google/gwt/emul/java/util/AbstractHashMap.java,47,0
-sn,java.util.AbstractHashMap$EntrySet::AbstractHashMap$EntrySet(Ljava/util/AbstractHashMap;) <init>,java.util.AbstractHashMap$EntrySet,AbstractHashMap$EntrySet,com/google/gwt/emul/java/util/AbstractHashMap.java,39,0
-tn,java.util.AbstractHashMap$EntrySet::contains(Ljava/lang/Object;)Z,java.util.AbstractHashMap$EntrySet,contains,com/google/gwt/emul/java/util/AbstractHashMap.java,47,0
-un,java.util.AbstractHashMap$EntrySet::iterator()Ljava/util/Iterator;,java.util.AbstractHashMap$EntrySet,iterator,com/google/gwt/emul/java/util/AbstractHashMap.java,55,0
-vn,java.util.AbstractHashMap$EntrySet::size()I,java.util.AbstractHashMap$EntrySet,size,com/google/gwt/emul/java/util/AbstractHashMap.java,70,0
+qn,java.util.AbstractHashMap$EntrySet::$contains(Ljava/util/AbstractHashMap$EntrySet;Ljava/lang/Object;)Z,java.util.AbstractHashMap$EntrySet,$contains,com/google/gwt/emul/java/util/AbstractHashMap.java,47,0
+rn,java.util.AbstractHashMap$EntrySet::AbstractHashMap$EntrySet(Ljava/util/AbstractHashMap;) <init>,java.util.AbstractHashMap$EntrySet,AbstractHashMap$EntrySet,com/google/gwt/emul/java/util/AbstractHashMap.java,39,0
+sn,java.util.AbstractHashMap$EntrySet::contains(Ljava/lang/Object;)Z,java.util.AbstractHashMap$EntrySet,contains,com/google/gwt/emul/java/util/AbstractHashMap.java,47,0
+tn,java.util.AbstractHashMap$EntrySet::iterator()Ljava/util/Iterator;,java.util.AbstractHashMap$EntrySet,iterator,com/google/gwt/emul/java/util/AbstractHashMap.java,55,0
+un,java.util.AbstractHashMap$EntrySet::size()I,java.util.AbstractHashMap$EntrySet,size,com/google/gwt/emul/java/util/AbstractHashMap.java,70,0
 a,java.util.AbstractHashMap$EntrySet::this$01,java.util.AbstractHashMap$EntrySet,this$01,com/google/gwt/emul/java/util/AbstractHashMap.java,39,-1
 AbstractHashMap$EntrySetIterator,,java.util.AbstractHashMap$EntrySetIterator,,com/google/gwt/emul/java/util/AbstractHashMap.java,78,-1
-wn,java.util.AbstractHashMap$EntrySetIterator::$computeHasNext(Ljava/util/AbstractHashMap$EntrySetIterator;)Z,java.util.AbstractHashMap$EntrySetIterator,$computeHasNext,com/google/gwt/emul/java/util/AbstractHashMap.java,93,0
-xn,java.util.AbstractHashMap$EntrySetIterator::$next(Ljava/util/AbstractHashMap$EntrySetIterator;)Ljava/util/Map$Entry;,java.util.AbstractHashMap$EntrySetIterator,$next,com/google/gwt/emul/java/util/AbstractHashMap.java,105,0
-yn,java.util.AbstractHashMap$EntrySetIterator::AbstractHashMap$EntrySetIterator(Ljava/util/AbstractHashMap;) <init>,java.util.AbstractHashMap$EntrySetIterator,AbstractHashMap$EntrySetIterator,com/google/gwt/emul/java/util/AbstractHashMap.java,84,0
+vn,java.util.AbstractHashMap$EntrySetIterator::$computeHasNext(Ljava/util/AbstractHashMap$EntrySetIterator;)Z,java.util.AbstractHashMap$EntrySetIterator,$computeHasNext,com/google/gwt/emul/java/util/AbstractHashMap.java,93,0
+wn,java.util.AbstractHashMap$EntrySetIterator::$next(Ljava/util/AbstractHashMap$EntrySetIterator;)Ljava/util/Map$Entry;,java.util.AbstractHashMap$EntrySetIterator,$next,com/google/gwt/emul/java/util/AbstractHashMap.java,105,0
+xn,java.util.AbstractHashMap$EntrySetIterator::AbstractHashMap$EntrySetIterator(Ljava/util/AbstractHashMap;) <init>,java.util.AbstractHashMap$EntrySetIterator,AbstractHashMap$EntrySetIterator,com/google/gwt/emul/java/util/AbstractHashMap.java,84,0
 a,java.util.AbstractHashMap$EntrySetIterator::current,java.util.AbstractHashMap$EntrySetIterator,current,com/google/gwt/emul/java/util/AbstractHashMap.java,80,-1
 b,java.util.AbstractHashMap$EntrySetIterator::hasNext,java.util.AbstractHashMap$EntrySetIterator,hasNext,com/google/gwt/emul/java/util/AbstractHashMap.java,82,-1
-zn,java.util.AbstractHashMap$EntrySetIterator::hasNext()Z,java.util.AbstractHashMap$EntrySetIterator,hasNext,com/google/gwt/emul/java/util/AbstractHashMap.java,89,0
-An,java.util.AbstractHashMap$EntrySetIterator::next()Ljava/lang/Object;,java.util.AbstractHashMap$EntrySetIterator,next,com/google/gwt/emul/java/util/AbstractHashMap.java,105,0
+yn,java.util.AbstractHashMap$EntrySetIterator::hasNext()Z,java.util.AbstractHashMap$EntrySetIterator,hasNext,com/google/gwt/emul/java/util/AbstractHashMap.java,89,0
+zn,java.util.AbstractHashMap$EntrySetIterator::next()Ljava/lang/Object;,java.util.AbstractHashMap$EntrySetIterator,next,com/google/gwt/emul/java/util/AbstractHashMap.java,105,0
 c,java.util.AbstractHashMap$EntrySetIterator::stringMapEntries,java.util.AbstractHashMap$EntrySetIterator,stringMapEntries,com/google/gwt/emul/java/util/AbstractHashMap.java,79,-1
 d,java.util.AbstractHashMap$EntrySetIterator::this$01,java.util.AbstractHashMap$EntrySetIterator,this$01,com/google/gwt/emul/java/util/AbstractHashMap.java,78,-1
 AbstractList,,java.util.AbstractList,,com/google/gwt/emul/java/util/AbstractList.java,32,-1
-Bn,java.util.AbstractList::$equals(Ljava/util/AbstractList;Ljava/lang/Object;)Z,java.util.AbstractList,$equals,com/google/gwt/emul/java/util/AbstractList.java,208,0
-Cn,java.util.AbstractList::add(ILjava/lang/Object;)V,java.util.AbstractList,add,com/google/gwt/emul/java/util/AbstractList.java,186,0
-Dn,java.util.AbstractList::add(Ljava/lang/Object;)Z,java.util.AbstractList,add,com/google/gwt/emul/java/util/AbstractList.java,180,0
-En,java.util.AbstractList::equals(Ljava/lang/Object;)Z,java.util.AbstractList,equals,com/google/gwt/emul/java/util/AbstractList.java,208,0
-Fn,java.util.AbstractList::hashCode()I,java.util.AbstractList,hashCode,com/google/gwt/emul/java/util/AbstractList.java,234,0
-Gn,java.util.AbstractList::iterator()Ljava/util/Iterator;,java.util.AbstractList,iterator,com/google/gwt/emul/java/util/AbstractList.java,249,0
-Hn,java.util.AbstractList::listIterator()Ljava/util/ListIterator;,java.util.AbstractList,listIterator,com/google/gwt/emul/java/util/AbstractList.java,264,0
-In,java.util.AbstractList::listIterator(I)Ljava/util/ListIterator;,java.util.AbstractList,listIterator,com/google/gwt/emul/java/util/AbstractList.java,269,0
+An,java.util.AbstractList::$equals(Ljava/util/AbstractList;Ljava/lang/Object;)Z,java.util.AbstractList,$equals,com/google/gwt/emul/java/util/AbstractList.java,208,0
+Bn,java.util.AbstractList::add(ILjava/lang/Object;)V,java.util.AbstractList,add,com/google/gwt/emul/java/util/AbstractList.java,186,0
+Cn,java.util.AbstractList::add(Ljava/lang/Object;)Z,java.util.AbstractList,add,com/google/gwt/emul/java/util/AbstractList.java,180,0
+Dn,java.util.AbstractList::equals(Ljava/lang/Object;)Z,java.util.AbstractList,equals,com/google/gwt/emul/java/util/AbstractList.java,208,0
+En,java.util.AbstractList::hashCode()I,java.util.AbstractList,hashCode,com/google/gwt/emul/java/util/AbstractList.java,234,0
+Fn,java.util.AbstractList::iterator()Ljava/util/Iterator;,java.util.AbstractList,iterator,com/google/gwt/emul/java/util/AbstractList.java,249,0
+Gn,java.util.AbstractList::listIterator()Ljava/util/ListIterator;,java.util.AbstractList,listIterator,com/google/gwt/emul/java/util/AbstractList.java,264,0
+Hn,java.util.AbstractList::listIterator(I)Ljava/util/ListIterator;,java.util.AbstractList,listIterator,com/google/gwt/emul/java/util/AbstractList.java,269,0
 AbstractList$IteratorImpl,,java.util.AbstractList$IteratorImpl,,com/google/gwt/emul/java/util/AbstractList.java,35,-1
-Jn,java.util.AbstractList$IteratorImpl::AbstractList$IteratorImpl(Ljava/util/AbstractList;) <init>,java.util.AbstractList$IteratorImpl,AbstractList$IteratorImpl,com/google/gwt/emul/java/util/AbstractList.java,35,0
-Kn,java.util.AbstractList$IteratorImpl::hasNext()Z,java.util.AbstractList$IteratorImpl,hasNext,com/google/gwt/emul/java/util/AbstractList.java,45,0
+In,java.util.AbstractList$IteratorImpl::AbstractList$IteratorImpl(Ljava/util/AbstractList;) <init>,java.util.AbstractList$IteratorImpl,AbstractList$IteratorImpl,com/google/gwt/emul/java/util/AbstractList.java,35,0
+Jn,java.util.AbstractList$IteratorImpl::hasNext()Z,java.util.AbstractList$IteratorImpl,hasNext,com/google/gwt/emul/java/util/AbstractList.java,45,0
 b,java.util.AbstractList$IteratorImpl::i,java.util.AbstractList$IteratorImpl,i,com/google/gwt/emul/java/util/AbstractList.java,42,-1
-Ln,java.util.AbstractList$IteratorImpl::next()Ljava/lang/Object;,java.util.AbstractList$IteratorImpl,next,com/google/gwt/emul/java/util/AbstractList.java,50,0
+Kn,java.util.AbstractList$IteratorImpl::next()Ljava/lang/Object;,java.util.AbstractList$IteratorImpl,next,com/google/gwt/emul/java/util/AbstractList.java,50,0
 c,java.util.AbstractList$IteratorImpl::this$01,java.util.AbstractList$IteratorImpl,this$01,com/google/gwt/emul/java/util/AbstractList.java,35,-1
 AbstractList$ListIteratorImpl,,java.util.AbstractList$ListIteratorImpl,,com/google/gwt/emul/java/util/AbstractList.java,69,-1
-Mn,java.util.AbstractList$ListIteratorImpl::AbstractList$ListIteratorImpl(Ljava/util/AbstractList;I) <init>,java.util.AbstractList$ListIteratorImpl,AbstractList$ListIteratorImpl,com/google/gwt/emul/java/util/AbstractList.java,81,0
-Nn,java.util.AbstractList$ListIteratorImpl::hasPrevious()Z,java.util.AbstractList$ListIteratorImpl,hasPrevious,com/google/gwt/emul/java/util/AbstractList.java,95,0
-On,java.util.AbstractList$ListIteratorImpl::previous()Ljava/lang/Object;,java.util.AbstractList$ListIteratorImpl,previous,com/google/gwt/emul/java/util/AbstractList.java,105,0
+Ln,java.util.AbstractList$ListIteratorImpl::AbstractList$ListIteratorImpl(Ljava/util/AbstractList;I) <init>,java.util.AbstractList$ListIteratorImpl,AbstractList$ListIteratorImpl,com/google/gwt/emul/java/util/AbstractList.java,81,0
+Mn,java.util.AbstractList$ListIteratorImpl::hasPrevious()Z,java.util.AbstractList$ListIteratorImpl,hasPrevious,com/google/gwt/emul/java/util/AbstractList.java,95,0
+Nn,java.util.AbstractList$ListIteratorImpl::previous()Ljava/lang/Object;,java.util.AbstractList$ListIteratorImpl,previous,com/google/gwt/emul/java/util/AbstractList.java,105,0
 a,java.util.AbstractList$ListIteratorImpl::this$01,java.util.AbstractList$ListIteratorImpl,this$01,com/google/gwt/emul/java/util/AbstractList.java,69,-1
 AbstractMap,,java.util.AbstractMap,,com/google/gwt/emul/java/util/AbstractMap.java,28,-1
-bn,java.util.AbstractMap::$containsEntry(Ljava/util/AbstractMap;Ljava/util/Map$Entry;)Z,java.util.AbstractMap,$containsEntry,com/google/gwt/emul/java/util/AbstractMap.java,140,0
-cn,java.util.AbstractMap::$toString(Ljava/util/AbstractMap;Ljava/lang/Object;)Ljava/lang/String;,java.util.AbstractMap,$toString,com/google/gwt/emul/java/util/AbstractMap.java,280,0
-dn,java.util.AbstractMap::equals(Ljava/lang/Object;)Z,java.util.AbstractMap,equals,com/google/gwt/emul/java/util/AbstractMap.java,158,0
-en,java.util.AbstractMap::getEntryValueOrNull(Ljava/util/Map$Entry;)Ljava/lang/Object;,java.util.AbstractMap,getEntryValueOrNull,com/google/gwt/emul/java/util/AbstractMap.java,330,0
-fn,java.util.AbstractMap::hashCode()I,java.util.AbstractMap,hashCode,com/google/gwt/emul/java/util/AbstractMap.java,184,0
-gn,java.util.AbstractMap::toString()Ljava/lang/String;,java.util.AbstractMap,toString,com/google/gwt/emul/java/util/AbstractMap.java,268,0
+an,java.util.AbstractMap::$containsEntry(Ljava/util/AbstractMap;Ljava/util/Map$Entry;)Z,java.util.AbstractMap,$containsEntry,com/google/gwt/emul/java/util/AbstractMap.java,140,0
+bn,java.util.AbstractMap::$toString(Ljava/util/AbstractMap;Ljava/lang/Object;)Ljava/lang/String;,java.util.AbstractMap,$toString,com/google/gwt/emul/java/util/AbstractMap.java,280,0
+cn,java.util.AbstractMap::equals(Ljava/lang/Object;)Z,java.util.AbstractMap,equals,com/google/gwt/emul/java/util/AbstractMap.java,158,0
+dn,java.util.AbstractMap::getEntryValueOrNull(Ljava/util/Map$Entry;)Ljava/lang/Object;,java.util.AbstractMap,getEntryValueOrNull,com/google/gwt/emul/java/util/AbstractMap.java,330,0
+en,java.util.AbstractMap::hashCode()I,java.util.AbstractMap,hashCode,com/google/gwt/emul/java/util/AbstractMap.java,184,0
+fn,java.util.AbstractMap::toString()Ljava/lang/String;,java.util.AbstractMap,toString,com/google/gwt/emul/java/util/AbstractMap.java,268,0
 AbstractMap$1,,java.util.AbstractMap$1,,com/google/gwt/emul/java/util/AbstractMap.java,195,-1
-Pn,java.util.AbstractMap$1::AbstractMap$1(Ljava/util/AbstractMap;) <init>,java.util.AbstractMap$1,AbstractMap$1,com/google/gwt/emul/java/util/AbstractMap.java,195,0
-Qn,java.util.AbstractMap$1::contains(Ljava/lang/Object;)Z,java.util.AbstractMap$1,contains,com/google/gwt/emul/java/util/AbstractMap.java,202,0
-Rn,java.util.AbstractMap$1::iterator()Ljava/util/Iterator;,java.util.AbstractMap$1,iterator,com/google/gwt/emul/java/util/AbstractMap.java,207,0
-Sn,java.util.AbstractMap$1::size()I,java.util.AbstractMap$1,size,com/google/gwt/emul/java/util/AbstractMap.java,238,0
+On,java.util.AbstractMap$1::AbstractMap$1(Ljava/util/AbstractMap;) <init>,java.util.AbstractMap$1,AbstractMap$1,com/google/gwt/emul/java/util/AbstractMap.java,195,0
+Pn,java.util.AbstractMap$1::contains(Ljava/lang/Object;)Z,java.util.AbstractMap$1,contains,com/google/gwt/emul/java/util/AbstractMap.java,202,0
+Qn,java.util.AbstractMap$1::iterator()Ljava/util/Iterator;,java.util.AbstractMap$1,iterator,com/google/gwt/emul/java/util/AbstractMap.java,207,0
+Rn,java.util.AbstractMap$1::size()I,java.util.AbstractMap$1,size,com/google/gwt/emul/java/util/AbstractMap.java,238,0
 a,java.util.AbstractMap$1::this$01,java.util.AbstractMap$1,this$01,com/google/gwt/emul/java/util/AbstractMap.java,195,-1
 AbstractMap$1$1,,java.util.AbstractMap$1$1,,com/google/gwt/emul/java/util/AbstractMap.java,209,-1
-Tn,java.util.AbstractMap$1$1::AbstractMap$1$1(Ljava/util/AbstractMap$1;) <init>,java.util.AbstractMap$1$1,AbstractMap$1$1,com/google/gwt/emul/java/util/AbstractMap.java,209,0
-Un,java.util.AbstractMap$1$1::hasNext()Z,java.util.AbstractMap$1$1,hasNext,com/google/gwt/emul/java/util/AbstractMap.java,211,0
-Vn,java.util.AbstractMap$1$1::next()Ljava/lang/Object;,java.util.AbstractMap$1$1,next,com/google/gwt/emul/java/util/AbstractMap.java,216,0
+Sn,java.util.AbstractMap$1$1::AbstractMap$1$1(Ljava/util/AbstractMap$1;) <init>,java.util.AbstractMap$1$1,AbstractMap$1$1,com/google/gwt/emul/java/util/AbstractMap.java,209,0
+Tn,java.util.AbstractMap$1$1::hasNext()Z,java.util.AbstractMap$1$1,hasNext,com/google/gwt/emul/java/util/AbstractMap.java,211,0
+Un,java.util.AbstractMap$1$1::next()Ljava/lang/Object;,java.util.AbstractMap$1$1,next,com/google/gwt/emul/java/util/AbstractMap.java,216,0
 a,java.util.AbstractMap$1$1::val$outerIter2,java.util.AbstractMap$1$1,val$outerIter2,com/google/gwt/emul/java/util/AbstractMap.java,209,-1
 AbstractMap$AbstractEntry,,java.util.AbstractMap$AbstractEntry,,com/google/gwt/emul/java/util/AbstractMap.java,65,-1
-Wn,java.util.AbstractMap$AbstractEntry::equals(Ljava/lang/Object;)Z,java.util.AbstractMap$AbstractEntry,equals,com/google/gwt/emul/java/util/AbstractMap.java,92,0
-Xn,java.util.AbstractMap$AbstractEntry::getKey()Ljava/lang/Object;,java.util.AbstractMap$AbstractEntry,getKey,com/google/gwt/emul/java/util/AbstractMap.java,75,0
-Yn,java.util.AbstractMap$AbstractEntry::getValue()Ljava/lang/Object;,java.util.AbstractMap$AbstractEntry,getValue,com/google/gwt/emul/java/util/AbstractMap.java,80,0
-Zn,java.util.AbstractMap$AbstractEntry::hashCode()I,java.util.AbstractMap$AbstractEntry,hashCode,com/google/gwt/emul/java/util/AbstractMap.java,105,0
+Vn,java.util.AbstractMap$AbstractEntry::equals(Ljava/lang/Object;)Z,java.util.AbstractMap$AbstractEntry,equals,com/google/gwt/emul/java/util/AbstractMap.java,92,0
+Wn,java.util.AbstractMap$AbstractEntry::getKey()Ljava/lang/Object;,java.util.AbstractMap$AbstractEntry,getKey,com/google/gwt/emul/java/util/AbstractMap.java,75,0
+Xn,java.util.AbstractMap$AbstractEntry::getValue()Ljava/lang/Object;,java.util.AbstractMap$AbstractEntry,getValue,com/google/gwt/emul/java/util/AbstractMap.java,80,0
+Yn,java.util.AbstractMap$AbstractEntry::hashCode()I,java.util.AbstractMap$AbstractEntry,hashCode,com/google/gwt/emul/java/util/AbstractMap.java,105,0
 a,java.util.AbstractMap$AbstractEntry::key,java.util.AbstractMap$AbstractEntry,key,com/google/gwt/emul/java/util/AbstractMap.java,66,-1
-$n,java.util.AbstractMap$AbstractEntry::setValue(Ljava/lang/Object;)Ljava/lang/Object;,java.util.AbstractMap$AbstractEntry,setValue,com/google/gwt/emul/java/util/AbstractMap.java,85,0
-_n,java.util.AbstractMap$AbstractEntry::toString()Ljava/lang/String;,java.util.AbstractMap$AbstractEntry,toString,com/google/gwt/emul/java/util/AbstractMap.java,110,0
+Zn,java.util.AbstractMap$AbstractEntry::setValue(Ljava/lang/Object;)Ljava/lang/Object;,java.util.AbstractMap$AbstractEntry,setValue,com/google/gwt/emul/java/util/AbstractMap.java,85,0
+$n,java.util.AbstractMap$AbstractEntry::toString()Ljava/lang/String;,java.util.AbstractMap$AbstractEntry,toString,com/google/gwt/emul/java/util/AbstractMap.java,110,0
 b,java.util.AbstractMap$AbstractEntry::value,java.util.AbstractMap$AbstractEntry,value,com/google/gwt/emul/java/util/AbstractMap.java,67,-1
 AbstractMap$SimpleEntry,,java.util.AbstractMap$SimpleEntry,,com/google/gwt/emul/java/util/AbstractMap.java,33,-1
-ao,java.util.AbstractMap$SimpleEntry::AbstractMap$SimpleEntry(Ljava/lang/Object;Ljava/lang/Object;) <init>,java.util.AbstractMap$SimpleEntry,AbstractMap$SimpleEntry,com/google/gwt/emul/java/util/AbstractMap.java,34,0
+_n,java.util.AbstractMap$SimpleEntry::AbstractMap$SimpleEntry(Ljava/lang/Object;Ljava/lang/Object;) <init>,java.util.AbstractMap$SimpleEntry,AbstractMap$SimpleEntry,com/google/gwt/emul/java/util/AbstractMap.java,34,0
 AbstractMapEntry,,java.util.AbstractMapEntry,,com/google/gwt/emul/java/util/AbstractMapEntry.java,22,-1
-bo,java.util.AbstractMapEntry::equals(Ljava/lang/Object;)Z,java.util.AbstractMapEntry,equals,com/google/gwt/emul/java/util/AbstractMapEntry.java,25,0
-co,java.util.AbstractMapEntry::hashCode()I,java.util.AbstractMapEntry,hashCode,com/google/gwt/emul/java/util/AbstractMapEntry.java,38,0
-eo,java.util.AbstractMapEntry::toString()Ljava/lang/String;,java.util.AbstractMapEntry,toString,com/google/gwt/emul/java/util/AbstractMapEntry.java,43,0
+ao,java.util.AbstractMapEntry::equals(Ljava/lang/Object;)Z,java.util.AbstractMapEntry,equals,com/google/gwt/emul/java/util/AbstractMapEntry.java,25,0
+bo,java.util.AbstractMapEntry::hashCode()I,java.util.AbstractMapEntry,hashCode,com/google/gwt/emul/java/util/AbstractMapEntry.java,38,0
+co,java.util.AbstractMapEntry::toString()Ljava/lang/String;,java.util.AbstractMapEntry,toString,com/google/gwt/emul/java/util/AbstractMapEntry.java,43,0
 AbstractSet,,java.util.AbstractSet,,com/google/gwt/emul/java/util/AbstractSet.java,27,-1
-pn,java.util.AbstractSet::equals(Ljava/lang/Object;)Z,java.util.AbstractSet,equals,com/google/gwt/emul/java/util/AbstractSet.java,33,0
-qn,java.util.AbstractSet::hashCode()I,java.util.AbstractSet,hashCode,com/google/gwt/emul/java/util/AbstractSet.java,50,0
+on,java.util.AbstractSet::equals(Ljava/lang/Object;)Z,java.util.AbstractSet,equals,com/google/gwt/emul/java/util/AbstractSet.java,33,0
+pn,java.util.AbstractSet::hashCode()I,java.util.AbstractSet,hashCode,com/google/gwt/emul/java/util/AbstractSet.java,50,0
 ArrayList,,java.util.ArrayList,,com/google/gwt/emul/java/util/ArrayList.java,51,-1
-fo,java.util.ArrayList::$add(Ljava/util/ArrayList;Ljava/lang/Object;)Z,java.util.ArrayList,$add,com/google/gwt/emul/java/util/ArrayList.java,80,0
-go,java.util.ArrayList::$get(Ljava/util/ArrayList;I)Ljava/lang/Object;,java.util.ArrayList,$get,com/google/gwt/emul/java/util/ArrayList.java,133,0
-ho,java.util.ArrayList::$indexOf(Ljava/util/ArrayList;Ljava/lang/Object;I)I,java.util.ArrayList,$indexOf,com/google/gwt/emul/java/util/ArrayList.java,295,0
-io,java.util.ArrayList::$remove(Ljava/util/ArrayList;Ljava/lang/Object;)Z,java.util.ArrayList,$remove,com/google/gwt/emul/java/util/ArrayList.java,197,0
-jo,java.util.ArrayList::$toArray(Ljava/util/ArrayList;[Ljava/lang/Object;)[Ljava/lang/Object;,java.util.ArrayList,$toArray,com/google/gwt/emul/java/util/ArrayList.java,267,0
-ko,java.util.ArrayList::ArrayList() <init>,java.util.ArrayList,ArrayList,com/google/gwt/emul/java/util/ArrayList.java,66,0
-lo,java.util.ArrayList::add(ILjava/lang/Object;)V,java.util.ArrayList,add,com/google/gwt/emul/java/util/ArrayList.java,86,0
-mo,java.util.ArrayList::add(Ljava/lang/Object;)Z,java.util.ArrayList,add,com/google/gwt/emul/java/util/ArrayList.java,80,0
+eo,java.util.ArrayList::$add(Ljava/util/ArrayList;Ljava/lang/Object;)Z,java.util.ArrayList,$add,com/google/gwt/emul/java/util/ArrayList.java,80,0
+fo,java.util.ArrayList::$indexOf(Ljava/util/ArrayList;Ljava/lang/Object;I)I,java.util.ArrayList,$indexOf,com/google/gwt/emul/java/util/ArrayList.java,295,0
+go,java.util.ArrayList::$remove(Ljava/util/ArrayList;Ljava/lang/Object;)Z,java.util.ArrayList,$remove,com/google/gwt/emul/java/util/ArrayList.java,197,0
+ho,java.util.ArrayList::$toArray(Ljava/util/ArrayList;[Ljava/lang/Object;)[Ljava/lang/Object;,java.util.ArrayList,$toArray,com/google/gwt/emul/java/util/ArrayList.java,267,0
+io,java.util.ArrayList::ArrayList() <init>,java.util.ArrayList,ArrayList,com/google/gwt/emul/java/util/ArrayList.java,66,0
+jo,java.util.ArrayList::add(ILjava/lang/Object;)V,java.util.ArrayList,add,com/google/gwt/emul/java/util/ArrayList.java,86,0
+ko,java.util.ArrayList::add(Ljava/lang/Object;)Z,java.util.ArrayList,add,com/google/gwt/emul/java/util/ArrayList.java,80,0
 a,java.util.ArrayList::array,java.util.ArrayList,array,com/google/gwt/emul/java/util/ArrayList.java,57,-1
-no,java.util.ArrayList::contains(Ljava/lang/Object;)Z,java.util.ArrayList,contains,com/google/gwt/emul/java/util/ArrayList.java,124,0
-oo,java.util.ArrayList::get(I)Ljava/lang/Object;,java.util.ArrayList,get,com/google/gwt/emul/java/util/ArrayList.java,133,0
-po,java.util.ArrayList::isEmpty()Z,java.util.ArrayList,isEmpty,com/google/gwt/emul/java/util/ArrayList.java,180,0
-qo,java.util.ArrayList::iterator()Ljava/util/Iterator;,java.util.ArrayList,iterator,com/google/gwt/emul/java/util/ArrayList.java,144,0
-ro,java.util.ArrayList::size()I,java.util.ArrayList,size,com/google/gwt/emul/java/util/ArrayList.java,248,0
+lo,java.util.ArrayList::contains(Ljava/lang/Object;)Z,java.util.ArrayList,contains,com/google/gwt/emul/java/util/ArrayList.java,124,0
+mo,java.util.ArrayList::get(I)Ljava/lang/Object;,java.util.ArrayList,get,com/google/gwt/emul/java/util/ArrayList.java,133,0
+no,java.util.ArrayList::isEmpty()Z,java.util.ArrayList,isEmpty,com/google/gwt/emul/java/util/ArrayList.java,180,0
+oo,java.util.ArrayList::iterator()Ljava/util/Iterator;,java.util.ArrayList,iterator,com/google/gwt/emul/java/util/ArrayList.java,144,0
+po,java.util.ArrayList::size()I,java.util.ArrayList,size,com/google/gwt/emul/java/util/ArrayList.java,248,0
 ArrayList$1,,java.util.ArrayList$1,,com/google/gwt/emul/java/util/ArrayList.java,145,-1
-so,java.util.ArrayList$1::$next(Ljava/util/ArrayList$1;)Ljava/lang/Object;,java.util.ArrayList$1,$next,com/google/gwt/emul/java/util/ArrayList.java,154,0
-to,java.util.ArrayList$1::ArrayList$1(Ljava/util/ArrayList;) <init>,java.util.ArrayList$1,ArrayList$1,com/google/gwt/emul/java/util/ArrayList.java,145,0
-uo,java.util.ArrayList$1::hasNext()Z,java.util.ArrayList$1,hasNext,com/google/gwt/emul/java/util/ArrayList.java,149,0
+qo,java.util.ArrayList$1::$next(Ljava/util/ArrayList$1;)Ljava/lang/Object;,java.util.ArrayList$1,$next,com/google/gwt/emul/java/util/ArrayList.java,154,0
+ro,java.util.ArrayList$1::ArrayList$1(Ljava/util/ArrayList;) <init>,java.util.ArrayList$1,ArrayList$1,com/google/gwt/emul/java/util/ArrayList.java,145,0
+so,java.util.ArrayList$1::hasNext()Z,java.util.ArrayList$1,hasNext,com/google/gwt/emul/java/util/ArrayList.java,149,0
 a,java.util.ArrayList$1::i,java.util.ArrayList$1,i,com/google/gwt/emul/java/util/ArrayList.java,146,-1
 b,java.util.ArrayList$1::last,java.util.ArrayList$1,last,com/google/gwt/emul/java/util/ArrayList.java,146,-1
-vo,java.util.ArrayList$1::next()Ljava/lang/Object;,java.util.ArrayList$1,next,com/google/gwt/emul/java/util/ArrayList.java,154,0
+to,java.util.ArrayList$1::next()Ljava/lang/Object;,java.util.ArrayList$1,next,com/google/gwt/emul/java/util/ArrayList.java,154,0
 c,java.util.ArrayList$1::this$01,java.util.ArrayList$1,this$01,com/google/gwt/emul/java/util/ArrayList.java,145,-1
-xo,java.util.Collections::$clinit()V,java.util.Collections,$clinit,com/google/gwt/emul/java/util/Collections.java,30,0
-wo,java.util.Collections::EMPTY_LIST,java.util.Collections,EMPTY_LIST,com/google/gwt/emul/java/util/Collections.java,848,-1
-yo,java.util.Collections::hashCode(Ljava/lang/Iterable;)I,java.util.Collections,hashCode,com/google/gwt/emul/java/util/Collections.java,1302,0
-zo,java.util.Collections::hashCode(Ljava/util/List;)I,java.util.Collections,hashCode,com/google/gwt/emul/java/util/Collections.java,1314,0
+vo,java.util.Collections::$clinit()V,java.util.Collections,$clinit,com/google/gwt/emul/java/util/Collections.java,30,0
+uo,java.util.Collections::EMPTY_LIST,java.util.Collections,EMPTY_LIST,com/google/gwt/emul/java/util/Collections.java,848,-1
+wo,java.util.Collections::hashCode(Ljava/lang/Iterable;)I,java.util.Collections,hashCode,com/google/gwt/emul/java/util/Collections.java,1302,0
+xo,java.util.Collections::hashCode(Ljava/util/List;)I,java.util.Collections,hashCode,com/google/gwt/emul/java/util/Collections.java,1314,0
 Collections$EmptyList,,java.util.Collections$EmptyList,,com/google/gwt/emul/java/util/Collections.java,67,-1
-Ao,java.util.Collections$EmptyList::Collections$EmptyList() <init>,java.util.Collections$EmptyList,Collections$EmptyList,com/google/gwt/emul/java/util/Collections.java,67,0
-Bo,java.util.Collections$EmptyList::contains(Ljava/lang/Object;)Z,java.util.Collections$EmptyList,contains,com/google/gwt/emul/java/util/Collections.java,70,0
-Co,java.util.Collections$EmptyList::get(I)Ljava/lang/Object;,java.util.Collections$EmptyList,get,com/google/gwt/emul/java/util/Collections.java,75,0
-Do,java.util.Collections$EmptyList::iterator()Ljava/util/Iterator;,java.util.Collections$EmptyList,iterator,com/google/gwt/emul/java/util/Collections.java,81,0
-Eo,java.util.Collections$EmptyList::listIterator()Ljava/util/ListIterator;,java.util.Collections$EmptyList,listIterator,com/google/gwt/emul/java/util/Collections.java,86,0
-Fo,java.util.Collections$EmptyList::size()I,java.util.Collections$EmptyList,size,com/google/gwt/emul/java/util/Collections.java,91,0
+yo,java.util.Collections$EmptyList::Collections$EmptyList() <init>,java.util.Collections$EmptyList,Collections$EmptyList,com/google/gwt/emul/java/util/Collections.java,67,0
+zo,java.util.Collections$EmptyList::contains(Ljava/lang/Object;)Z,java.util.Collections$EmptyList,contains,com/google/gwt/emul/java/util/Collections.java,70,0
+Ao,java.util.Collections$EmptyList::get(I)Ljava/lang/Object;,java.util.Collections$EmptyList,get,com/google/gwt/emul/java/util/Collections.java,75,0
+Bo,java.util.Collections$EmptyList::iterator()Ljava/util/Iterator;,java.util.Collections$EmptyList,iterator,com/google/gwt/emul/java/util/Collections.java,81,0
+Co,java.util.Collections$EmptyList::listIterator()Ljava/util/ListIterator;,java.util.Collections$EmptyList,listIterator,com/google/gwt/emul/java/util/Collections.java,86,0
+Do,java.util.Collections$EmptyList::size()I,java.util.Collections$EmptyList,size,com/google/gwt/emul/java/util/Collections.java,91,0
 Collections$EmptyListIterator,,java.util.Collections$EmptyListIterator,,com/google/gwt/emul/java/util/Collections.java,96,-1
-Ho,java.util.Collections$EmptyListIterator::$clinit()V,java.util.Collections$EmptyListIterator,$clinit,com/google/gwt/emul/java/util/Collections.java,96,0
-Io,java.util.Collections$EmptyListIterator::Collections$EmptyListIterator() <init>,java.util.Collections$EmptyListIterator,Collections$EmptyListIterator,com/google/gwt/emul/java/util/Collections.java,96,0
-Go,java.util.Collections$EmptyListIterator::INSTANCE,java.util.Collections$EmptyListIterator,INSTANCE,com/google/gwt/emul/java/util/Collections.java,98,-1
-Jo,java.util.Collections$EmptyListIterator::hasNext()Z,java.util.Collections$EmptyListIterator,hasNext,com/google/gwt/emul/java/util/Collections.java,106,0
-Ko,java.util.Collections$EmptyListIterator::hasPrevious()Z,java.util.Collections$EmptyListIterator,hasPrevious,com/google/gwt/emul/java/util/Collections.java,111,0
-Lo,java.util.Collections$EmptyListIterator::next()Ljava/lang/Object;,java.util.Collections$EmptyListIterator,next,com/google/gwt/emul/java/util/Collections.java,116,0
-Mo,java.util.Collections$EmptyListIterator::previous()Ljava/lang/Object;,java.util.Collections$EmptyListIterator,previous,com/google/gwt/emul/java/util/Collections.java,126,0
-No,java.util.ConcurrentModificationDetector::checkStructuralChange(Ljava/lang/Object;Ljava/util/Iterator;)V,java.util.ConcurrentModificationDetector,checkStructuralChange,com/google/gwt/emul/java/util/ConcurrentModificationDetector.java,48,0
-Oo,java.util.ConcurrentModificationDetector::structureChanged(Ljava/lang/Object;)V,java.util.ConcurrentModificationDetector,structureChanged,com/google/gwt/emul/java/util/ConcurrentModificationDetector.java,31,0
+Fo,java.util.Collections$EmptyListIterator::$clinit()V,java.util.Collections$EmptyListIterator,$clinit,com/google/gwt/emul/java/util/Collections.java,96,0
+Go,java.util.Collections$EmptyListIterator::Collections$EmptyListIterator() <init>,java.util.Collections$EmptyListIterator,Collections$EmptyListIterator,com/google/gwt/emul/java/util/Collections.java,96,0
+Eo,java.util.Collections$EmptyListIterator::INSTANCE,java.util.Collections$EmptyListIterator,INSTANCE,com/google/gwt/emul/java/util/Collections.java,98,-1
+Ho,java.util.Collections$EmptyListIterator::hasNext()Z,java.util.Collections$EmptyListIterator,hasNext,com/google/gwt/emul/java/util/Collections.java,106,0
+Io,java.util.Collections$EmptyListIterator::hasPrevious()Z,java.util.Collections$EmptyListIterator,hasPrevious,com/google/gwt/emul/java/util/Collections.java,111,0
+Jo,java.util.Collections$EmptyListIterator::next()Ljava/lang/Object;,java.util.Collections$EmptyListIterator,next,com/google/gwt/emul/java/util/Collections.java,116,0
+Ko,java.util.Collections$EmptyListIterator::previous()Ljava/lang/Object;,java.util.Collections$EmptyListIterator,previous,com/google/gwt/emul/java/util/Collections.java,126,0
+Lo,java.util.ConcurrentModificationDetector::checkStructuralChange(Ljava/lang/Object;Ljava/util/Iterator;)V,java.util.ConcurrentModificationDetector,checkStructuralChange,com/google/gwt/emul/java/util/ConcurrentModificationDetector.java,48,0
+Mo,java.util.ConcurrentModificationDetector::structureChanged(Ljava/lang/Object;)V,java.util.ConcurrentModificationDetector,structureChanged,com/google/gwt/emul/java/util/ConcurrentModificationDetector.java,31,0
 ConcurrentModificationException,,java.util.ConcurrentModificationException,,com/google/gwt/emul/java/util/ConcurrentModificationException.java,23,-1
-Po,java.util.ConcurrentModificationException::ConcurrentModificationException() <init>,java.util.ConcurrentModificationException,ConcurrentModificationException,com/google/gwt/emul/java/util/ConcurrentModificationException.java,25,0
+No,java.util.ConcurrentModificationException::ConcurrentModificationException() <init>,java.util.ConcurrentModificationException,ConcurrentModificationException,com/google/gwt/emul/java/util/ConcurrentModificationException.java,25,0
 HashMap,,java.util.HashMap,,com/google/gwt/emul/java/util/HashMap.java,30,-1
-Qo,java.util.HashMap::$equals(Ljava/util/HashMap;Ljava/lang/Object;Ljava/lang/Object;)Z,java.util.HashMap,$equals,com/google/gwt/emul/java/util/HashMap.java,67,0
-Ro,java.util.HashMap::HashMap() <init>,java.util.HashMap,HashMap,com/google/gwt/emul/java/util/HashMap.java,47,0
+Oo,java.util.HashMap::$equals(Ljava/util/HashMap;Ljava/lang/Object;Ljava/lang/Object;)Z,java.util.HashMap,$equals,com/google/gwt/emul/java/util/HashMap.java,67,0
+Po,java.util.HashMap::HashMap() <init>,java.util.HashMap,HashMap,com/google/gwt/emul/java/util/HashMap.java,47,0
 HashSet,,java.util.HashSet,,com/google/gwt/emul/java/util/HashSet.java,27,-1
-So,java.util.HashSet::$add(Ljava/util/HashSet;Ljava/lang/Object;)Z,java.util.HashSet,$add,com/google/gwt/emul/java/util/HashSet.java,67,0
-To,java.util.HashSet::$contains(Ljava/util/HashSet;Ljava/lang/Object;)Z,java.util.HashSet,$contains,com/google/gwt/emul/java/util/HashSet.java,82,0
-Uo,java.util.HashSet::$remove(Ljava/util/HashSet;Ljava/lang/Object;)Z,java.util.HashSet,$remove,com/google/gwt/emul/java/util/HashSet.java,97,0
-Vo,java.util.HashSet::HashSet() <init>,java.util.HashSet,HashSet,com/google/gwt/emul/java/util/HashSet.java,39,0
-Wo,java.util.HashSet::add(Ljava/lang/Object;)Z,java.util.HashSet,add,com/google/gwt/emul/java/util/HashSet.java,67,0
-Xo,java.util.HashSet::contains(Ljava/lang/Object;)Z,java.util.HashSet,contains,com/google/gwt/emul/java/util/HashSet.java,82,0
-Yo,java.util.HashSet::isEmpty()Z,java.util.HashSet,isEmpty,com/google/gwt/emul/java/util/HashSet.java,87,0
-Zo,java.util.HashSet::iterator()Ljava/util/Iterator;,java.util.HashSet,iterator,com/google/gwt/emul/java/util/HashSet.java,92,0
+Qo,java.util.HashSet::$add(Ljava/util/HashSet;Ljava/lang/Object;)Z,java.util.HashSet,$add,com/google/gwt/emul/java/util/HashSet.java,67,0
+Ro,java.util.HashSet::$contains(Ljava/util/HashSet;Ljava/lang/Object;)Z,java.util.HashSet,$contains,com/google/gwt/emul/java/util/HashSet.java,82,0
+So,java.util.HashSet::$remove(Ljava/util/HashSet;Ljava/lang/Object;)Z,java.util.HashSet,$remove,com/google/gwt/emul/java/util/HashSet.java,97,0
+To,java.util.HashSet::HashSet() <init>,java.util.HashSet,HashSet,com/google/gwt/emul/java/util/HashSet.java,39,0
+Uo,java.util.HashSet::add(Ljava/lang/Object;)Z,java.util.HashSet,add,com/google/gwt/emul/java/util/HashSet.java,67,0
+Vo,java.util.HashSet::contains(Ljava/lang/Object;)Z,java.util.HashSet,contains,com/google/gwt/emul/java/util/HashSet.java,82,0
+Wo,java.util.HashSet::isEmpty()Z,java.util.HashSet,isEmpty,com/google/gwt/emul/java/util/HashSet.java,87,0
+Xo,java.util.HashSet::iterator()Ljava/util/Iterator;,java.util.HashSet,iterator,com/google/gwt/emul/java/util/HashSet.java,92,0
 a,java.util.HashSet::map,java.util.HashSet,map,com/google/gwt/emul/java/util/HashSet.java,30,-1
-$o,java.util.HashSet::size()I,java.util.HashSet,size,com/google/gwt/emul/java/util/HashSet.java,102,0
+Yo,java.util.HashSet::size()I,java.util.HashSet,size,com/google/gwt/emul/java/util/HashSet.java,102,0
 InternalHashCodeMap,,java.util.InternalHashCodeMap,,com/google/gwt/emul/java/util/InternalHashCodeMap.java,35,-1
-_o,java.util.InternalHashCodeMap::$findEntryInChain(Ljava/util/InternalHashCodeMap;Ljava/lang/Object;[Ljava/util/Map$Entry;)Ljava/util/Map$Entry;,java.util.InternalHashCodeMap,$findEntryInChain,com/google/gwt/emul/java/util/InternalHashCodeMap.java,91,0
-ap,java.util.InternalHashCodeMap::$getChainOrEmpty(Ljava/util/InternalHashCodeMap;I)[Ljava/util/Map$Entry;,java.util.InternalHashCodeMap,$getChainOrEmpty,com/google/gwt/emul/java/util/InternalHashCodeMap.java,144,0
-bp,java.util.InternalHashCodeMap::$getEntry(Ljava/util/InternalHashCodeMap;Ljava/lang/Object;)Ljava/util/Map$Entry;,java.util.InternalHashCodeMap,$getEntry,com/google/gwt/emul/java/util/InternalHashCodeMap.java,87,0
-cp,java.util.InternalHashCodeMap::$put(Ljava/util/InternalHashCodeMap;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;,java.util.InternalHashCodeMap,$put,com/google/gwt/emul/java/util/InternalHashCodeMap.java,45,0
-dp,java.util.InternalHashCodeMap::$remove(Ljava/util/InternalHashCodeMap;Ljava/lang/Object;)Ljava/lang/Object;,java.util.InternalHashCodeMap,$remove,com/google/gwt/emul/java/util/InternalHashCodeMap.java,65,0
-ep,java.util.InternalHashCodeMap::InternalHashCodeMap(Ljava/util/AbstractHashMap;) <init>,java.util.InternalHashCodeMap,InternalHashCodeMap,com/google/gwt/emul/java/util/InternalHashCodeMap.java,41,0
+Zo,java.util.InternalHashCodeMap::$findEntryInChain(Ljava/util/InternalHashCodeMap;Ljava/lang/Object;[Ljava/util/Map$Entry;)Ljava/util/Map$Entry;,java.util.InternalHashCodeMap,$findEntryInChain,com/google/gwt/emul/java/util/InternalHashCodeMap.java,91,0
+$o,java.util.InternalHashCodeMap::$getChainOrEmpty(Ljava/util/InternalHashCodeMap;I)[Ljava/util/Map$Entry;,java.util.InternalHashCodeMap,$getChainOrEmpty,com/google/gwt/emul/java/util/InternalHashCodeMap.java,144,0
+_o,java.util.InternalHashCodeMap::$getEntry(Ljava/util/InternalHashCodeMap;Ljava/lang/Object;)Ljava/util/Map$Entry;,java.util.InternalHashCodeMap,$getEntry,com/google/gwt/emul/java/util/InternalHashCodeMap.java,87,0
+ap,java.util.InternalHashCodeMap::$put(Ljava/util/InternalHashCodeMap;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;,java.util.InternalHashCodeMap,$put,com/google/gwt/emul/java/util/InternalHashCodeMap.java,45,0
+bp,java.util.InternalHashCodeMap::$remove(Ljava/util/InternalHashCodeMap;Ljava/lang/Object;)Ljava/lang/Object;,java.util.InternalHashCodeMap,$remove,com/google/gwt/emul/java/util/InternalHashCodeMap.java,65,0
+cp,java.util.InternalHashCodeMap::InternalHashCodeMap(Ljava/util/AbstractHashMap;) <init>,java.util.InternalHashCodeMap,InternalHashCodeMap,com/google/gwt/emul/java/util/InternalHashCodeMap.java,41,0
 a,java.util.InternalHashCodeMap::backingMap,java.util.InternalHashCodeMap,backingMap,com/google/gwt/emul/java/util/InternalHashCodeMap.java,37,-1
 b,java.util.InternalHashCodeMap::host,java.util.InternalHashCodeMap,host,com/google/gwt/emul/java/util/InternalHashCodeMap.java,38,-1
-fp,java.util.InternalHashCodeMap::iterator()Ljava/util/Iterator;,java.util.InternalHashCodeMap,iterator,com/google/gwt/emul/java/util/InternalHashCodeMap.java,105,0
+dp,java.util.InternalHashCodeMap::iterator()Ljava/util/Iterator;,java.util.InternalHashCodeMap,iterator,com/google/gwt/emul/java/util/InternalHashCodeMap.java,105,0
 c,java.util.InternalHashCodeMap::size,java.util.InternalHashCodeMap,size,com/google/gwt/emul/java/util/InternalHashCodeMap.java,39,-1
 InternalHashCodeMap$1,,java.util.InternalHashCodeMap$1,,com/google/gwt/emul/java/util/InternalHashCodeMap.java,106,-1
-gp,java.util.InternalHashCodeMap$1::InternalHashCodeMap$1(Ljava/util/InternalHashCodeMap;) <init>,java.util.InternalHashCodeMap$1,InternalHashCodeMap$1,com/google/gwt/emul/java/util/InternalHashCodeMap.java,106,0
+ep,java.util.InternalHashCodeMap$1::InternalHashCodeMap$1(Ljava/util/InternalHashCodeMap;) <init>,java.util.InternalHashCodeMap$1,InternalHashCodeMap$1,com/google/gwt/emul/java/util/InternalHashCodeMap.java,106,0
 a,java.util.InternalHashCodeMap$1::chain,java.util.InternalHashCodeMap$1,chain,com/google/gwt/emul/java/util/InternalHashCodeMap.java,109,-1
 b,java.util.InternalHashCodeMap$1::chains,java.util.InternalHashCodeMap$1,chains,com/google/gwt/emul/java/util/InternalHashCodeMap.java,107,-1
-hp,java.util.InternalHashCodeMap$1::hasNext()Z,java.util.InternalHashCodeMap$1,hasNext,com/google/gwt/emul/java/util/InternalHashCodeMap.java,113,0
+fp,java.util.InternalHashCodeMap$1::hasNext()Z,java.util.InternalHashCodeMap$1,hasNext,com/google/gwt/emul/java/util/InternalHashCodeMap.java,113,0
 c,java.util.InternalHashCodeMap$1::itemIndex,java.util.InternalHashCodeMap$1,itemIndex,com/google/gwt/emul/java/util/InternalHashCodeMap.java,108,-1
 d,java.util.InternalHashCodeMap$1::lastEntry,java.util.InternalHashCodeMap$1,lastEntry,com/google/gwt/emul/java/util/InternalHashCodeMap.java,110,-1
-ip,java.util.InternalHashCodeMap$1::next()Ljava/lang/Object;,java.util.InternalHashCodeMap$1,next,com/google/gwt/emul/java/util/InternalHashCodeMap.java,128,0
+gp,java.util.InternalHashCodeMap$1::next()Ljava/lang/Object;,java.util.InternalHashCodeMap$1,next,com/google/gwt/emul/java/util/InternalHashCodeMap.java,128,0
 e,java.util.InternalHashCodeMap$1::this$01,java.util.InternalHashCodeMap$1,this$01,com/google/gwt/emul/java/util/InternalHashCodeMap.java,106,-1
 InternalJsMap,,java.util.InternalJsMap,,com/google/gwt/emul/java/util/InternalJsMap.java,25,-1
 InternalJsMap$Iterator,,java.util.InternalJsMap$Iterator,,com/google/gwt/emul/java/util/InternalJsMap.java,28,-1
 InternalJsMap$IteratorEntry,,java.util.InternalJsMap$IteratorEntry,,com/google/gwt/emul/java/util/InternalJsMap.java,33,-1
 done,java.util.InternalJsMap$IteratorEntry::done,java.util.InternalJsMap$IteratorEntry,done,com/google/gwt/emul/java/util/InternalJsMap.java,35,-1
 value,java.util.InternalJsMap$IteratorEntry::value,java.util.InternalJsMap$IteratorEntry,value,com/google/gwt/emul/java/util/InternalJsMap.java,34,-1
-kp,java.util.InternalJsMapFactory::$clinit()V,java.util.InternalJsMapFactory,$clinit,com/google/gwt/emul/java/util/InternalJsMapFactory.java,23,0
-lp,java.util.InternalJsMapFactory::canHandleObjectCreateAndProto()Z,java.util.InternalJsMapFactory,canHandleObjectCreateAndProto,com/google/gwt/emul/java/util/InternalJsMapFactory.java,133,0
-mp,java.util.InternalJsMapFactory::getJsMapConstructor()Lcom/google/gwt/core/client/JavaScriptObject;,java.util.InternalJsMapFactory,getJsMapConstructor,com/google/gwt/emul/java/util/InternalJsMapFactory.java,27,0
-np,java.util.InternalJsMapFactory::getJsMapPolyFill()Lcom/google/gwt/core/client/JavaScriptObject;,java.util.InternalJsMapFactory,getJsMapPolyFill,com/google/gwt/emul/java/util/InternalJsMapFactory.java,58,0
-jp,java.util.InternalJsMapFactory::jsMapCtor,java.util.InternalJsMapFactory,jsMapCtor,com/google/gwt/emul/java/util/InternalJsMapFactory.java,25,-1
-op,java.util.InternalJsMapFactory::newJsMap()Ljava/util/InternalJsMap;,java.util.InternalJsMapFactory,newJsMap,com/google/gwt/emul/java/util/InternalJsMapFactory.java,44,0
+ip,java.util.InternalJsMapFactory::$clinit()V,java.util.InternalJsMapFactory,$clinit,com/google/gwt/emul/java/util/InternalJsMapFactory.java,23,0
+jp,java.util.InternalJsMapFactory::canHandleObjectCreateAndProto()Z,java.util.InternalJsMapFactory,canHandleObjectCreateAndProto,com/google/gwt/emul/java/util/InternalJsMapFactory.java,133,0
+kp,java.util.InternalJsMapFactory::getJsMapConstructor()Lcom/google/gwt/core/client/JavaScriptObject;,java.util.InternalJsMapFactory,getJsMapConstructor,com/google/gwt/emul/java/util/InternalJsMapFactory.java,27,0
+lp,java.util.InternalJsMapFactory::getJsMapPolyFill()Lcom/google/gwt/core/client/JavaScriptObject;,java.util.InternalJsMapFactory,getJsMapPolyFill,com/google/gwt/emul/java/util/InternalJsMapFactory.java,58,0
+hp,java.util.InternalJsMapFactory::jsMapCtor,java.util.InternalJsMapFactory,jsMapCtor,com/google/gwt/emul/java/util/InternalJsMapFactory.java,25,-1
+mp,java.util.InternalJsMapFactory::newJsMap()Ljava/util/InternalJsMap;,java.util.InternalJsMapFactory,newJsMap,com/google/gwt/emul/java/util/InternalJsMapFactory.java,44,0
 InternalStringMap,,java.util.InternalStringMap,,com/google/gwt/emul/java/util/InternalStringMap.java,27,-1
-pp,java.util.InternalStringMap::$contains(Ljava/util/InternalStringMap;Ljava/lang/String;)Z,java.util.InternalStringMap,$contains,com/google/gwt/emul/java/util/InternalStringMap.java,45,0
-qp,java.util.InternalStringMap::$get(Ljava/util/InternalStringMap;Ljava/lang/String;)Ljava/lang/Object;,java.util.InternalStringMap,$get,com/google/gwt/emul/java/util/InternalStringMap.java,49,0
-rp,java.util.InternalStringMap::$put(Ljava/util/InternalStringMap;Ljava/lang/String;Ljava/lang/Object;)Ljava/lang/Object;,java.util.InternalStringMap,$put,com/google/gwt/emul/java/util/InternalStringMap.java,53,0
-sp,java.util.InternalStringMap::$remove(Ljava/util/InternalStringMap;Ljava/lang/String;)Ljava/lang/Object;,java.util.InternalStringMap,$remove,com/google/gwt/emul/java/util/InternalStringMap.java,66,0
-tp,java.util.InternalStringMap::InternalStringMap(Ljava/util/AbstractHashMap;) <init>,java.util.InternalStringMap,InternalStringMap,com/google/gwt/emul/java/util/InternalStringMap.java,41,0
+np,java.util.InternalStringMap::$contains(Ljava/util/InternalStringMap;Ljava/lang/String;)Z,java.util.InternalStringMap,$contains,com/google/gwt/emul/java/util/InternalStringMap.java,45,0
+op,java.util.InternalStringMap::$get(Ljava/util/InternalStringMap;Ljava/lang/String;)Ljava/lang/Object;,java.util.InternalStringMap,$get,com/google/gwt/emul/java/util/InternalStringMap.java,49,0
+pp,java.util.InternalStringMap::$put(Ljava/util/InternalStringMap;Ljava/lang/String;Ljava/lang/Object;)Ljava/lang/Object;,java.util.InternalStringMap,$put,com/google/gwt/emul/java/util/InternalStringMap.java,53,0
+qp,java.util.InternalStringMap::$remove(Ljava/util/InternalStringMap;Ljava/lang/String;)Ljava/lang/Object;,java.util.InternalStringMap,$remove,com/google/gwt/emul/java/util/InternalStringMap.java,66,0
+rp,java.util.InternalStringMap::InternalStringMap(Ljava/util/AbstractHashMap;) <init>,java.util.InternalStringMap,InternalStringMap,com/google/gwt/emul/java/util/InternalStringMap.java,41,0
 a,java.util.InternalStringMap::backingMap,java.util.InternalStringMap,backingMap,com/google/gwt/emul/java/util/InternalStringMap.java,29,-1
 b,java.util.InternalStringMap::host,java.util.InternalStringMap,host,com/google/gwt/emul/java/util/InternalStringMap.java,30,-1
-up,java.util.InternalStringMap::iterator()Ljava/util/Iterator;,java.util.InternalStringMap,iterator,com/google/gwt/emul/java/util/InternalStringMap.java,84,0
+sp,java.util.InternalStringMap::iterator()Ljava/util/Iterator;,java.util.InternalStringMap,iterator,com/google/gwt/emul/java/util/InternalStringMap.java,84,0
 c,java.util.InternalStringMap::size,java.util.InternalStringMap,size,com/google/gwt/emul/java/util/InternalStringMap.java,31,-1
 d,java.util.InternalStringMap::valueMod,java.util.InternalStringMap,valueMod,com/google/gwt/emul/java/util/InternalStringMap.java,39,-1
 InternalStringMap$1,,java.util.InternalStringMap$1,,com/google/gwt/emul/java/util/InternalStringMap.java,85,-1
-vp,java.util.InternalStringMap$1::InternalStringMap$1(Ljava/util/InternalStringMap;) <init>,java.util.InternalStringMap$1,InternalStringMap$1,com/google/gwt/emul/java/util/InternalStringMap.java,85,0
+tp,java.util.InternalStringMap$1::InternalStringMap$1(Ljava/util/InternalStringMap;) <init>,java.util.InternalStringMap$1,InternalStringMap$1,com/google/gwt/emul/java/util/InternalStringMap.java,85,0
 a,java.util.InternalStringMap$1::current,java.util.InternalStringMap$1,current,com/google/gwt/emul/java/util/InternalStringMap.java,87,-1
 b,java.util.InternalStringMap$1::entries,java.util.InternalStringMap$1,entries,com/google/gwt/emul/java/util/InternalStringMap.java,86,-1
-wp,java.util.InternalStringMap$1::hasNext()Z,java.util.InternalStringMap$1,hasNext,com/google/gwt/emul/java/util/InternalStringMap.java,91,0
+up,java.util.InternalStringMap$1::hasNext()Z,java.util.InternalStringMap$1,hasNext,com/google/gwt/emul/java/util/InternalStringMap.java,91,0
 c,java.util.InternalStringMap$1::last,java.util.InternalStringMap$1,last,com/google/gwt/emul/java/util/InternalStringMap.java,88,-1
-xp,java.util.InternalStringMap$1::next()Ljava/lang/Object;,java.util.InternalStringMap$1,next,com/google/gwt/emul/java/util/InternalStringMap.java,95,0
+vp,java.util.InternalStringMap$1::next()Ljava/lang/Object;,java.util.InternalStringMap$1,next,com/google/gwt/emul/java/util/InternalStringMap.java,95,0
 d,java.util.InternalStringMap$1::this$01,java.util.InternalStringMap$1,this$01,com/google/gwt/emul/java/util/InternalStringMap.java,85,-1
 InternalStringMap$2,,java.util.InternalStringMap$2,,com/google/gwt/emul/java/util/InternalStringMap.java,109,-1
-yp,java.util.InternalStringMap$2::$getValue(Ljava/util/InternalStringMap$2;)Ljava/lang/Object;,java.util.InternalStringMap$2,$getValue,com/google/gwt/emul/java/util/InternalStringMap.java,116,0
-zp,java.util.InternalStringMap$2::InternalStringMap$2(Ljava/util/InternalStringMap;) <init>,java.util.InternalStringMap$2,InternalStringMap$2,com/google/gwt/emul/java/util/InternalStringMap.java,109,0
-Ap,java.util.InternalStringMap$2::getKey()Ljava/lang/Object;,java.util.InternalStringMap$2,getKey,com/google/gwt/emul/java/util/InternalStringMap.java,112,0
-Bp,java.util.InternalStringMap$2::getValue()Ljava/lang/Object;,java.util.InternalStringMap$2,getValue,com/google/gwt/emul/java/util/InternalStringMap.java,116,0
-Cp,java.util.InternalStringMap$2::setValue(Ljava/lang/Object;)Ljava/lang/Object;,java.util.InternalStringMap$2,setValue,com/google/gwt/emul/java/util/InternalStringMap.java,124,0
+wp,java.util.InternalStringMap$2::$getValue(Ljava/util/InternalStringMap$2;)Ljava/lang/Object;,java.util.InternalStringMap$2,$getValue,com/google/gwt/emul/java/util/InternalStringMap.java,116,0
+xp,java.util.InternalStringMap$2::InternalStringMap$2(Ljava/util/InternalStringMap;) <init>,java.util.InternalStringMap$2,InternalStringMap$2,com/google/gwt/emul/java/util/InternalStringMap.java,109,0
+yp,java.util.InternalStringMap$2::getKey()Ljava/lang/Object;,java.util.InternalStringMap$2,getKey,com/google/gwt/emul/java/util/InternalStringMap.java,112,0
+zp,java.util.InternalStringMap$2::getValue()Ljava/lang/Object;,java.util.InternalStringMap$2,getValue,com/google/gwt/emul/java/util/InternalStringMap.java,116,0
+Ap,java.util.InternalStringMap$2::setValue(Ljava/lang/Object;)Ljava/lang/Object;,java.util.InternalStringMap$2,setValue,com/google/gwt/emul/java/util/InternalStringMap.java,124,0
 a,java.util.InternalStringMap$2::this$01,java.util.InternalStringMap$2,this$01,com/google/gwt/emul/java/util/InternalStringMap.java,109,-1
 b,java.util.InternalStringMap$2::val$entry2,java.util.InternalStringMap$2,val$entry2,com/google/gwt/emul/java/util/InternalStringMap.java,109,-1
 c,java.util.InternalStringMap$2::val$lastValueMod3,java.util.InternalStringMap$2,val$lastValueMod3,com/google/gwt/emul/java/util/InternalStringMap.java,109,-1
 NoSuchElementException,,java.util.NoSuchElementException,,com/google/gwt/emul/java/util/NoSuchElementException.java,23,-1
-Dp,java.util.NoSuchElementException::NoSuchElementException() <init>,java.util.NoSuchElementException,NoSuchElementException,com/google/gwt/emul/java/util/NoSuchElementException.java,25,0
-Ep,java.util.Objects::equals(Ljava/lang/Object;Ljava/lang/Object;)Z,java.util.Objects,equals,com/google/gwt/emul/java/util/Objects.java,86,0
-Fp,java.util.Objects::hashCode(Ljava/lang/Object;)I,java.util.Objects,hashCode,com/google/gwt/emul/java/util/Objects.java,95,0
+Bp,java.util.NoSuchElementException::NoSuchElementException() <init>,java.util.NoSuchElementException,NoSuchElementException,com/google/gwt/emul/java/util/NoSuchElementException.java,25,0
+Cp,java.util.Objects::equals(Ljava/lang/Object;Ljava/lang/Object;)Z,java.util.Objects,equals,com/google/gwt/emul/java/util/Objects.java,86,0
+Dp,java.util.Objects::hashCode(Ljava/lang/Object;)I,java.util.Objects,hashCode,com/google/gwt/emul/java/util/Objects.java,95,0
 StringJoiner,,java.util.StringJoiner,,com/google/gwt/emul/java/util/StringJoiner.java,22,-1
-Gp,java.util.StringJoiner::$add(Ljava/util/StringJoiner;Ljava/lang/CharSequence;)Ljava/util/StringJoiner;,java.util.StringJoiner,$add,com/google/gwt/emul/java/util/StringJoiner.java,42,0
-Hp,java.util.StringJoiner::StringJoiner(Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;) <init>,java.util.StringJoiner,StringJoiner,com/google/gwt/emul/java/util/StringJoiner.java,35,0
+Ep,java.util.StringJoiner::$add(Ljava/util/StringJoiner;Ljava/lang/CharSequence;)Ljava/util/StringJoiner;,java.util.StringJoiner,$add,com/google/gwt/emul/java/util/StringJoiner.java,42,0
+Fp,java.util.StringJoiner::StringJoiner(Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;) <init>,java.util.StringJoiner,StringJoiner,com/google/gwt/emul/java/util/StringJoiner.java,35,0
 a,java.util.StringJoiner::builder,java.util.StringJoiner,builder,com/google/gwt/emul/java/util/StringJoiner.java,28,-1
 b,java.util.StringJoiner::delimiter,java.util.StringJoiner,delimiter,com/google/gwt/emul/java/util/StringJoiner.java,24,-1
 c,java.util.StringJoiner::emptyValue,java.util.StringJoiner,emptyValue,com/google/gwt/emul/java/util/StringJoiner.java,29,-1
 d,java.util.StringJoiner::prefix,java.util.StringJoiner,prefix,com/google/gwt/emul/java/util/StringJoiner.java,25,-1
 e,java.util.StringJoiner::suffix,java.util.StringJoiner,suffix,com/google/gwt/emul/java/util/StringJoiner.java,26,-1
-Ip,java.util.StringJoiner::toString()Ljava/lang/String;,java.util.StringJoiner,toString,com/google/gwt/emul/java/util/StringJoiner.java,72,0
-Jp,javaemul.internal.ArrayHelper::insertTo(Ljava/lang/Object;ILjava/lang/Object;)V,javaemul.internal.ArrayHelper,insertTo,com/google/gwt/emul/javaemul/internal/ArrayHelper.java,59,0
-Kp,javaemul.internal.ArrayHelper::removeFrom(Ljava/lang/Object;II)V,javaemul.internal.ArrayHelper,removeFrom,com/google/gwt/emul/javaemul/internal/ArrayHelper.java,55,0
-Lp,javaemul.internal.InternalPreconditions::checkCriticalArgument(ZLjava/lang/Object;)V,javaemul.internal.InternalPreconditions,checkCriticalArgument,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,307,0
-Mp,javaemul.internal.InternalPreconditions::checkCriticalArrayType(Z)V,javaemul.internal.InternalPreconditions,checkCriticalArrayType,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,160,0
-Np,javaemul.internal.InternalPreconditions::checkCriticalElement(Z)V,javaemul.internal.InternalPreconditions,checkCriticalElement,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,226,0
-Op,javaemul.internal.InternalPreconditions::checkCriticalElementIndex(II)V,javaemul.internal.InternalPreconditions,checkCriticalElementIndex,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,482,0
-Pp,javaemul.internal.InternalPreconditions::checkCriticalNotNull(Ljava/lang/Object;)Ljava/lang/Object;,javaemul.internal.InternalPreconditions,checkCriticalNotNull,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,417,0
-Qp,javaemul.internal.InternalPreconditions::checkCriticalNotNull(Ljava/lang/Object;Ljava/lang/Object;)V,javaemul.internal.InternalPreconditions,checkCriticalNotNull,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,439,0
-Rp,javaemul.internal.InternalPreconditions::checkCriticalPositionIndex(II)V,javaemul.internal.InternalPreconditions,checkCriticalPositionIndex,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,504,0
-Sp,javaemul.internal.InternalPreconditions::checkCriticalType(Z)V,javaemul.internal.InternalPreconditions,checkCriticalType,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,139,0
-Tp,javaemul.internal.JsUtils::setPropertySafe(Ljava/lang/Object;Ljava/lang/String;Ljava/lang/Object;)V,javaemul.internal.JsUtils,setPropertySafe,com/google/gwt/emul/javaemul/internal/JsUtils.java,59,0
+Gp,java.util.StringJoiner::toString()Ljava/lang/String;,java.util.StringJoiner,toString,com/google/gwt/emul/java/util/StringJoiner.java,72,0
+Hp,javaemul.internal.ArrayHelper::insertTo(Ljava/lang/Object;ILjava/lang/Object;)V,javaemul.internal.ArrayHelper,insertTo,com/google/gwt/emul/javaemul/internal/ArrayHelper.java,59,0
+Ip,javaemul.internal.ArrayHelper::removeFrom(Ljava/lang/Object;II)V,javaemul.internal.ArrayHelper,removeFrom,com/google/gwt/emul/javaemul/internal/ArrayHelper.java,55,0
+Jp,javaemul.internal.InternalPreconditions::checkCriticalArgument(ZLjava/lang/Object;)V,javaemul.internal.InternalPreconditions,checkCriticalArgument,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,307,0
+Kp,javaemul.internal.InternalPreconditions::checkCriticalArrayType(Z)V,javaemul.internal.InternalPreconditions,checkCriticalArrayType,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,160,0
+Lp,javaemul.internal.InternalPreconditions::checkCriticalElement(Z)V,javaemul.internal.InternalPreconditions,checkCriticalElement,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,226,0
+Mp,javaemul.internal.InternalPreconditions::checkCriticalElementIndex(II)V,javaemul.internal.InternalPreconditions,checkCriticalElementIndex,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,482,0
+Np,javaemul.internal.InternalPreconditions::checkCriticalNotNull(Ljava/lang/Object;)Ljava/lang/Object;,javaemul.internal.InternalPreconditions,checkCriticalNotNull,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,417,0
+Op,javaemul.internal.InternalPreconditions::checkCriticalNotNull(Ljava/lang/Object;Ljava/lang/Object;)V,javaemul.internal.InternalPreconditions,checkCriticalNotNull,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,439,0
+Pp,javaemul.internal.InternalPreconditions::checkCriticalPositionIndex(II)V,javaemul.internal.InternalPreconditions,checkCriticalPositionIndex,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,504,0
+Qp,javaemul.internal.InternalPreconditions::checkCriticalType(Z)V,javaemul.internal.InternalPreconditions,checkCriticalType,com/google/gwt/emul/javaemul/internal/InternalPreconditions.java,139,0
+Rp,javaemul.internal.JsUtils::setPropertySafe(Ljava/lang/Object;Ljava/lang/String;Ljava/lang/Object;)V,javaemul.internal.JsUtils,setPropertySafe,com/google/gwt/emul/javaemul/internal/JsUtils.java,59,0
 NativeRegExp,,javaemul.internal.NativeRegExp,,com/google/gwt/emul/javaemul/internal/NativeRegExp.java,24,-1
-Vp,javaemul.internal.ObjectHashing::getHashCode(Ljava/lang/Object;)I,javaemul.internal.ObjectHashing,getHashCode,com/google/gwt/emul/javaemul/internal/ObjectHashing.java,26,0
-Up,javaemul.internal.ObjectHashing::nextHashId,javaemul.internal.ObjectHashing,nextHashId,com/google/gwt/emul/javaemul/internal/ObjectHashing.java,23,-1
-Zp,javaemul.internal.StringHashCache::$clinit()V,javaemul.internal.StringHashCache,$clinit,com/google/gwt/emul/javaemul/internal/StringHashCache.java,23,0
-Wp,javaemul.internal.StringHashCache::back,javaemul.internal.StringHashCache,back,com/google/gwt/emul/javaemul/internal/StringHashCache.java,27,-1
-$p,javaemul.internal.StringHashCache::compute(Ljava/lang/String;)I,javaemul.internal.StringHashCache,compute,com/google/gwt/emul/javaemul/internal/StringHashCache.java,62,0
-Xp,javaemul.internal.StringHashCache::count,javaemul.internal.StringHashCache,count,com/google/gwt/emul/javaemul/internal/StringHashCache.java,31,-1
-Yp,javaemul.internal.StringHashCache::front,javaemul.internal.StringHashCache,front,com/google/gwt/emul/javaemul/internal/StringHashCache.java,35,-1
-_p,javaemul.internal.StringHashCache::getHashCode(Ljava/lang/String;)I,javaemul.internal.StringHashCache,getHashCode,com/google/gwt/emul/javaemul/internal/StringHashCache.java,41,0
-aq,javaemul.internal.StringHashCache::increment()V,javaemul.internal.StringHashCache,increment,com/google/gwt/emul/javaemul/internal/StringHashCache.java,89,0
+Tp,javaemul.internal.ObjectHashing::getHashCode(Ljava/lang/Object;)I,javaemul.internal.ObjectHashing,getHashCode,com/google/gwt/emul/javaemul/internal/ObjectHashing.java,26,0
+Sp,javaemul.internal.ObjectHashing::nextHashId,javaemul.internal.ObjectHashing,nextHashId,com/google/gwt/emul/javaemul/internal/ObjectHashing.java,23,-1
+Xp,javaemul.internal.StringHashCache::$clinit()V,javaemul.internal.StringHashCache,$clinit,com/google/gwt/emul/javaemul/internal/StringHashCache.java,23,0
+Up,javaemul.internal.StringHashCache::back,javaemul.internal.StringHashCache,back,com/google/gwt/emul/javaemul/internal/StringHashCache.java,27,-1
+Yp,javaemul.internal.StringHashCache::compute(Ljava/lang/String;)I,javaemul.internal.StringHashCache,compute,com/google/gwt/emul/javaemul/internal/StringHashCache.java,62,0
+Vp,javaemul.internal.StringHashCache::count,javaemul.internal.StringHashCache,count,com/google/gwt/emul/javaemul/internal/StringHashCache.java,31,-1
+Wp,javaemul.internal.StringHashCache::front,javaemul.internal.StringHashCache,front,com/google/gwt/emul/javaemul/internal/StringHashCache.java,35,-1
+Zp,javaemul.internal.StringHashCache::getHashCode(Ljava/lang/String;)I,javaemul.internal.StringHashCache,getHashCode,com/google/gwt/emul/javaemul/internal/StringHashCache.java,41,0
+$p,javaemul.internal.StringHashCache::increment()V,javaemul.internal.StringHashCache,increment,com/google/gwt/emul/javaemul/internal/StringHashCache.java,89,0
