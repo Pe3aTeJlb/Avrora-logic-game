@@ -49,4 +49,5 @@ public interface Constants extends com.google.gwt.i18n.client.Constants{
 	 
 	 String ToMenu();
 	 String Score();
+	 String RulesText();
 	}

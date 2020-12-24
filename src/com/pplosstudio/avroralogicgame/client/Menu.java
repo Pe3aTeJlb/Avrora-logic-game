@@ -67,8 +67,6 @@ public class Menu{
     
     int width,height;
     
-    ArrayList<Particle> particles = new ArrayList<Particle>();
- 
 	Menu(){ menu = this;}
 	
 	public void setCanvasSize(){
@@ -154,7 +152,7 @@ public class Menu{
 		 
 		Button rules = new Button(constants.Rules(), new ClickHandler() {
 		      public void onClick(ClickEvent event) {
-					AboutBox b = new AboutBox();
+					AboutBox b = new AboutBox(constants.RulesText());
 					dp.add(b.vp);
 		      }
 		    });
@@ -182,12 +180,6 @@ public class Menu{
 	    root.add(layoutPanel);
 	    
 	    setCanvasSize();	
-	    
-	    for(int i = 0; i < 5; i++) {
-	    	
-	    	Particle p = new Particle(backcontext, width, height);
-	    	particles.add(p);
-	    }
 	    
 	    timer.scheduleRepeating(REFRESH_RATE);
 	   

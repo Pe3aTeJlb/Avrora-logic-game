@@ -39,12 +39,12 @@ public class AboutBox extends PopupPanel {
 	VerticalPanel vp;
 	Button okButton;
 	
-	AboutBox() {
+	AboutBox(String content) {
 		super();
 		vp = new VerticalPanel();
 		setWidget(vp);
 		vp.setWidth("400px");
-		vp.add(new HTML("asdasdassada"));
+		vp.add(new HTML(content));
 		
 		
 		vp.add(okButton = new Button("OK"));

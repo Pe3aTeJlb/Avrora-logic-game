@@ -265,12 +265,12 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		}}));
 		
 		infoBar.addItem(new MenuItem(constants.Rules(),  new Command() { public void execute(){
-			AboutBox b = new AboutBox();
+			AboutBox b = new AboutBox(constants.RulesText());
 			layoutPanel.add(b);
 		}}));
 		
 		infoBar.addItem(new MenuItem(constants.Developers(),  new Command() { public void execute(){
-			AboutBox b = new AboutBox();
+			AboutBox b = new AboutBox(constants.RulesText());
 			layoutPanel.add(b);
 		}}));
 		
@@ -510,7 +510,7 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 				 				 transform[3], transform[4], transform[5]
 				 				);
         		 
-    	for (int i = 0; i != elmList.size(); i++) {
+    	for (int i = elmList.size()-1; i >=0; i--) {
     		
     		if(printableCheckItem.getState()){
     			g.setColor(Color.black);	
