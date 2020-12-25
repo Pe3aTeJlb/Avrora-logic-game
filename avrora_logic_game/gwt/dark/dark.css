@@ -68,18 +68,18 @@ a, a:visited, a:hover {
 }
 
 .gwt-DecoratorPanel {
+	box-shadow: 0.4em 0.4em 20px rgba(122,122,122,0.5);
 }
-.gwt-DecoratorPanel .topCenter,
-.gwt-DecoratorPanel .bottomCenter,
-.gwt-DecoratorPanel .middleLeft,
-.gwt-DecoratorPanel .middleRight,
-.gwt-DecoratorPanel .topLeft,
-.gwt-DecoratorPanel .topRight,
-.gwt-DecoratorPanel .bottomLeft,
-.gwt-DecoratorPanel .bottomRight {
-  background: #00CCFF;
-  zoom: 1;
-}
+.gwt-DecoratorPanel .topCenter{}
+.gwt-DecoratorPanel .bottomCenter{}
+.gwt-DecoratorPanel .middleLeft{}
+.gwt-DecoratorPanel .middleRight{}
+
+.gwt-DecoratorPanel .topLeft,{}
+.gwt-DecoratorPanel .topRight,{}
+.gwt-DecoratorPanel .bottomLeft,{}
+.gwt-DecoratorPanel .bottomRight {}
+
 .gwt-DecoratorPanel .topLeftInner,
 .gwt-DecoratorPanel .topRightInner,
 .gwt-DecoratorPanel .bottomLeftInner,
@@ -210,36 +210,37 @@ a, a:visited, a:hover {
   cursor: default;
 }
 .gwt-MenuBar .gwt-MenuItem {
+  color: #A5C6FF;
+  box-shadow: 0.4em 0.4em 5px rgba(122,122,122,0.5);
+  background: #2D4257;
   cursor: default;
 }
 .gwt-MenuBar .gwt-MenuItem-selected {
-  background: #666;
-  color: #0cf;
+  background: #65707B;
+  color: #A5C6FF;
 }
 .gwt-MenuBar .gwt-MenuItem-disabled {
-  color: #ccc;
+  color: #A5C6FF;
 }
 .gwt-MenuBar-horizontal {
-  background: #222222;
-  border: 1px solid #777;
+  background: #223242;
+  border-bottom: 2px solid #2d4257;
 }
 .gwt-MenuBar-horizontal .gwt-MenuItem {
-  padding: 0px 10px;
-  vertical-align: bottom;
+  padding: 4px 50px; 
   font-weight: bold;
 }
+
 .gwt-MenuBar-horizontal .gwt-MenuItemSeparator {
   width: 1px;
   padding: 0px;
   margin: 0px;
-  border: 0px;
-  border-left: 1px solid #bec7cc;
-  background: #000;
+  background: #2d4257;
 }
 .gwt-MenuBar-horizontal .gwt-MenuItemSeparator .menuSeparatorInner {
   width: 1px;
   height: 1px;
-  background: #000;
+  background: #263e56;
 }
 .gwt-MenuBar-vertical {
   margin-top: 0px;
@@ -322,9 +323,11 @@ a, a:visited, a:hover {
 }
 
 .gwt-PopupPanel {
-  border: 3px solid #00CCFF;
+  margin: 10% 20% 10% 20%;
+  border: 3px ridge #283c5033;
   padding: 3px;
-  background: #4D4D4D;
+  background: #223242;
+  box-shadow: 0 0 5px;
 }
 
 .gwt-DecoratedPopupPanel .popupContent {
