@@ -68,6 +68,7 @@ a, a:visited, a:hover {
 }
 
 .gwt-DecoratorPanel {
+	box-shadow: 0.4em 0.4em 20px rgba(122,122,122,0.5);
 }
 .gwt-DecoratorPanel .topCenter{}
 .gwt-DecoratorPanel .bottomCenter{}

@@ -109,4 +109,5 @@ public class Gif extends Image {
 		
 	}
 	
+	
 }

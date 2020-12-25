@@ -353,7 +353,7 @@ public class CircuitSynthesizer {
 		DeleteUnusedInputs();
 		CreateCircuitOutput();
 		
-		GWT.log(dump);
+		//GWT.log(dump);
 	}
 	
 	//Создание списка наследуемых входных переменных

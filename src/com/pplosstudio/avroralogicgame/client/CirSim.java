@@ -266,12 +266,12 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 		
 		infoBar.addItem(new MenuItem(constants.Rules(),  new Command() { public void execute(){
 			AboutBox b = new AboutBox(constants.RulesText());
-			layoutPanel.add(b);
+			//layoutPanel.add(b);
 		}}));
 		
 		infoBar.addItem(new MenuItem(constants.Developers(),  new Command() { public void execute(){
-			AboutBox b = new AboutBox(constants.RulesText());
-			layoutPanel.add(b);
+			AboutBox b = new AboutBox(constants.DevelopersText());
+			//layoutPanel.add(b);
 		}}));
 		
 		//initialize wire color
@@ -477,10 +477,30 @@ public class CirSim implements  MouseDownHandler,  MouseUpHandler, MouseMoveHand
 	      		//Переход на след уровень
 	          	if(currOutputIndex == FunctionsOutput.size()) {
 	          		
+	          		level++;
+	          		
+	          		if(level > maxLevelCount) {
+	          			
+	          			if(gameType.equals("Test")) {
+	          				
+	          				if(Score>0) {
+	          					AboutBox b = new AboutBox(constants.TestPassed());
+	          				}else {
+	          					AboutBox b = new AboutBox(constants.TestFailed());
+	          				}
+	          				
+	          			}
+	          			else {
+	          				AboutBox b = new AboutBox(constants.PrictiseOver());
+	          			}
+	          			//layoutPanel.add(b);
+	       
+	          		}
+	          		
 	          		currOutputIndex = 0;
 	          		GWT.log("You Won!");
 	          		elmList.clear();
-	          		level++;
+	          		
 	          		
 	          		GenerateCircuit();
 	          	}

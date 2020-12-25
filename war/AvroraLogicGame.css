@@ -11,9 +11,9 @@
 .gwt-DecoratorPanel{
 	height: 100%;
 	width: 100%;
-	margin: 0 auto;
     border: 3px inset #2b425d;
 	background: #223242;
+	box-shadow: 0.4em 0.4em 20px rgba(122,122,122,0.5);
 }
 
 .gwt-DecoratorPanel .middle{

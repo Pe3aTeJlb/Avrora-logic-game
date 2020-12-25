@@ -59,6 +59,7 @@ public class AboutBox extends PopupPanel {
 	}
 
 	public void close() {
+		
 		hide();
 	}
 }
